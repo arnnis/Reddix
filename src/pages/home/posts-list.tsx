@@ -9,6 +9,7 @@ import Flex from "../../components/flex";
 const PostList: FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     getPostsList();
@@ -16,11 +17,12 @@ const PostList: FC = () => {
 
   const getPostsList = async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       let posts: any = await dispatch(getPosts());
       setPosts(posts.data.children);
     } catch (e) {
-      // handle error
+      setLoadError(e);
     } finally {
       setLoading(false);
     }
@@ -29,14 +31,24 @@ const PostList: FC = () => {
   const renderPostCell = (post: any) => <PostCell post={post.data} />;
 
   const renderLoading = () => (
-    <Flex justifyContent="center" alignItems="center">
+    <Flex allCenter>
       <span>Loading...</span>
+    </Flex>
+  );
+
+  const renderLoadError = () => (
+    <Flex allCenter>
+      <span>Load errored.</span>
     </Flex>
   );
 
   return (
     <Container>
-      {loading ? renderLoading() : posts.map(renderPostCell)}
+      {loading
+        ? renderLoading()
+        : loadError
+        ? renderLoadError()
+        : posts.map(renderPostCell)}
     </Container>
   );
 };

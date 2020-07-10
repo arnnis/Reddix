@@ -1,19 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type AppState = Readonly<{
-  ds: "ss";
+  token: string | null;
 }>;
 
 const initialState: AppState = {
-  ds: "ss",
+  token: null,
 };
 
 const appSlice = createSlice({
   name: "app",
   initialState,
-  reducers: {},
+  reducers: {
+    setToken(state, action: PayloadAction<{ token: string }>) {
+      state.token = action.payload.token;
+    },
+  },
 });
 
 export const appReducer = appSlice.reducer;
 
-export const {} = appSlice.actions;
+export const { setToken } = appSlice.actions;

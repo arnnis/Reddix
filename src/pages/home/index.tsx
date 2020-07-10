@@ -10,10 +10,9 @@ const Home: FC = () => {
     <Container>
       <NavBar />
       <BodyContainer>
-          <Header />
-          <PostList />
+        <Header />
+        <PostList />
       </BodyContainer>
-
     </Container>
   );
 };
@@ -28,7 +27,7 @@ const BodyContainer = styled.div`
   flex: 1;
   flex-direction: column;
   padding: 0 100px 0 100px;
-   background-color: #f2f3f5;
-`
+  background-color: #f2f3f5;
+`;
 
 export default Home;
