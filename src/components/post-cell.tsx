@@ -12,9 +12,9 @@ interface Props {
 const PostCell: FC<Props> = ({ post }) => {
   const renderVotes = () => (
     <VotesContainer>
-      <ChevronUp />
-      <span>123</span>
-      <ChevronDown />
+      <ChevronUp style={{ cursor: "pointer" }} />
+      <span>{post.ups.toString()}</span>
+      <ChevronDown style={{ cursor: "pointer" }} />
     </VotesContainer>
   );
 
@@ -43,7 +43,7 @@ const Container = styled.div`
   min-height: 100px;
   max-height: 300px;
   background-color: #fff;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid whitesmoke;
 `;
 
 const BodyContainer = styled.div`
@@ -61,7 +61,7 @@ const PostTitle = styled.span`
 const VotesContainer = styled.div`
   display: flex;
   min-width: 100px;
-  background-color: red;
+  //background-color: red;
   flex-direction: column;
   justify-content: center;
   align-items: center;

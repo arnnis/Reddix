@@ -25,7 +25,7 @@ const Header = () => {
 
 const Container = styled.div`
   display: flex;
-  height: 75px;
+  height: 100px;
   width: 100%;
 
   align-items: center;

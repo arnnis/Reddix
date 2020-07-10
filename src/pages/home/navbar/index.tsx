@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { ReactComponent as HotIcon } from "../../../assets/svg/fire.svg";
+import { ReactComponent as NewIcon } from "../../../assets/svg/plus-box.svg";
+import { ReactComponent as ChartIcon } from "../../../assets/svg/chart-bar.svg";
 
 const NavBar: FC = () => {
   const renderAppLogo = () => (
@@ -9,19 +11,24 @@ const NavBar: FC = () => {
     </LogoContainer>
   );
 
-  const renderCategorySection = () => (
+  const renderCategorySection = (title: string) => (
     <SectionContainer>
       <SectionTitleContainer>
-        <SectionTitle>CATEGORY</SectionTitle>
+        <SectionTitle>{title}</SectionTitle>
+        <SectionDivider />
       </SectionTitleContainer>
-      <SectionDivider />
       <SectionItemContainer>
-        <HotIcon style={{ marginLeft: -3 }} />
-        <SectionItemTitle>Test</SectionItemTitle>
+        <NewIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
+        <SectionItemTitle>NEW</SectionItemTitle>
+      </SectionItemContainer>
+      <SectionItemContainer enabled>
+        <HotIcon style={{ marginLeft: -3, fill: "#494949" }} />
+        <SectionItemTitle enabled={true}>BEST</SectionItemTitle>
+        <SectionItemSelectedBar />
       </SectionItemContainer>
       <SectionItemContainer>
-        <HotIcon style={{ marginLeft: -3 }} />
-        <SectionItemTitle>Test</SectionItemTitle>
+        <ChartIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
+        <SectionItemTitle>TOP</SectionItemTitle>
       </SectionItemContainer>
     </SectionContainer>
   );
@@ -29,7 +36,8 @@ const NavBar: FC = () => {
   return (
     <Container>
       {renderAppLogo()}
-      {renderCategorySection()}
+      {renderCategorySection("CATEGORY")}
+      {renderCategorySection("SUBREDDITS")}
     </Container>
   );
 };
@@ -40,7 +48,7 @@ const Container = styled.div`
   height: 100%;
   background-color: #fff;
   flex-direction: column;
-  box-shadow: 5px 0px 5px -4px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 0px 15px -19px rgba(150, 150, 150, 1);
 `;
 
 const LogoContainer = styled.div`
@@ -49,11 +57,11 @@ const LogoContainer = styled.div`
   width: 100%;
   //background-color: navajowhite;
   align-items: center;
-  padding-left: 40px;
+  padding-left: 35px;
 `;
 
 const LogoTilte = styled.div`
-  font-size: 18px;
+  font-size: 19px;
   font-weight: bold;
 `;
 
@@ -63,12 +71,15 @@ const SectionContainer = styled.div`
   width: 100%;
   flex-direction: column;
   align-items: center;
-  padding: 25px;
+  margin-bottom: 25px;
 `;
 
 const SectionTitleContainer = styled.div`
   display: flex;
   width: 100%;
+  padding: 0px 35px 0 35px;
+  flex-direction: column;
+  margin-bottom: 10px;
 `;
 
 const SectionTitle = styled.span`
@@ -80,21 +91,34 @@ const SectionTitle = styled.span`
 
 const SectionDivider = styled.div`
   width: 100%;
-  height: 1px;
-  background-color: darkgrey;
+  height: 1.5px;
+  background-color: whitesmoke;
 `;
 
-const SectionItemContainer = styled.div`
-  height: 40px;
+const SectionItemContainer = styled.div<{ enabled?: boolean }>`
+  position: relative;
+  height: 47.5px;
   display: flex;
   width: 100%;
   align-items: center;
+  padding: 0px 35px 0 35px;
+  cursor: pointer;
 `;
 
-const SectionItemTitle = styled.span`
-  font-size: 14px;
-  color: black;
-  margin-left: 7.5px;
+const SectionItemTitle = styled.span<{ enabled?: boolean }>`
+  font-size: 13.5px;
+  color: ${(props) => (props.enabled ? "#494949" : "#CECECE")};
+  margin-left: 15px;
+  font-weight: bold;
+`;
+
+const SectionItemSelectedBar = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4.5px;
+  background-color: #e04e18;
 `;
 
 export default NavBar;

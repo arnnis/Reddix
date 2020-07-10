@@ -28,7 +28,9 @@ const PostList: FC = () => {
     }
   };
 
-  const renderPostCell = (post: any) => <PostCell post={post.data} />;
+  const renderPostCell = (post: any) => (
+    <PostCell key={post.data.id} post={post.data} />
+  );
 
   const renderLoading = () => (
     <Flex allCenter>
@@ -59,6 +61,8 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  background-color: white;
+  box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
 `;
 
 export default PostList;
