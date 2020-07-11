@@ -30,16 +30,19 @@ const Header: FC<Props> = ({ subreddit }) => {
     </UserProfileContainer>
   );
 
-  const renderCategoryDropdown = () => (
-    <Flex alignItems="center" style={{ marginTop: 5 }}>
-      <CategoryDropdown>{category.toUpperCase()}</CategoryDropdown>
-      <ChevronDown style={{ fill: "#e04e18", height: 18 }} />
-    </Flex>
-  );
+  const renderCategoryDropdown = () =>
+    subreddit && (
+      <Flex alignItems="center" style={{ marginTop: 1.5 }}>
+        <CategoryDropdown>{category.toUpperCase()}</CategoryDropdown>
+        <ChevronDown style={{ fill: "#e04e18", height: 18 }} />
+      </Flex>
+    );
 
   return (
     <Container>
-      <CategoryTitle>{subreddit ? `r/${subreddit}` : "Best"}</CategoryTitle>
+      <CategoryTitle>
+        {subreddit ? `r/${subreddit}` : category.toUpperCase()}
+      </CategoryTitle>
       {renderCategoryDropdown()}
       {false ? renderUserProfile() : renderLoginButton()}
     </Container>

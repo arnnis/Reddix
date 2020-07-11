@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as HotIcon } from "../../assets/svg/fire.svg";
 import { ReactComponent as NewIcon } from "../../assets/svg/plus-box.svg";
 import { ReactComponent as ChartIcon } from "../../assets/svg/chart-bar.svg";
-import { batch, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getMySubreddits, getPosts } from "../../slices/posts/thunks";
 import Flex from "../../components/flex";
 import { Subreddit } from "../../models/subreddit";
@@ -42,7 +42,12 @@ const NavBar: FC<Props> = ({ subreddit }) => {
   };
 
   const renderAppLogo = () => (
-    <LogoContainer>
+    <LogoContainer
+      onClick={() => {
+        dispatch(setCategory("best"));
+        history.push("/");
+      }}
+    >
       <LogoTilte>Reddix</LogoTilte>
     </LogoContainer>
   );
@@ -129,8 +134,9 @@ const NavBar: FC<Props> = ({ subreddit }) => {
   return (
     <Container>
       {renderAppLogo()}
-      {renderHomeSection()}
       <Flex flexDirection="column" style={{ overflowY: "auto" }}>
+        {renderHomeSection()}
+
         {renderSubReddits()}
       </Flex>
     </Container>
@@ -176,10 +182,11 @@ const LogoContainer = styled.div`
   //background-color: navajowhite;
   align-items: center;
   padding-left: 35px;
+  cursor: pointer;
 `;
 
 const LogoTilte = styled.div`
-  font-size: 19px;
+  font-size: 19.5px;
   font-weight: bold;
   color: #e04e18;
 `;

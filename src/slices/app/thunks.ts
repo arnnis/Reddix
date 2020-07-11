@@ -39,7 +39,7 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
 };
 
 export const refreshToken = (): AppThunk => async (dispatch, getState) => {
-  alert("refreshing token...");
+  console.log("refreshing token...");
   const refreshToken = getState().app.refreshToken;
   if (!refreshToken) {
     dispatch(logOut());
