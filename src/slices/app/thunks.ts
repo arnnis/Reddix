@@ -6,8 +6,6 @@ import { LoginResult } from "../../models/auth";
 import { setToken } from "./slice";
 import { history } from "../../index";
 
-export default null;
-
 export const logInStart = (): AppThunk => (dispatch) => {
   window.location.replace(OAUTH_URL);
 };
@@ -36,7 +34,7 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
       expiresIn: data.expires_in,
     })
   );
-  // window.location.replace("/home");
+
   history.replace("/home");
 };
 
@@ -62,8 +60,6 @@ export const refreshToken = (): AppThunk => async (dispatch, getState) => {
         },
       })
       .json<LoginResult>();
-
-    console.log(data);
 
     dispatch(
       setToken({

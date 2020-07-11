@@ -1,10 +1,36 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as HotIcon } from "../../assets/svg/fire.svg";
 import { ReactComponent as NewIcon } from "../../assets/svg/plus-box.svg";
 import { ReactComponent as ChartIcon } from "../../assets/svg/chart-bar.svg";
+import { useDispatch } from "react-redux";
+import { getMySubreddits, getPosts } from "../../slices/posts/thunks";
+import Flex from "../../components/flex";
+import { Subreddit } from "../../models/subreddit";
 
 const NavBar: FC = () => {
+  const dispatch = useDispatch();
+  const [subreddits, setSubreddits] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState<any>(null);
+
+  useEffect(() => {
+    getMySubredditsList();
+  }, []);
+
+  const getMySubredditsList = async () => {
+    setLoading(true);
+    setLoadError(null);
+    try {
+      let subs: any = await dispatch(getMySubreddits());
+      setSubreddits(subs.data.children);
+    } catch (e) {
+      setLoadError(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const renderAppLogo = () => (
     <LogoContainer>
       <LogoTilte>Reddix</LogoTilte>
@@ -12,7 +38,7 @@ const NavBar: FC = () => {
   );
 
   const renderHomeSection = () => (
-    <Section title="Home">
+    <Section title="HOME">
       <SectionItem
         title="NEW"
         icon={
@@ -33,11 +59,32 @@ const NavBar: FC = () => {
     </Section>
   );
 
+  const renderSubReddit = ({ data: sub }: { data: Subreddit }) => {
+    return (
+      <SectionItem
+        key={sub.id}
+        title={"r/" + sub.display_name}
+        icon={
+          <SubredditImage
+            src={(sub.icon_img || sub.community_icon)?.replace(/amp;/g, "")}
+            style={{ marginLeft: -3 }}
+          />
+        }
+      />
+    );
+  };
+
+  const renderSubReddits = () => (
+    <Section title="SUBREDDITS">{subreddits.map(renderSubReddit)}</Section>
+  );
+
   return (
     <Container>
       {renderAppLogo()}
       {renderHomeSection()}
-      {/*{renderCategorySection("SUBREDDITS")}*/}
+      <Flex flexDirection="column" style={{ overflowY: "auto" }}>
+        {renderSubReddits()}
+      </Flex>
     </Container>
   );
 };
@@ -60,7 +107,8 @@ const SectionItem: FC<{
 }> = ({ icon, title, onPress, selected }) => (
   <SectionItemContainer selected={selected}>
     {icon}
-    <SectionItemTitle selected={selected}>title</SectionItemTitle>
+    <SectionItemTitle selected={selected}>{title}</SectionItemTitle>
+    {selected && <SectionItemSelectedBar />}
   </SectionItemContainer>
 );
 
@@ -142,6 +190,12 @@ const SectionItemSelectedBar = styled.div`
   height: 100%;
   width: 4.5px;
   background-color: #e04e18;
+`;
+
+const SubredditImage = styled.img`
+  width: 21px;
+  height: 21px;
+  border-radius: 100%;
 `;
 
 export default NavBar;

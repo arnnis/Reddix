@@ -1,19 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export type UsersState = Readonly<{
+export type PostsState = Readonly<{
   list: Array<string>;
   loadingList: boolean;
   loading: { [userId: string]: boolean };
 }>;
 
-const initialState: UsersState = {
+const initialState: PostsState = {
   list: [],
   loadingList: false,
   loading: {},
 };
 
 const membersSlice = createSlice({
-  name: "members",
+  name: "posts",
   initialState,
   reducers: {},
 });

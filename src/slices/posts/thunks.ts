@@ -8,3 +8,10 @@ export const getPosts = (): AppThunk => async (dispatch, getState) => {
   console.log("posts", data);
   return data;
 };
+
+export const getMySubreddits = (): AppThunk => async (dispatch) => {
+  let data = await req("OAUTH").get("subreddits/mine.json").json();
+  console.log("my subs", data);
+  navigator.clipboard.writeText(JSON.stringify(data));
+  return data;
+};
