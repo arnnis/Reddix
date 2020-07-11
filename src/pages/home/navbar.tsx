@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { ReactComponent as HotIcon } from "../../../assets/svg/fire.svg";
-import { ReactComponent as NewIcon } from "../../../assets/svg/plus-box.svg";
-import { ReactComponent as ChartIcon } from "../../../assets/svg/chart-bar.svg";
+import { ReactComponent as HotIcon } from "../../assets/svg/fire.svg";
+import { ReactComponent as NewIcon } from "../../assets/svg/plus-box.svg";
+import { ReactComponent as ChartIcon } from "../../assets/svg/chart-bar.svg";
 
 const NavBar: FC = () => {
   const renderAppLogo = () => (
@@ -11,36 +11,58 @@ const NavBar: FC = () => {
     </LogoContainer>
   );
 
-  const renderCategorySection = (title: string) => (
-    <SectionContainer>
-      <SectionTitleContainer>
-        <SectionTitle>{title}</SectionTitle>
-        <SectionDivider />
-      </SectionTitleContainer>
-      <SectionItemContainer>
-        <NewIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
-        <SectionItemTitle>NEW</SectionItemTitle>
-      </SectionItemContainer>
-      <SectionItemContainer enabled>
-        <HotIcon style={{ marginLeft: -3, fill: "#494949" }} />
-        <SectionItemTitle enabled={true}>BEST</SectionItemTitle>
-        <SectionItemSelectedBar />
-      </SectionItemContainer>
-      <SectionItemContainer>
-        <ChartIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
-        <SectionItemTitle>TOP</SectionItemTitle>
-      </SectionItemContainer>
-    </SectionContainer>
+  const renderHomeSection = () => (
+    <Section title="Home">
+      <SectionItem
+        title="NEW"
+        icon={
+          <NewIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
+        }
+      />
+      <SectionItem
+        title="BEST"
+        icon={<HotIcon style={{ marginLeft: -3, fill: "#494949" }} />}
+        selected
+      />
+      <SectionItem
+        title="TOP"
+        icon={
+          <ChartIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
+        }
+      />
+    </Section>
   );
 
   return (
     <Container>
       {renderAppLogo()}
-      {renderCategorySection("HOME")}
-      {renderCategorySection("SUBREDDITS")}
+      {renderHomeSection()}
+      {/*{renderCategorySection("SUBREDDITS")}*/}
     </Container>
   );
 };
+
+const Section: FC<{ title: string }> = ({ title, children }) => (
+  <SectionContainer>
+    <SectionTitleContainer>
+      <SectionTitle>{title}</SectionTitle>
+      <SectionDivider />
+    </SectionTitleContainer>
+    {children}
+  </SectionContainer>
+);
+
+const SectionItem: FC<{
+  icon: any;
+  title: string;
+  onPress?(): void;
+  selected?: boolean;
+}> = ({ icon, title, onPress, selected }) => (
+  <SectionItemContainer selected={selected}>
+    {icon}
+    <SectionItemTitle selected={selected}>title</SectionItemTitle>
+  </SectionItemContainer>
+);
 
 const Container = styled.div`
   display: flex;
@@ -96,7 +118,7 @@ const SectionDivider = styled.div`
   background-color: whitesmoke;
 `;
 
-const SectionItemContainer = styled.div<{ enabled?: boolean }>`
+const SectionItemContainer = styled.div<{ selected?: boolean }>`
   position: relative;
   height: 47.5px;
   display: flex;
@@ -106,9 +128,9 @@ const SectionItemContainer = styled.div<{ enabled?: boolean }>`
   cursor: pointer;
 `;
 
-const SectionItemTitle = styled.span<{ enabled?: boolean }>`
+const SectionItemTitle = styled.span<{ selected?: boolean }>`
   font-size: 13.5px;
-  color: ${(props) => (props.enabled ? "#494949" : "#CECECE")};
+  color: ${(props) => (props.selected ? "#494949" : "#CECECE")};
   margin-left: 15px;
   font-weight: bold;
 `;

@@ -29,8 +29,6 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
     })
     .json<LoginResult>();
 
-  // alert(data.access_token);
-
   dispatch(
     setToken({
       token: data.access_token,
@@ -43,7 +41,7 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
 };
 
 export const refreshToken = (): AppThunk => async (dispatch, getState) => {
-  console.log("refreshing token...");
+  alert("refreshing token...");
   const refreshToken = getState().app.refreshToken;
   if (!refreshToken) {
     dispatch(logOut());
@@ -66,10 +64,21 @@ export const refreshToken = (): AppThunk => async (dispatch, getState) => {
       .json<LoginResult>();
 
     console.log(data);
+
+    dispatch(
+      setToken({
+        token: data.access_token,
+        refreshToken: data.refresh_token,
+        expiresIn: data.expires_in,
+      })
+    );
+
+    return data;
   } catch (e) {
     if (e.message == 401) {
       dispatch(logOut());
     }
+    return false;
   }
 };
 
