@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { getMySubreddits, getPosts } from "../../slices/posts/thunks";
 import Flex from "../../components/flex";
 import { Subreddit } from "../../models/subreddit";
+import { history } from "../../index";
 
 const NavBar: FC = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ const NavBar: FC = () => {
       <SectionItem
         key={sub.id}
         title={"r/" + sub.display_name}
+        onPress={() => history.push("/r/" + sub.display_name)}
         icon={
           <SubredditImage
             src={(sub.icon_img || sub.community_icon)?.replace(/amp;/g, "")}
@@ -105,7 +107,7 @@ const SectionItem: FC<{
   onPress?(): void;
   selected?: boolean;
 }> = ({ icon, title, onPress, selected }) => (
-  <SectionItemContainer selected={selected}>
+  <SectionItemContainer selected={selected} onClick={onPress}>
     {icon}
     <SectionItemTitle selected={selected}>{title}</SectionItemTitle>
     {selected && <SectionItemSelectedBar />}

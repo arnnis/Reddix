@@ -1,17 +1,20 @@
 import React, { FC } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+
 import NavBar from "./navbar";
 import PostList from "./posts-list";
 import Flex from "../../components/flex";
 import Header from "./header";
 
 const Home: FC = () => {
+  const params = useParams<{ subreddit: string | undefined }>();
   return (
     <Container>
       <NavBar />
       <BodyContainer>
-        <Header />
-        <PostList />
+        <Header subreddit={params.subreddit} />
+        <PostList subreddit={params.subreddit} />
       </BodyContainer>
     </Container>
   );

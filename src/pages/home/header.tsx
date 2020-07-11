@@ -1,10 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logInStart } from "../../slices/app/thunks";
 import { RootState } from "../../store/configureStore";
 
-const Header = () => {
+interface Props {
+  subreddit?: string;
+}
+
+const Header: FC<Props> = ({ subreddit }) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.app.isLoggedIn);
   const handleLogin = () => {
@@ -26,7 +30,7 @@ const Header = () => {
 
   return (
     <Container>
-      <CategoryTitle>Best</CategoryTitle>
+      <CategoryTitle>{`r/${subreddit}` ?? "Best"}</CategoryTitle>
       {false ? renderUserProfile() : renderLoginButton()}
     </Container>
   );

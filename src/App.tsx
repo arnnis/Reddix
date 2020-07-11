@@ -11,6 +11,9 @@ function App() {
         <Route path="/home">
           <Home />
         </Route>
+        <Route path="/r/:subreddit">
+          <Home />
+        </Route>
         <Route path="/oauthcallback">
           <OauthCallback />
         </Route>

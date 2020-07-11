@@ -6,14 +6,21 @@ import { getPosts } from "../../slices/posts/thunks";
 import { Post } from "../../models/post";
 import Flex from "../../components/flex";
 
-const PostList: FC = () => {
+interface Props {
+  subreddit?: string;
+}
+
+const PostList: FC<Props> = ({ subreddit }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<any>(null);
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log("subreddit:", subreddit);
     getPostsList();
   }, []);
+
+  const isHome = !subreddit;
 
   const getPostsList = async () => {
     setLoading(true);
