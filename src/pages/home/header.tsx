@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logInStart } from "../../slices/app/thunks";
 import { RootState } from "../../store/configureStore";
+import { Button } from "../../components/button";
+import { ReactComponent as ChevronDown } from "../../assets/svg/chevron-down.svg";
+import Flex from "../../components/flex";
 
 interface Props {
   subreddit?: string;
@@ -16,9 +19,7 @@ const Header: FC<Props> = ({ subreddit }) => {
   };
 
   const renderLoginButton = () => (
-    <LoginButtonContainer onClick={handleLogin}>
-      <LoginButtonText>Login</LoginButtonText>
-    </LoginButtonContainer>
+    <Button title="Login" onClick={handleLogin} />
   );
 
   const renderUserProfile = () => (
@@ -28,9 +29,17 @@ const Header: FC<Props> = ({ subreddit }) => {
     </UserProfileContainer>
   );
 
+  const renderCategoryDropdown = () => (
+    <Flex alignItems="center" style={{ marginTop: 5 }}>
+      <CategoryDropdown>BEST</CategoryDropdown>
+      <ChevronDown style={{ fill: "#e04e18", height: 18 }} />
+    </Flex>
+  );
+
   return (
     <Container>
-      <CategoryTitle>{`r/${subreddit}` ?? "Best"}</CategoryTitle>
+      <CategoryTitle>{subreddit ? `r/${subreddit}` : "Best"}</CategoryTitle>
+      {renderCategoryDropdown()}
       {false ? renderUserProfile() : renderLoginButton()}
     </Container>
   );
@@ -38,9 +47,8 @@ const Header: FC<Props> = ({ subreddit }) => {
 
 const Container = styled.div`
   display: flex;
-  height: 100px;
+  padding: 25px 0 30px 0;
   width: 100%;
-
   align-items: center;
 `;
 
@@ -49,16 +57,11 @@ const CategoryTitle = styled.span`
   font-weight: bold;
 `;
 
-const LoginButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: auto;
-  cursor: pointer;
-`;
-
-const LoginButtonText = styled.div`
-  color: blue;
+const CategoryDropdown = styled.div`
+  color: #e04e18;
+  font-weight: 500;
+  margin-left: 30px;
+  font-size: 14.5px;
 `;
 
 const UserProfileContainer = styled.div`

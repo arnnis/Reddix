@@ -11,7 +11,7 @@ const Home: FC = () => {
   const params = useParams<{ subreddit: string | undefined }>();
   return (
     <Container>
-      <NavBar />
+      <NavBar subreddit={params.subreddit} />
       <BodyContainer>
         <Header subreddit={params.subreddit} />
         <PostList subreddit={params.subreddit} />

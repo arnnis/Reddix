@@ -9,7 +9,11 @@ import Flex from "../../components/flex";
 import { Subreddit } from "../../models/subreddit";
 import { history } from "../../index";
 
-const NavBar: FC = () => {
+interface Props {
+  subreddit?: string;
+}
+
+const NavBar: FC<Props> = ({ subreddit }) => {
   const dispatch = useDispatch();
   const [subreddits, setSubreddits] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -66,6 +70,7 @@ const NavBar: FC = () => {
         key={sub.id}
         title={"r/" + sub.display_name}
         onPress={() => history.push("/r/" + sub.display_name)}
+        selected={sub.display_name === subreddit}
         icon={
           <SubredditImage
             src={(sub.icon_img || sub.community_icon)?.replace(/amp;/g, "")}

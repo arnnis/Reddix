@@ -8,13 +8,13 @@ function App() {
   return (
     <Container>
       <Switch>
-        <Route path="/home">
+        <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/r/:subreddit">
+        <Route path="/r/:subreddit" exact>
           <Home />
         </Route>
-        <Route path="/oauthcallback">
+        <Route path="/oauthcallback" exact>
           <OauthCallback />
         </Route>
       </Switch>

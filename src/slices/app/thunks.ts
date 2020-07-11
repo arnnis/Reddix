@@ -35,7 +35,7 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
     })
   );
 
-  history.replace("/home");
+  history.replace("/");
 };
 
 export const refreshToken = (): AppThunk => async (dispatch, getState) => {
