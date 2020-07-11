@@ -36,7 +36,7 @@ const NavBar: FC = () => {
   return (
     <Container>
       {renderAppLogo()}
-      {renderCategorySection("CATEGORY")}
+      {renderCategorySection("HOME")}
       {renderCategorySection("SUBREDDITS")}
     </Container>
   );
@@ -63,6 +63,7 @@ const LogoContainer = styled.div`
 const LogoTilte = styled.div`
   font-size: 19px;
   font-weight: bold;
+  color: #e04e18;
 `;
 
 const SectionContainer = styled.div`

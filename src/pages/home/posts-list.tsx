@@ -9,7 +9,7 @@ import Flex from "../../components/flex";
 const PostList: FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
-  const [loadError, setLoadError] = useState(null);
+  const [loadError, setLoadError] = useState<any>(null);
   const dispatch = useDispatch();
   useEffect(() => {
     getPostsList();
@@ -40,7 +40,7 @@ const PostList: FC = () => {
 
   const renderLoadError = () => (
     <Flex allCenter>
-      <span>Load errored.</span>
+      <span>Load errored. {loadError?.message}</span>
     </Flex>
   );
 

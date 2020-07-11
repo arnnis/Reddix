@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { logIn } from "../../slices/app/thunks";
+import { logInStart } from "../../slices/app/thunks";
 
 const Header = () => {
   const dispatch = useDispatch();
   const handleLogin = () => {
-    dispatch(logIn());
+    dispatch(logInStart());
   };
 
   const renderLoginButton = () => (

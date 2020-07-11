@@ -8,7 +8,7 @@ import { history } from "../../index";
 
 export default null;
 
-export const logIn = (): AppThunk => (dispatch) => {
+export const logInStart = (): AppThunk => (dispatch) => {
   window.location.replace(OAUTH_URL);
 };
 
@@ -18,27 +18,31 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
   fd.append("grant_type", "authorization_code");
   fd.append("redirect_uri", OAUTH_CALLBACK_URL);
 
-  const r = await fetch("https://www.reddit.com/api/v1/access_token", {
-    headers: {
-      Authorization:
-        "Basic " + btoa(unescape(encodeURIComponent(CLIENT_ID + ":" + ""))),
-    },
-    method: "POST",
-    body: fd,
-  });
-  const data = await r.json();
-  // const data = await ky
-  //   .post("https://www.reddit.com/api/v1/access_token", {
-  //     body: fd,
-  //   })
-  //   .json<LoginResult>();
+  const data = await ky
+    .post("https://www.reddit.com/api/v1/access_token", {
+      method: "POST",
+      body: fd,
+      headers: {
+        Authorization:
+          "Basic " + btoa(unescape(encodeURIComponent(CLIENT_ID + ":" + ""))),
+      },
+    })
+    .json<LoginResult>();
 
   // alert(data.access_token);
 
-  dispatch(setToken({ token: data.access_token }));
+  dispatch(
+    setToken({
+      token: data.access_token,
+      refreshToken: data.refresh_token,
+      expiresIn: data.expires_in,
+    })
+  );
   // window.location.replace("/home");
   history.replace("/home");
 };
+
+export const refreshToken = (): AppThunk => (dispatch) => {};
 
 // import {batch} from 'react-redux';
 // import { AppThunk, RootState } from '../../store/configureStore';
