@@ -7,6 +7,7 @@ import { finishLogin } from "../slices/app/thunks";
 const OauthCallback = () => {
   const dispatch = useDispatch();
   const query = new URLSearchParams(useLocation().search);
+
   useEffect(() => {
     const code = query.get("code");
     if (code) {
@@ -25,6 +26,7 @@ const OauthCallback = () => {
 
 const Container = styled.div`
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
 `;

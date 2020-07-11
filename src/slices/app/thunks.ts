@@ -42,7 +42,47 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
   history.replace("/home");
 };
 
-export const refreshToken = (): AppThunk => (dispatch) => {};
+export const refreshToken = (): AppThunk => async (dispatch, getState) => {
+  console.log("refreshing token...");
+  const refreshToken = getState().app.refreshToken;
+  if (!refreshToken) {
+    dispatch(logOut());
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("grant_type", "refresh_token");
+  fd.append("refresh_token", refreshToken);
+  try {
+    const data = await ky
+      .post("https://www.reddit.com/api/v1/access_token", {
+        method: "POST",
+        body: fd,
+        headers: {
+          Authorization:
+            "Basic " + btoa(unescape(encodeURIComponent(CLIENT_ID + ":" + ""))),
+        },
+      })
+      .json<LoginResult>();
+
+    console.log(data);
+  } catch (e) {
+    if (e.message == 401) {
+      dispatch(logOut());
+    }
+  }
+};
+
+const logOut = (): AppThunk => (dispatch) => {
+  dispatch(
+    setToken({
+      token: null,
+      refreshToken: null,
+      expiresIn: null,
+      isLoggedIn: false,
+    })
+  );
+};
 
 // import {batch} from 'react-redux';
 // import { AppThunk, RootState } from '../../store/configureStore';

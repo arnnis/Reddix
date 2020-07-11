@@ -98,7 +98,7 @@ const Container = styled.div`
   //min-height: 100px;
   //max-height: 300px;
   background-color: #fff;
-  border-bottom: 1px solid whitesmoke;
+  border-bottom: 1.25px solid whitesmoke;
 `;
 
 const BodyContainer = styled.div`

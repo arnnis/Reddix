@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logInStart } from "../../slices/app/thunks";
+import { RootState } from "../../store/configureStore";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => state.app.isLoggedIn);
   const handleLogin = () => {
     dispatch(logInStart());
   };
@@ -15,10 +17,17 @@ const Header = () => {
     </LoginButtonContainer>
   );
 
+  const renderUserProfile = () => (
+    <UserProfileContainer>
+      <UserAvatar src="https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png?width=256&s=13a87a036836ce95570a76feb53f27e61717ad1b" />
+      <UserName>alirezarzna</UserName>
+    </UserProfileContainer>
+  );
+
   return (
     <Container>
       <CategoryTitle>Best</CategoryTitle>
-      {renderLoginButton()}
+      {false ? renderUserProfile() : renderLoginButton()}
     </Container>
   );
 };
@@ -46,6 +55,25 @@ const LoginButtonContainer = styled.div`
 
 const LoginButtonText = styled.div`
   color: blue;
+`;
+
+const UserProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+`;
+
+const UserAvatar = styled.img`
+  height: 30px;
+  width: 30px;
+  background-color: darkred;
+  border-radius: 100%;
+`;
+
+const UserName = styled.span`
+  font-size: 15px;
+  margin-left: 10px;
+  margin-bottom: 1px;
 `;
 
 export default Header;

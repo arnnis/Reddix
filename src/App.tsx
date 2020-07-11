@@ -23,7 +23,7 @@ const Container = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
-  background-color: blueviolet;
+  background-color: #f2f3f5;
   flex-direction: column;
 `;
 

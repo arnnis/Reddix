@@ -4,7 +4,7 @@ import { AppThunk } from "../../store/configureStore";
 export default () => null;
 
 export const getPosts = (): AppThunk => async (dispatch, getState) => {
-  let data = await req("OAUTH").get("top").json();
+  let data = await req("OAUTH").get("best").json();
   console.log("posts", data);
   return data;
 };
