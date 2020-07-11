@@ -52,7 +52,13 @@ const NavBar: FC<Props> = ({ subreddit }) => {
       <SectionItem
         title="NEW"
         icon={
-          <NewIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
+          <NewIcon
+            style={{
+              marginLeft: -3,
+              fill: isHome && category === "new" ? "#494949" : "#CECECE",
+              height: 19,
+            }}
+          />
         }
         onPress={() => {
           dispatch(setCategory("new"));
@@ -62,7 +68,14 @@ const NavBar: FC<Props> = ({ subreddit }) => {
       />
       <SectionItem
         title="BEST"
-        icon={<HotIcon style={{ marginLeft: -3, fill: "#494949" }} />}
+        icon={
+          <HotIcon
+            style={{
+              marginLeft: -3,
+              fill: isHome && category === "best" ? "#494949" : "#CECECE",
+            }}
+          />
+        }
         onPress={() => {
           dispatch(setCategory("best"));
           history.push("/");
@@ -72,7 +85,13 @@ const NavBar: FC<Props> = ({ subreddit }) => {
       <SectionItem
         title="TOP"
         icon={
-          <ChartIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
+          <ChartIcon
+            style={{
+              marginLeft: -3,
+              fill: isHome && category === "top" ? "#494949" : "#CECECE",
+              height: 19,
+            }}
+          />
         }
         onPress={() => {
           dispatch(setCategory("top"));
