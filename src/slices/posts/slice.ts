@@ -1,23 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export type Category = "best" | "top" | "new";
 
 export type PostsState = Readonly<{
   list: Array<string>;
   loadingList: boolean;
   loading: { [userId: string]: boolean };
+  category: Category;
 }>;
 
 const initialState: PostsState = {
   list: [],
   loadingList: false,
   loading: {},
+  category: "best",
 };
 
-const membersSlice = createSlice({
+const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    setCategory(state, action: PayloadAction<Category>) {
+      state.category = action.payload;
+    },
+  },
 });
 
-export const postsReducer = membersSlice.reducer;
+export const postsReducer = postsSlice.reducer;
 
-export const {} = membersSlice.actions;
+export const { setCategory } = postsSlice.actions;

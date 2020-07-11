@@ -17,6 +17,7 @@ const Header: FC<Props> = ({ subreddit }) => {
   const handleLogin = () => {
     dispatch(logInStart());
   };
+  const category = useSelector((state: RootState) => state.posts.category);
 
   const renderLoginButton = () => (
     <Button title="Login" onClick={handleLogin} />
@@ -31,7 +32,7 @@ const Header: FC<Props> = ({ subreddit }) => {
 
   const renderCategoryDropdown = () => (
     <Flex alignItems="center" style={{ marginTop: 5 }}>
-      <CategoryDropdown>BEST</CategoryDropdown>
+      <CategoryDropdown>{category.toUpperCase()}</CategoryDropdown>
       <ChevronDown style={{ fill: "#e04e18", height: 18 }} />
     </Flex>
   );
@@ -62,6 +63,7 @@ const CategoryDropdown = styled.div`
   font-weight: 500;
   margin-left: 30px;
   font-size: 14.5px;
+  cursor: pointer;
 `;
 
 const UserProfileContainer = styled.div`

@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { ReactComponent as HotIcon } from "../../assets/svg/fire.svg";
 import { ReactComponent as NewIcon } from "../../assets/svg/plus-box.svg";
 import { ReactComponent as ChartIcon } from "../../assets/svg/chart-bar.svg";
-import { useDispatch } from "react-redux";
+import { batch, useDispatch, useSelector } from "react-redux";
 import { getMySubreddits, getPosts } from "../../slices/posts/thunks";
 import Flex from "../../components/flex";
 import { Subreddit } from "../../models/subreddit";
 import { history } from "../../index";
+import { setCategory } from "../../slices/posts/slice";
+import { RootState } from "../../store/configureStore";
 
 interface Props {
   subreddit?: string;
@@ -18,6 +20,9 @@ const NavBar: FC<Props> = ({ subreddit }) => {
   const [subreddits, setSubreddits] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<any>(null);
+  const category = useSelector((state: RootState) => state.posts.category);
+
+  const isHome = !subreddit;
 
   useEffect(() => {
     getMySubredditsList();
@@ -49,17 +54,31 @@ const NavBar: FC<Props> = ({ subreddit }) => {
         icon={
           <NewIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
         }
+        onPress={() => {
+          dispatch(setCategory("new"));
+          history.push("/");
+        }}
+        selected={isHome && category === "new"}
       />
       <SectionItem
         title="BEST"
         icon={<HotIcon style={{ marginLeft: -3, fill: "#494949" }} />}
-        selected
+        onPress={() => {
+          dispatch(setCategory("best"));
+          history.push("/");
+        }}
+        selected={isHome && category === "best"}
       />
       <SectionItem
         title="TOP"
         icon={
           <ChartIcon style={{ marginLeft: -3, fill: "#CECECE", height: 19 }} />
         }
+        onPress={() => {
+          dispatch(setCategory("top"));
+          history.push("/");
+        }}
+        selected={isHome && category === "top"}
       />
     </Section>
   );
@@ -69,7 +88,10 @@ const NavBar: FC<Props> = ({ subreddit }) => {
       <SectionItem
         key={sub.id}
         title={"r/" + sub.display_name}
-        onPress={() => history.push("/r/" + sub.display_name)}
+        onPress={() => {
+          dispatch(setCategory("best"));
+          history.push("/r/" + sub.display_name);
+        }}
         selected={sub.display_name === subreddit}
         icon={
           <SubredditImage

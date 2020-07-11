@@ -1,10 +1,16 @@
 import req from "../../utils/req";
 import { AppThunk } from "../../store/configureStore";
+import { Category, PostsState } from "./slice";
 
 export default () => null;
 
-export const getPosts = (): AppThunk => async (dispatch, getState) => {
-  let data = await req("OAUTH").get("best").json();
+export const getPosts = (
+  subreddit?: string,
+  category: Category = "best"
+): AppThunk => async (dispatch, getState) => {
+  let data = await req("OAUTH")
+    .get(subreddit ? `r/${subreddit}/.json` : category)
+    .json();
   console.log("posts", data);
   return data;
 };

@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import PostCell from "../../components/post-cell";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../slices/posts/thunks";
 import { Post } from "../../models/post";
 import Flex from "../../components/flex";
+import { Category, PostsState } from "../../slices/posts/slice";
+import { RootState } from "../../store/configureStore";
 
 interface Props {
   subreddit?: string;
@@ -14,11 +16,14 @@ const PostList: FC<Props> = ({ subreddit }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<any>(null);
+  const category = useSelector((state: RootState) => state.posts.category);
   const dispatch = useDispatch();
+
   useEffect(() => {
     console.log("subreddit:", subreddit);
+    console.log("category:", category);
     getPostsList();
-  }, []);
+  }, [subreddit, category]);
 
   const isHome = !subreddit;
 
@@ -26,7 +31,7 @@ const PostList: FC<Props> = ({ subreddit }) => {
     setLoading(true);
     setLoadError(null);
     try {
-      let posts: any = await dispatch(getPosts());
+      let posts: any = await dispatch(getPosts(subreddit, category));
       setPosts(posts.data.children);
     } catch (e) {
       setLoadError(e);
