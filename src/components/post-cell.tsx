@@ -7,6 +7,7 @@ import { ReactComponent as SaveIcon } from "../assets/svg/bookmark-plus.svg";
 import { history } from "../";
 import { Post } from "../models/post";
 import Flex from "./flex";
+import Voter from "./voter";
 
 interface Props {
   post: Post;
@@ -16,13 +17,7 @@ const PostCell: FC<Props> = ({ post }) => {
   const goToPostComments = () =>
     history.push("/" + post.subreddit_name_prefixed + "/comments/" + post.id);
 
-  const renderVotes = () => (
-    <VotesContainer>
-      <ChevronUp style={{ cursor: "pointer", fill: "#34495e" }} />
-      <Votes>{post.ups.toString()}</Votes>
-      <ChevronDown style={{ cursor: "pointer", fill: "#34495e" }} />
-    </VotesContainer>
-  );
+  const renderVotes = () => <Voter post={post} />;
 
   const renderSubRedditNameAndIcon = () => (
     <SubredditContainer>
@@ -155,21 +150,6 @@ const CommentsNum = styled.span`
   font-weight: 400;
   cursor: pointer;
   margin-bottom: 1px;
-`;
-
-const VotesContainer = styled.div`
-  display: flex;
-  min-width: 100px;
-  //background-color: red;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px 0 15px 0;
-`;
-
-const Votes = styled.span`
-  font-size: 14.5px;
-  color: #34495e;
-  font-weight: 500;
 `;
 
 const SubredditContainer = styled.div`

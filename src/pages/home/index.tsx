@@ -1,10 +1,9 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { useParams, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import NavBar from "./navbar";
 import PostList from "./posts-list";
-import Flex from "../../components/flex";
 import Header from "./header";
 import PostPage from "../post";
 
