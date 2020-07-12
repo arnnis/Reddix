@@ -7,9 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMySubreddits, getPosts } from "../../slices/posts/thunks";
 import Flex from "../../components/flex";
 import { Subreddit } from "../../models/subreddit";
-import { history } from "../../index";
 import { setCategory } from "../../slices/posts/slice";
-import { RootState } from "../../store/configureStore";
+import { history, RootState } from "../../store/configureStore";
 
 interface Props {}
 

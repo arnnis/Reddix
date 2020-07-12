@@ -23,7 +23,7 @@ const ButtonContainer = styled.div`
     rgba(221, 91, 18, 1) 100%,
     rgba(135, 55, 12, 1) 100%
   );
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1.4px solid #dd5b12;
   margin-left: auto;
   padding: 4px 11px 5px 11px;

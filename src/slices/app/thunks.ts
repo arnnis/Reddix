@@ -1,10 +1,9 @@
-import { AppThunk } from "../../store/configureStore";
+import { AppThunk, history } from "../../store/configureStore";
 import { CLIENT_ID, OAUTH_CALLBACK_URL, OAUTH_URL } from "../../env";
 import req from "../../utils/req";
 import ky from "ky";
 import { LoginResult } from "../../models/auth";
 import { setToken } from "./slice";
-import { history } from "../../index";
 
 export const logInStart = (): AppThunk => (dispatch) => {
   window.location.replace(OAUTH_URL);

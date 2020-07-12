@@ -4,10 +4,10 @@ import { ReactComponent as ChevronUp } from "../assets/svg/chevron-up.svg";
 import { ReactComponent as ChevronDown } from "../assets/svg/chevron-down.svg";
 import { ReactComponent as CommentIcon } from "../assets/svg/comment.svg";
 import { ReactComponent as SaveIcon } from "../assets/svg/bookmark-plus.svg";
-import { history } from "../";
 import { Post } from "../models/post";
 import Flex from "./flex";
 import Voter from "./voter";
+import { history } from "../store/configureStore";
 
 interface Props {
   post: Post;

@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import Home from "./pages/home";
 import OauthCallback from "./pages/oauth-callback";
 import PostPage from "./pages/post";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/configureStore";
+import { createMatchSelector } from "connected-react-router";
 
 function App() {
   return (
     <Container>
       <Switch>
+        <Route path="/oauthcallback">
+          <OauthCallback />
+        </Route>
         <Route path="/">
           <Home />
-        </Route>
-        <Route path="/oauthcallback" exact>
-          <OauthCallback />
         </Route>
       </Switch>
     </Container>
