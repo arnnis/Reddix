@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { Switch, Route, useParams } from "react-router-dom";
 
@@ -8,7 +8,6 @@ import Header from "./header";
 import PostPage from "../post";
 
 const Home: FC = () => {
-  const { subreddit } = useParams<{ subreddit: string | undefined }>();
   return (
     <Container>
       <NavBar />
@@ -16,14 +15,14 @@ const Home: FC = () => {
         <Header />
         <BodyContainer>
           <Switch>
+            <Route path="/" exact>
+              <PostList />
+            </Route>
             <Route path="/r/:subreddit" exact>
               <PostList />
             </Route>
             <Route path="/r/:subreddit/comments/:postId" exact>
               <PostPage />
-            </Route>
-            <Route path="/" exact>
-              <PostList />
             </Route>
           </Switch>
         </BodyContainer>

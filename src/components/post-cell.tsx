@@ -3,17 +3,20 @@ import styled from "styled-components";
 
 import { ReactComponent as CommentIcon } from "../assets/svg/comment.svg";
 import { ReactComponent as SaveIcon } from "../assets/svg/bookmark-plus.svg";
-import { Post } from "../models/post";
 import Flex from "./flex";
 import Voter from "./voter";
-import { history } from "../store/configureStore";
+import { history, RootState } from "../store/configureStore";
 import millify from "millify";
+import { useSelector } from "react-redux";
 
 interface Props {
-  post: Post;
+  postId: string;
 }
 
-const PostCell: FC<Props> = ({ post }) => {
+const PostCell: FC<Props> = ({ postId }) => {
+  const post = useSelector(
+    (state: RootState) => state.entities.posts.byId[postId]
+  );
   const goToPostComments = () =>
     history.push("/" + post.subreddit_name_prefixed + "/comments/" + post.id);
 
@@ -171,4 +174,4 @@ const SubredditName = styled.span`
   color: #34495e;
 `;
 
-export default PostCell;
+export default React.memo(PostCell);

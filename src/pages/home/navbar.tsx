@@ -9,12 +9,14 @@ import Flex from "../../components/flex";
 import { Subreddit } from "../../models/subreddit";
 import { setCategory } from "../../slices/posts/slice";
 import { history, RootState } from "../../store/configureStore";
+import { Listing } from "../../models/api";
+import SubredditCell from "./subreddit-cell";
 
 interface Props {}
 
 const NavBar: FC<Props> = () => {
-  const dispatch = useDispatch();
-  const [subreddits, setSubreddits] = useState([]);
+  const dispatch = useDispatch<any>();
+  const [subreddits, setSubreddits] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<any>(null);
   const subreddit = useSelector((state: RootState) => state.posts.subreddit);
@@ -30,8 +32,8 @@ const NavBar: FC<Props> = () => {
     setLoading(true);
     setLoadError(null);
     try {
-      let subs: any = await dispatch(getMySubreddits());
-      setSubreddits(subs.data.children);
+      let subs: Listing<Subreddit> = await dispatch(getMySubreddits());
+      setSubreddits(subs.data.children.map(({ data }) => data.id));
     } catch (e) {
       setLoadError(e);
     } finally {
@@ -105,24 +107,8 @@ const NavBar: FC<Props> = () => {
     </Section>
   );
 
-  const renderSubReddit = ({ data: sub }: { data: Subreddit }) => {
-    return (
-      <SectionItem
-        key={sub.id}
-        title={"r/" + sub.display_name}
-        onPress={() => {
-          dispatch(setCategory("best"));
-          history.push("/r/" + sub.display_name);
-        }}
-        selected={sub.display_name === subreddit}
-        icon={
-          <SubredditImage
-            src={(sub.icon_img || sub.community_icon)?.replace(/amp;/g, "")}
-            style={{ marginLeft: -3 }}
-          />
-        }
-      />
-    );
+  const renderSubReddit = (subId: string) => {
+    return <SubredditCell subId={subId} />;
   };
 
   const renderSubReddits = () => (
@@ -151,7 +137,7 @@ const Section: FC<{ title: string }> = ({ title, children }) => (
   </SectionContainer>
 );
 
-const SectionItem: FC<{
+export const SectionItem: FC<{
   icon: any;
   title: string;
   onPress?(): void;
@@ -243,12 +229,6 @@ const SectionItemSelectedBar = styled.div`
   height: 100%;
   width: 4.5px;
   background-color: #e04e18;
-`;
-
-const SubredditImage = styled.img`
-  width: 21px;
-  height: 21px;
-  border-radius: 100%;
 `;
 
 export default NavBar;

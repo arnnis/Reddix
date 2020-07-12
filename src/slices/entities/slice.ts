@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import merge from "lodash/merge";
 import { Post } from "../../models/post";
+import { Subreddit } from "../../models/subreddit";
+import { Data } from "../../models/api";
 
 export type EntitiesState = Readonly<{
   posts: { byId: { [userId: string]: Post } };
+  subreddits: { byId: { [userId: string]: Subreddit } };
 }>;
 
 const initialState: EntitiesState = {
   posts: { byId: {} },
+  subreddits: { byId: {} },
 };
 
 type EntityType = keyof typeof initialState;
@@ -18,7 +22,7 @@ const entitiesSlice = createSlice({
   reducers: {
     storeEntities(
       state,
-      action: PayloadAction<{ entity: EntityType; data: object }>
+      action: PayloadAction<{ entity: EntityType; data: any | Data<any>[] }>
     ) {
       let { entity, data } = action.payload;
 
@@ -28,8 +32,7 @@ const entitiesSlice = createSlice({
         data = data.reduce(
           (preValue, curValue) => ({
             ...preValue,
-            // note: ts is the id in messages in Slack
-            [curValue.id || curValue.ts]: curValue,
+            [curValue.data.id]: curValue.data,
           }),
           {}
         );

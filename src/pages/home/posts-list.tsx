@@ -6,20 +6,21 @@ import { getPosts } from "../../slices/posts/thunks";
 import { Post } from "../../models/post";
 import Flex from "../../components/flex";
 import { setSubreddit, PostsState } from "../../slices/posts/slice";
-import { RootState } from "../../store/configureStore";
+import { AppDispatch, RootState } from "../../store/configureStore";
 import { useParams } from "react-router-dom";
+import { Listing } from "../../models/api";
 
 interface Props {
   subreddit?: string;
 }
 
 const PostList: FC<Props> = ({}) => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<any>(null);
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
   const category = useSelector((state: RootState) => state.posts.category);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
 
   useEffect(() => {
     console.log("subreddit:", subreddit);
@@ -37,17 +38,18 @@ const PostList: FC<Props> = ({}) => {
     setLoading(true);
     setLoadError(null);
     try {
-      let posts: any = await dispatch(getPosts(subreddit, category));
-      setPosts(posts.data.children);
+      let posts: Listing<Post> = await dispatch(getPosts(subreddit, category));
+      setPosts(posts.data.children.map(({ data }) => data.id));
     } catch (e) {
+      console.log(e);
       setLoadError(e);
     } finally {
       setLoading(false);
     }
   };
 
-  const renderPostCell = (post: any) => (
-    <PostCell key={post.data.id} post={post.data} />
+  const renderPostCell = (postId: string) => (
+    <PostCell key={postId} postId={postId} />
   );
 
   const renderLoading = () => (
