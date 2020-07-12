@@ -5,17 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../slices/posts/thunks";
 import { Post } from "../../models/post";
 import Flex from "../../components/flex";
-import { Category, PostsState } from "../../slices/posts/slice";
+import { setSubreddit, PostsState } from "../../slices/posts/slice";
 import { RootState } from "../../store/configureStore";
+import { useParams } from "react-router-dom";
 
 interface Props {
   subreddit?: string;
 }
 
-const PostList: FC<Props> = ({ subreddit }) => {
+const PostList: FC<Props> = ({}) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<any>(null);
+  const { subreddit } = useParams<{ subreddit: string | undefined }>();
   const category = useSelector((state: RootState) => state.posts.category);
   const dispatch = useDispatch();
 
@@ -24,6 +26,10 @@ const PostList: FC<Props> = ({ subreddit }) => {
     console.log("category:", category);
     getPostsList();
   }, [subreddit, category]);
+
+  useEffect(() => {
+    dispatch(setSubreddit(subreddit));
+  }, [subreddit]);
 
   const isHome = !subreddit;
 
@@ -73,8 +79,6 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
-  background-color: white;
-  box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
 `;
 
 export default PostList;

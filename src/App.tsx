@@ -3,15 +3,13 @@ import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import Home from "./pages/home";
 import OauthCallback from "./pages/oauth-callback";
+import PostPage from "./pages/post";
 
 function App() {
   return (
     <Container>
       <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/r/:subreddit" exact>
+        <Route path="/">
           <Home />
         </Route>
         <Route path="/oauthcallback" exact>

@@ -7,16 +7,15 @@ import { Button } from "../../components/button";
 import { ReactComponent as ChevronDown } from "../../assets/svg/chevron-down.svg";
 import Flex from "../../components/flex";
 
-interface Props {
-  subreddit?: string;
-}
+interface Props {}
 
-const Header: FC<Props> = ({ subreddit }) => {
+const Header: FC<Props> = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.app.isLoggedIn);
   const handleLogin = () => {
     dispatch(logInStart());
   };
+  const subreddit = useSelector((state: RootState) => state.posts.subreddit);
   const category = useSelector((state: RootState) => state.posts.category);
 
   const renderLoginButton = () => (

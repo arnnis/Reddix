@@ -4,7 +4,7 @@ import { ReactComponent as ChevronUp } from "../assets/svg/chevron-up.svg";
 import { ReactComponent as ChevronDown } from "../assets/svg/chevron-down.svg";
 import { ReactComponent as CommentIcon } from "../assets/svg/comment.svg";
 import { ReactComponent as SaveIcon } from "../assets/svg/bookmark-plus.svg";
-
+import { history } from "../";
 import { Post } from "../models/post";
 import Flex from "./flex";
 
@@ -13,6 +13,9 @@ interface Props {
 }
 
 const PostCell: FC<Props> = ({ post }) => {
+  const goToPostComments = () =>
+    history.push("/" + post.subreddit_name_prefixed + "/comments/" + post.id);
+
   const renderVotes = () => (
     <VotesContainer>
       <ChevronUp style={{ cursor: "pointer", fill: "#34495e" }} />
@@ -55,7 +58,9 @@ const PostCell: FC<Props> = ({ post }) => {
   const renderCommentsNum = () => (
     <Flex alignItems="center" style={{ flex: "initial" }}>
       <CommentIcon style={{ fill: "#8d9092", height: 15 }} />
-      <CommentsNum>{post.num_comments.toString()} comments</CommentsNum>
+      <CommentsNum onClick={goToPostComments}>
+        {post.num_comments.toString()} comments
+      </CommentsNum>
     </Flex>
   );
 

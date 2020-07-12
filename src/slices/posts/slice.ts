@@ -7,6 +7,7 @@ export type PostsState = Readonly<{
   loadingList: boolean;
   loading: { [userId: string]: boolean };
   category: Category;
+  subreddit: string | undefined;
 }>;
 
 const initialState: PostsState = {
@@ -14,6 +15,7 @@ const initialState: PostsState = {
   loadingList: false,
   loading: {},
   category: "best",
+  subreddit: undefined,
 };
 
 const postsSlice = createSlice({
@@ -23,9 +25,12 @@ const postsSlice = createSlice({
     setCategory(state, action: PayloadAction<Category>) {
       state.category = action.payload;
     },
+    setSubreddit(state, action: PayloadAction<PostsState["subreddit"]>) {
+      state.subreddit = action.payload;
+    },
   },
 });
 
 export const postsReducer = postsSlice.reducer;
 
-export const { setCategory } = postsSlice.actions;
+export const { setCategory, setSubreddit } = postsSlice.actions;

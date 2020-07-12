@@ -11,15 +11,14 @@ import { history } from "../../index";
 import { setCategory } from "../../slices/posts/slice";
 import { RootState } from "../../store/configureStore";
 
-interface Props {
-  subreddit?: string;
-}
+interface Props {}
 
-const NavBar: FC<Props> = ({ subreddit }) => {
+const NavBar: FC<Props> = () => {
   const dispatch = useDispatch();
   const [subreddits, setSubreddits] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<any>(null);
+  const subreddit = useSelector((state: RootState) => state.posts.subreddit);
   const category = useSelector((state: RootState) => state.posts.category);
 
   const isHome = !subreddit;
