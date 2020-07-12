@@ -31,6 +31,7 @@ const createKyInstance = (apiType: API_TYPE) => {
     });
   } else {
     const token = store.getState().app.token;
+    if (!token) throw new Error("401");
     let headers = {};
     if (token)
       headers = {
