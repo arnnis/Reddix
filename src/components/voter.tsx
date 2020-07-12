@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { ReactComponent as ChevronUp } from "../assets/svg/chevron-up.svg";
 import { ReactComponent as ChevronDown } from "../assets/svg/chevron-down.svg";
 import styled from "styled-components";
+import millify from "millify";
 import { Post } from "../models/post";
 
 interface Props {
@@ -12,7 +13,7 @@ const Voter: FC<Props> = ({ post }) => {
   return (
     <VotesContainer>
       <ChevronUp style={{ cursor: "pointer", fill: "#34495e" }} />
-      <Votes>{post.ups.toString()}</Votes>
+      <Votes>{millify(post.ups, { precision: 1 })}</Votes>
       <ChevronDown style={{ cursor: "pointer", fill: "#34495e" }} />
     </VotesContainer>
   );
