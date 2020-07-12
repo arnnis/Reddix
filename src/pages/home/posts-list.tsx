@@ -1,31 +1,36 @@
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+// @ts-ignore
+import useScrollInfo from "react-element-scroll-hook";
 import PostCell from "../../components/post-cell";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../slices/posts/thunks";
-import { Post } from "../../models/post";
 import Flex from "../../components/flex";
-import { setSubreddit, PostsState } from "../../slices/posts/slice";
-import { AppDispatch, RootState } from "../../store/configureStore";
-import { useParams } from "react-router-dom";
-import { Listing } from "../../models/api";
+import { setSubreddit } from "../../slices/posts/slice";
+import { RootState } from "../../store/configureStore";
+import { useParams, useLocation } from "react-router-dom";
 
 interface Props {
   subreddit?: string;
 }
 
 const PostList: FC<Props> = ({}) => {
-  const [posts, setPosts] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [loadError, setLoadError] = useState<any>(null);
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
+  const { state } = useLocation();
   const category = useSelector((state: RootState) => state.posts.category);
+  const postsList = useSelector((state: RootState) => state.posts.list);
+  const loading = useSelector((state: RootState) => state.posts.loadingList);
+  const loadError = useSelector((state: RootState) => state.posts.loadError);
   const dispatch = useDispatch<any>();
+  // const [scrollInfo, setRef, ref] = useScrollInfo();
 
   useEffect(() => {
+    console.log("location state", state);
     console.log("subreddit:", subreddit);
     console.log("category:", category);
     getPostsList();
+    // if (state?.currentScrollPosition)
+    //   ref.current.toScroll(0, state.currentScrollPosition);
   }, [subreddit, category]);
 
   useEffect(() => {
@@ -35,21 +40,15 @@ const PostList: FC<Props> = ({}) => {
   const isHome = !subreddit;
 
   const getPostsList = async () => {
-    setLoading(true);
-    setLoadError(null);
-    try {
-      let posts: Listing<Post> = await dispatch(getPosts(subreddit, category));
-      setPosts(posts.data.children.map(({ data }) => data.id));
-    } catch (e) {
-      console.log(e);
-      setLoadError(e);
-    } finally {
-      setLoading(false);
-    }
+    if (!state?.currentScrollPosition) dispatch(getPosts(subreddit, category));
   };
 
   const renderPostCell = (postId: string) => (
-    <PostCell key={postId} postId={postId} />
+    <PostCell
+      key={postId}
+      postId={postId}
+      // currentScrollPosition={scrollInfo.y.value}
+    />
   );
 
   const renderLoading = () => (
@@ -60,7 +59,7 @@ const PostList: FC<Props> = ({}) => {
 
   const renderLoadError = () => (
     <Flex allCenter>
-      <span>Load errored. {loadError?.message}</span>
+      <span>Load errored. {loadError}</span>
     </Flex>
   );
 
@@ -70,7 +69,7 @@ const PostList: FC<Props> = ({}) => {
         ? renderLoading()
         : loadError
         ? renderLoadError()
-        : posts.map(renderPostCell)}
+        : postsList.map(renderPostCell)}
     </Container>
   );
 };

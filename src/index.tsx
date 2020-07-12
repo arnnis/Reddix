@@ -5,15 +5,18 @@ import { Provider as ReduxProvider } from "react-redux";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { history, store } from "./store/configureStore";
+import { history, persistor, store } from "./store/configureStore";
 import { ConnectedRouter } from "connected-react-router";
+import { PersistGate } from "redux-persist/integration/react";
 
 ReactDOM.render(
   <ReduxProvider store={store}>
     <ConnectedRouter history={history}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <PersistGate persistor={persistor}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </PersistGate>
     </ConnectedRouter>
   </ReduxProvider>,
   document.getElementById("root")

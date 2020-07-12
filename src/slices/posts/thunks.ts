@@ -1,21 +1,42 @@
 import req from "../../utils/req";
 import { AppThunk } from "../../store/configureStore";
-import { Category } from "./slice";
+import {
+  Category,
+  getPostsStart,
+  getPostsFail,
+  getPostsSuccess,
+} from "./slice";
 import { storeEntities } from "../entities/slice";
 import { Listing } from "../../models/api";
 import { Post } from "../../models/post";
 import { Subreddit } from "../../models/subreddit";
+import { batch } from "react-redux";
 
 export const getPosts = (
   subreddit?: string,
   category: Category = "best"
 ): AppThunk => async (dispatch, getState) => {
-  let result = await req("OAUTH")
-    .get(subreddit ? `r/${subreddit}/.json?raw_json=1` : category)
-    .json<Listing<Post>>();
-  console.log("posts", result);
-  dispatch(storeEntities({ entity: "posts", data: result.data.children }));
-  return result;
+  // if (getState().posts.list.length) return;
+  dispatch(getPostsStart());
+
+  try {
+    let result = await req("OAUTH")
+      .get(subreddit ? `r/${subreddit}/.json?raw_json=1` : category)
+      .json<Listing<Post>>();
+
+    console.log("posts", result);
+
+    batch(() => {
+      dispatch(storeEntities({ entity: "posts", data: result.data.children }));
+      dispatch(
+        getPostsSuccess(result.data.children.map(({ data }) => data.id))
+      );
+    });
+
+    return result;
+  } catch (e) {
+    dispatch(getPostsFail(e.message));
+  }
 };
 
 export const getMySubreddits = (): AppThunk => async (dispatch) => {

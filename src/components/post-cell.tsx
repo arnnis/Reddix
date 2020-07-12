@@ -11,14 +11,18 @@ import { useSelector } from "react-redux";
 
 interface Props {
   postId: string;
+  currentScrollPosition?: number;
 }
 
-const PostCell: FC<Props> = ({ postId }) => {
+const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const post = useSelector(
     (state: RootState) => state.entities.posts.byId[postId]
   );
+
   const goToPostComments = () =>
-    history.push("/" + post.subreddit_name_prefixed + "/comments/" + post.id);
+    history.push("/" + post.subreddit_name_prefixed + "/comments/" + post.id, {
+      currentScrollPosition,
+    });
 
   const renderVotes = () => <Voter post={post} />;
 

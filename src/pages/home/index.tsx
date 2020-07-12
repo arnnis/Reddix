@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Switch, Route, useParams } from "react-router-dom";
 
 import NavBar from "./navbar";
-import PostList from "./posts-list";
+import PostsList from "./posts-list";
 import Header from "./header";
 import PostPage from "../post";
 
@@ -16,10 +16,10 @@ const Home: FC = () => {
         <BodyContainer>
           <Switch>
             <Route path="/" exact>
-              <PostList />
+              <PostsList />
             </Route>
             <Route path="/r/:subreddit" exact>
-              <PostList />
+              <PostsList />
             </Route>
             <Route path="/r/:subreddit/comments/:postId" exact>
               <PostPage />

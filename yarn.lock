@@ -8878,6 +8878,11 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
+react-element-scroll-hook@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-element-scroll-hook/-/react-element-scroll-hook-1.1.0.tgz#4a472933f381667007ae249fb5790c39134bcae3"
+  integrity sha512-c9ITNZIb57HT93HbuK+7lVWNOt5ZmmPWguYrf2YbWpLT8AJMHlxXp0926jLxXnFEr0qr4yiyTA8tfkHx+H+scg==
+
 react-error-overlay@^6.0.7:
   version "6.0.7"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.7.tgz#1dcfb459ab671d53f660a991513cb2f0a0553108"

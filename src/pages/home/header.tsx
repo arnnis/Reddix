@@ -17,6 +17,7 @@ const Header: FC<Props> = () => {
   };
   const subreddit = useSelector((state: RootState) => state.posts.subreddit);
   const category = useSelector((state: RootState) => state.posts.category);
+  const postId = useSelector((state: RootState) => state.posts.post);
 
   const renderLoginButton = () => (
     <Button title="Login" onClick={handleLogin} />
@@ -30,7 +31,8 @@ const Header: FC<Props> = () => {
   );
 
   const renderCategoryDropdown = () =>
-    subreddit && (
+    subreddit &&
+    !postId && (
       <Flex alignItems="center" style={{ marginTop: 1.5 }}>
         <CategoryDropdown>{category.toUpperCase()}</CategoryDropdown>
         <ChevronDown style={{ fill: "#e04e18", height: 18 }} />
