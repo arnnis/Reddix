@@ -8,38 +8,50 @@ import Flex from "../../components/flex";
 
 interface Props {
   comment: Comment;
+  isMaster?: boolean;
 }
 
-const CommentCell: FC<Props> = ({ comment }) => {
+const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
   if (!comment.body) return null;
 
   const renderReply = (replyData: Data<Comment>) => (
-    <CommentCell comment={replyData.data} />
+    <CommentCell comment={replyData.data} isMaster={false} />
   );
 
   return (
     <Container>
       <Flex flexDirection="column">
+        <ChevronUp
+          style={{
+            cursor: "pointer",
+            fill: "#34495e",
+            height: 16,
+            width: 16,
+            marginLeft: -7.5,
+          }}
+        />
+        <ChevronDown
+          style={{
+            cursor: "pointer",
+            fill: "#34495e",
+            height: 16,
+            width: 16,
+            marginLeft: -8,
+          }}
+        />
+        {
+          <div
+            style={{
+              height: "100%",
+              width: 1.4,
+              backgroundColor: "whitesmoke",
+            }}
+          />
+        }
+      </Flex>
+      <Flex flexDirection="column" style={{ marginLeft: 15 }}>
         <CommentContainer>
-          <Flex flexDirection="column" alignItems="center">
-            <ChevronUp
-              style={{
-                cursor: "pointer",
-                fill: "#34495e",
-                height: 16,
-                marginLeft: -5,
-              }}
-            />
-            <ChevronDown
-              style={{
-                cursor: "pointer",
-                fill: "#34495e",
-                height: 16,
-                marginLeft: -5,
-              }}
-            />
-          </Flex>
-          <Flex flexDirection="column" style={{ marginLeft: 10 }}>
+          <Flex flexDirection="column">
             <Flex>
               <Author>{comment.author}</Author>
               <Score>{comment.score} points</Score>
@@ -59,9 +71,8 @@ const CommentCell: FC<Props> = ({ comment }) => {
 const Container = styled.div`
   display: flex;
   width: auto;
-  border-top: 1.3px solid whitesmoke;
+  //border-top: 1.3px solid whitesmoke;
   margin-top: 15px;
-  margin-left: 20px;
 `;
 
 const CommentContainer = styled.div`
@@ -69,7 +80,7 @@ const CommentContainer = styled.div`
 
   //margin-left: 10px;
 
-  padding-top: 15px;
+  //padding-top: 15px;
 `;
 
 const Author = styled.span`

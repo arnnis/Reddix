@@ -100,7 +100,7 @@ const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0px 10px 15px 0px;
+  padding: 0px 10px 15px 15px;
 `;
 
 const CommentsNum = styled.span`
