@@ -48,7 +48,7 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   display: flex;
-
+  background-color: #fff;
   width: 100%;
 `;
 

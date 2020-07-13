@@ -5,6 +5,7 @@ interface Props {
   justifyContent?: React.CSSProperties["justifyContent"];
   alignItems?: React.CSSProperties["alignItems"];
   flexDirection?: React.CSSProperties["flexDirection"];
+  flex?: React.CSSProperties["flex"];
   allCenter?: boolean;
   style?: React.CSSProperties;
 }
@@ -13,6 +14,7 @@ const Flex: FC<Props> = ({
   justifyContent = "initial",
   alignItems = "initial",
   flexDirection = "initial",
+  flex = "initial",
   allCenter = false,
   children,
   style = null,
@@ -22,7 +24,9 @@ const Flex: FC<Props> = ({
     alignItems = "center";
   }
   return (
-    <Container style={{ justifyContent, alignItems, flexDirection, ...style }}>
+    <Container
+      style={{ justifyContent, alignItems, flexDirection, flex, ...style }}
+    >
       {children}
     </Container>
   );

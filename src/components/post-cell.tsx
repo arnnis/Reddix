@@ -102,8 +102,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  //min-height: 100px;
-  //max-height: 300px;
   background-color: #fff;
   border-bottom: 1.25px solid whitesmoke;
 `;

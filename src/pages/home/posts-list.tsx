@@ -1,7 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import styled from "styled-components";
-// @ts-ignore
-import useScrollInfo from "react-element-scroll-hook";
 import PostCell from "../../components/post-cell";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../slices/posts/thunks";
@@ -22,15 +20,12 @@ const PostList: FC<Props> = ({}) => {
   const loading = useSelector((state: RootState) => state.posts.loadingList);
   const loadError = useSelector((state: RootState) => state.posts.loadError);
   const dispatch = useDispatch<any>();
-  // const [scrollInfo, setRef, ref] = useScrollInfo();
 
   useEffect(() => {
     console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);
     console.log("category:", category);
     getPostsList();
-    // if (state?.currentScrollPosition)
-    //   ref.current.toScroll(0, state.currentScrollPosition);
   }, [subreddit, category]);
 
   useEffect(() => {
@@ -44,15 +39,11 @@ const PostList: FC<Props> = ({}) => {
   };
 
   const renderPostCell = (postId: string) => (
-    <PostCell
-      key={postId}
-      postId={postId}
-      // currentScrollPosition={scrollInfo.y.value}
-    />
+    <PostCell key={postId} postId={postId} />
   );
 
   const renderLoading = () => (
-    <Flex allCenter>
+    <Flex flex={1} allCenter>
       <span>Loading...</span>
     </Flex>
   );
