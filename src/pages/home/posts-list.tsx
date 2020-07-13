@@ -16,6 +16,7 @@ const PostList: FC<Props> = ({}) => {
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
   const { pathname } = useLocation();
   const category = useSelector((state: RootState) => state.posts.category);
+  const currentPostId = useSelector((state: RootState) => state.posts.post);
   const postsList = useSelector((state: RootState) => state.posts.list);
   const loading = useSelector((state: RootState) => state.posts.loadingList);
   const loadError = useSelector((state: RootState) => state.posts.loadError);
@@ -55,7 +56,7 @@ const PostList: FC<Props> = ({}) => {
   );
 
   return (
-    <Container>
+    <Container style={{ visibility: currentPostId ? "hidden" : "visible" }}>
       {loading
         ? renderLoading()
         : loadError
@@ -71,6 +72,8 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
+  background-color: white;
 `;
 
 export default PostList;

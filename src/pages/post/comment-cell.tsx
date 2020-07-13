@@ -1,7 +1,10 @@
 import React, { FC, useEffect } from "react";
+import { ReactComponent as ChevronUp } from "../../assets/svg/chevron-up.svg";
+import { ReactComponent as ChevronDown } from "../../assets/svg/chevron-down.svg";
 import { Comment } from "../../models/comment";
 import styled from "styled-components";
 import { Data } from "../../models/api";
+import Flex from "../../components/flex";
 
 interface Props {
   comment: Comment;
@@ -9,34 +12,64 @@ interface Props {
 
 const CommentCell: FC<Props> = ({ comment }) => {
   if (!comment.body) return null;
+
   const renderReply = (replyData: Data<Comment>) => (
     <CommentCell comment={replyData.data} />
   );
 
   return (
     <Container>
-      <CommentContainer>
-        <Author>{comment.author}</Author>
-        <Text>{comment.body}</Text>
-      </CommentContainer>
+      <Flex flexDirection="column">
+        <CommentContainer>
+          <Flex flexDirection="column" alignItems="center">
+            <ChevronUp
+              style={{
+                cursor: "pointer",
+                fill: "#34495e",
+                height: 16,
+                marginLeft: -5,
+              }}
+            />
+            <ChevronDown
+              style={{
+                cursor: "pointer",
+                fill: "#34495e",
+                height: 16,
+                marginLeft: -5,
+              }}
+            />
+          </Flex>
+          <Flex flexDirection="column" style={{ marginLeft: 10 }}>
+            <Flex>
+              <Author>{comment.author}</Author>
+              <Score>{comment.score} points</Score>
+            </Flex>
 
-      {comment.replies &&
-        comment.replies.data.children.length &&
-        comment.replies.data.children.map(renderReply)}
+            <Text>{comment.body}</Text>
+          </Flex>
+        </CommentContainer>
+        {comment.replies &&
+          comment.replies.data.children.length &&
+          comment.replies.data.children.map(renderReply)}
+      </Flex>
     </Container>
   );
 };
 
 const Container = styled.div`
-  padding-left: 15px;
-  margin-bottom: 15px;
-  margin-left: 15px;
+  display: flex;
+  width: auto;
+  border-top: 1.3px solid whitesmoke;
+  margin-top: 15px;
+  margin-left: 20px;
 `;
 
 const CommentContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
+
+  //margin-left: 10px;
+
+  padding-top: 15px;
 `;
 
 const Author = styled.span`
@@ -46,6 +79,11 @@ const Author = styled.span`
 
 const Text = styled.span`
   font-size: 14px;
+`;
+
+const Score = styled.span`
+  font-size: 12px;
+  margin-left: 5px;
 `;
 
 export default CommentCell;

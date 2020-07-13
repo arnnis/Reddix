@@ -49,8 +49,6 @@ const BodyContainer = styled.div`
   flex: 1;
   flex-direction: column;
   height: 100%;
-  background-color: white;
-  box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
 `;
 
 export default Home;
