@@ -16,7 +16,7 @@ interface Props {
 
 const PostList: FC<Props> = ({}) => {
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
-  const { state } = useLocation();
+  const { pathname } = useLocation();
   const category = useSelector((state: RootState) => state.posts.category);
   const postsList = useSelector((state: RootState) => state.posts.list);
   const loading = useSelector((state: RootState) => state.posts.loadingList);
@@ -25,7 +25,7 @@ const PostList: FC<Props> = ({}) => {
   // const [scrollInfo, setRef, ref] = useScrollInfo();
 
   useEffect(() => {
-    console.log("location state", state);
+    console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);
     console.log("category:", category);
     getPostsList();
@@ -40,7 +40,7 @@ const PostList: FC<Props> = ({}) => {
   const isHome = !subreddit;
 
   const getPostsList = async () => {
-    if (!state?.currentScrollPosition) dispatch(getPosts(subreddit, category));
+    dispatch(getPosts(subreddit, category));
   };
 
   const renderPostCell = (postId: string) => (

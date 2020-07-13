@@ -21,9 +21,9 @@ const PostPage: FC = ({}) => {
   );
 
   // Sync url subreddit with redux
-  useEffect(() => {
-    dispatch(setSubreddit(subreddit));
-  }, [subreddit]);
+  // useEffect(() => {
+  //   dispatch(setSubreddit(subreddit));
+  // }, [subreddit]);
   // Sync url postId with redux
   useEffect(() => {
     dispatch(setPost(postId));
@@ -42,6 +42,11 @@ const PostPage: FC = ({}) => {
 };
 
 const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
 
   width: 100%;

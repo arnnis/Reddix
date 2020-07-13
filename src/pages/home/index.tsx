@@ -15,13 +15,12 @@ const Home: FC = () => {
         <Header />
         <BodyContainer>
           <Switch>
-            <Route path="/" exact>
+            <Route path="/(r?)/:subreddit?">
               <PostsList />
             </Route>
-            <Route path="/r/:subreddit" exact>
-              <PostsList />
-            </Route>
-            <Route path="/r/:subreddit/comments/:postId" exact>
+          </Switch>
+          <Switch>
+            <Route path="/r/:subreddit/comments/:postId">
               <PostPage />
             </Route>
           </Switch>
@@ -45,11 +44,11 @@ const RightContainer = styled.div`
 `;
 
 const BodyContainer = styled.div`
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
   height: 100%;
-
   background-color: white;
   box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
 `;
