@@ -11,6 +11,7 @@ import { Listing } from "../../models/api";
 import { Post } from "../../models/post";
 import { Subreddit } from "../../models/subreddit";
 import { batch } from "react-redux";
+import { Comment } from "../../models/comment";
 
 export const getPosts = (
   subreddit?: string,
@@ -46,5 +47,19 @@ export const getMySubreddits = (): AppThunk => async (dispatch) => {
   console.log("my subs", data);
   // navigator.clipboard.writeText(JSON.stringify(data));
   dispatch(storeEntities({ entity: "subreddits", data: data.data.children }));
+  return data;
+};
+
+// Loads both post object and commments
+export const getPostComments = (
+  postId: string,
+  subreddit: string
+): AppThunk => async (dispatch) => {
+  let data = await req("OAUTH")
+    .get(`r/${subreddit}/comments/${postId}?raw_json=1&depth=3`)
+    .json<[Listing<Post>, Listing<Comment>]>();
+  console.log("comments", data);
+
+  // dispatch(storeEntities({ entity: "subreddits", data: data.data.children }));
   return data;
 };
