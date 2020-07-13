@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
-import { setSubreddit, setPost } from "../../slices/posts/slice";
-import { useLocation, useParams } from "react-router-dom";
+import { setPost } from "../../slices/posts/slice";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Voter from "../../components/voter";
 import { Post } from "../../models/post";
 import { RootState } from "../../store/configureStore";
 import PostCell from "../../components/post-cell";

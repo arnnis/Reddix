@@ -30,7 +30,7 @@ const CommentCell: FC<Props> = ({ comment }) => {
 const Container = styled.div`
   padding-left: 15px;
   margin-bottom: 15px;
-  //border-left: 1px solid red;
+  margin-left: 15px;
 `;
 
 const CommentContainer = styled.div`
