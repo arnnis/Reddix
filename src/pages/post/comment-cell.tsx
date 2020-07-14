@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { ReactComponent as ChevronUp } from "../../assets/svg/chevron-up.svg";
 import { ReactComponent as ChevronDown } from "../../assets/svg/chevron-down.svg";
 import { Comment } from "../../models/comment";
@@ -12,42 +12,41 @@ interface Props {
 }
 
 const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
+  const [collapsed, setCollapsed] = useState(false);
   if (!comment.body) return null;
 
   const renderReply = (replyData: Data<Comment>) => (
     <CommentCell comment={replyData.data} isMaster={false} />
   );
 
+  const renderLine = () => <Line onClick={() => setCollapsed(true)} />;
+
   return (
     <Container>
-      <Flex flexDirection="column">
-        <ChevronUp
-          style={{
-            cursor: "pointer",
-            fill: "#34495e",
-            height: 16,
-            width: 16,
-            marginLeft: -7.5,
-          }}
-        />
-        <ChevronDown
-          style={{
-            cursor: "pointer",
-            fill: "#34495e",
-            height: 16,
-            width: 16,
-            marginLeft: -8,
-          }}
-        />
-        {
-          <div
-            style={{
-              height: "100%",
-              width: 1.4,
-              backgroundColor: "whitesmoke",
-            }}
-          />
-        }
+      <Flex flexDirection="column" style={{ width: 15 }}>
+        {!collapsed ? (
+          <>
+            <ChevronUp
+              width="16px"
+              height="16px"
+              style={{
+                cursor: "pointer",
+                fill: "#34495e",
+              }}
+            />
+            <ChevronDown
+              width="16px"
+              height="16px"
+              style={{
+                cursor: "pointer",
+                fill: "#34495e",
+              }}
+            />
+            {renderLine()}
+          </>
+        ) : (
+          <span onClick={() => setCollapsed(false)}>+</span>
+        )}
       </Flex>
       <Flex flexDirection="column" style={{ marginLeft: 15 }}>
         <CommentContainer>
@@ -57,10 +56,11 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
               <Score>{comment.score} points</Score>
             </Flex>
 
-            <Text>{comment.body}</Text>
+            {!collapsed && <Text>{comment.body}</Text>}
           </Flex>
         </CommentContainer>
-        {comment.replies &&
+        {!collapsed &&
+          comment.replies &&
           comment.replies.data.children.length &&
           comment.replies.data.children.map(renderReply)}
       </Flex>
@@ -71,16 +71,21 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
 const Container = styled.div`
   display: flex;
   width: auto;
-  //border-top: 1.3px solid whitesmoke;
-  margin-top: 15px;
+  margin-top: 20px;
 `;
 
 const CommentContainer = styled.div`
   display: flex;
+`;
 
-  //margin-left: 10px;
-
-  //padding-top: 15px;
+const Line = styled.div`
+  height: 100%;
+  width: 1.4px;
+  background-color: whitesmoke;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgrey;
+  }
 `;
 
 const Author = styled.span`

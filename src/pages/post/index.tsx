@@ -63,13 +63,9 @@ const PostPage: FC = ({}) => {
     <Container>
       {post ? (
         <>
-          <Card>
-            <PostCell postId={postId} />
-          </Card>
-          <Card style={{ marginTop: 15, flexDirection: "column" }}>
-            <CommentsNum>{post.num_comments} Comments</CommentsNum>
-            {renderComments()}
-          </Card>
+          <PostCell postId={postId} />
+          <CommentsNum>{post.num_comments} Comments</CommentsNum>
+          {renderComments()}
         </>
       ) : (
         "Post not found in redux state"
@@ -82,22 +78,17 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
+  flex: 1;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   overflow-y: auto;
-`;
-
-const Card = styled.div`
-  display: flex;
-  box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
-  background-color: white;
 `;
 
 const CommentsContainer = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   width: 100%;
   padding: 0px 10px 15px 20px;
