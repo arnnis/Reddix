@@ -86,6 +86,7 @@ const CommentContainer = styled.div`
 const Author = styled.span`
   font-size: 12px;
   margin-bottom: 5px;
+  font-weight: 500;
 `;
 
 const Text = styled.span`
@@ -95,6 +96,7 @@ const Text = styled.span`
 const Score = styled.span`
   font-size: 12px;
   margin-left: 5px;
+  color: #7c7c7c;
 `;
 
 export default CommentCell;
