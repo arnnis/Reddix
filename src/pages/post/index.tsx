@@ -91,11 +91,11 @@ const CommentsContainer = styled.div`
   flex: 1;
   flex-direction: column;
   width: 100%;
-  padding: 0px 10px 15px 20px;
+  padding: 0px 10px 20px 20px;
 `;
 
 const CommentsNum = styled.span`
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   margin-left: 15px;
   margin-top: 15px;
