@@ -45,7 +45,7 @@ const Header: FC<Props> = () => {
         {subreddit ? `r/${subreddit}` : category.toUpperCase()}
       </CategoryTitle>
       {renderCategoryDropdown()}
-      {false ? renderUserProfile() : renderLoginButton()}
+      {isLoggedIn ? renderUserProfile() : renderLoginButton()}
     </Container>
   );
 };

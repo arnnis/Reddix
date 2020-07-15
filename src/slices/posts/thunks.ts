@@ -17,13 +17,22 @@ export const getPosts = (
   subreddit?: string,
   category: Category = "best"
 ): AppThunk => async (dispatch, getState) => {
-  // if (getState().posts.list.length) return;
+  const { isLoggedIn } = getState().app;
   dispatch(getPostsStart());
 
   try {
-    let result = await req("OAUTH")
-      .get(subreddit ? `r/${subreddit}/.json?raw_json=1` : category)
-      .json<Listing<Post>>();
+    let result: Listing<Post>;
+    if (isLoggedIn) {
+      result = await req("OAUTH")
+        .get(subreddit ? `r/${subreddit}/.json?raw_json=1` : category)
+        .json<Listing<Post>>();
+    } else {
+      result = await req("PUBLIC")
+        .get(
+          subreddit ? `r/${subreddit}/.json?raw_json=1` : `${category}/.json`
+        )
+        .json<Listing<Post>>();
+    }
 
     console.log("posts", result);
 

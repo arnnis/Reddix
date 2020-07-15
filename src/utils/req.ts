@@ -1,6 +1,6 @@
 import ky, { Hooks } from "ky";
 import { store } from "../store/configureStore";
-import { OAUTH_API_URL, PUBLIC_API_URL } from "../env";
+import { CLIENT_ID, OAUTH_API_URL, PUBLIC_API_URL } from "../env";
 import { refreshToken } from "../slices/app/thunks";
 import { LoginResult } from "../models/auth";
 
@@ -32,7 +32,10 @@ const createKyInstance = (apiType: API_TYPE) => {
   } else {
     const token = store.getState().app.token;
     if (!token) throw new Error("401");
-    let headers = {};
+    let headers = {
+      Authorization:
+        "Basic " + btoa(unescape(encodeURIComponent(CLIENT_ID + ":" + ""))),
+    };
     if (token)
       headers = {
         Authorization: "Bearer " + store.getState().app.token,

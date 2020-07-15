@@ -120,7 +120,6 @@ const NavBar: FC<Props> = () => {
       {renderAppLogo()}
       <Flex flex={1} flexDirection="column" style={{ overflowY: "auto" }}>
         {renderHomeSection()}
-
         {renderSubReddits()}
       </Flex>
     </Container>

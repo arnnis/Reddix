@@ -1,4 +1,4 @@
-export const PUBLIC_API_URL = "https://reddit.com";
+export const PUBLIC_API_URL = "https://www.reddit.com";
 export const OAUTH_API_URL = "https://oauth.reddit.com";
 export const APP_URL = "http://localhost:3000";
 export const CLIENT_ID = "-q-aaV4uoRgELg";
