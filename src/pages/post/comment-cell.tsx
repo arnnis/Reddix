@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import { ReactComponent as ChevronUp } from "../../assets/svg/chevron-up.svg";
-import { ReactComponent as ChevronDown } from "../../assets/svg/chevron-down.svg";
+import { ReactComponent as ArrowUp } from "../../assets/svg/arrow-up-bold.svg";
+import { ReactComponent as ArrowDown } from "../../assets/svg/arrow-down-bold.svg";
 import { Comment } from "../../models/comment";
 import styled from "styled-components";
 import { Data } from "../../models/api";
@@ -26,22 +26,27 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
       <Flex flexDirection="column" style={{ width: 15 }}>
         {!collapsed ? (
           <>
-            <ChevronUp
-              width="16px"
-              height="16px"
-              style={{
-                cursor: "pointer",
-                fill: "#34495e",
-              }}
-            />
-            <ChevronDown
-              width="16px"
-              height="16px"
-              style={{
-                cursor: "pointer",
-                fill: "#34495e",
-              }}
-            />
+            <VoteContainer>
+              <ArrowUp
+                width="13px"
+                height="13px"
+                fontSize="13px"
+                style={{
+                  cursor: "pointer",
+                  fill: "#34495e",
+                }}
+              />
+              <ArrowDown
+                width="13px"
+                height="13px"
+                fontSize="13px"
+                style={{
+                  cursor: "pointer",
+                  fill: "#34495e",
+                  marginTop: 3,
+                }}
+              />
+            </VoteContainer>
             {renderLine()}
           </>
         ) : (
@@ -79,7 +84,7 @@ const CommentContainer = styled.div`
 `;
 
 const Line = styled.div`
-  height: 100%;
+  height: calc(100% - 30px);
   width: 1.4px;
   background-color: whitesmoke;
   cursor: pointer;
@@ -96,12 +101,20 @@ const Author = styled.span`
 
 const Text = styled.span`
   font-size: 14px;
+  color: #34495e;
 `;
 
 const Score = styled.span`
   font-size: 12px;
   margin-left: 5px;
   color: #7c7c7c;
+`;
+
+const VoteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 30px;
+  margin-left: -5px;
 `;
 
 export default CommentCell;
