@@ -19,6 +19,7 @@
     "ky": "^0.20.0",
     "lodash": "^4.17.15",
     "millify": "^3.2.1",
+    "polished": "^3.6.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-element-scroll-hook": "^1.1.0",
