@@ -5,6 +5,7 @@ import { Comment } from "../../models/comment";
 import styled from "styled-components";
 import { Data } from "../../models/api";
 import Flex from "../../components/flex";
+import ReactMarkdown from "react-markdown";
 
 interface Props {
   comment: Comment;
@@ -61,7 +62,9 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
               <Score>{comment.score} points</Score>
             </Flex>
 
-            {!collapsed && <Text>{comment.body}</Text>}
+            {!collapsed && (
+              <Text>{<ReactMarkdown source={comment.body} />}</Text>
+            )}
           </Flex>
         </CommentContainer>
         {!collapsed &&

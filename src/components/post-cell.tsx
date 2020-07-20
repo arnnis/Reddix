@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-
+import ReactMarkdown from "react-markdown";
 import { ReactComponent as CommentIcon } from "../assets/svg/comment.svg";
 import { ReactComponent as SaveIcon } from "../assets/svg/bookmark-plus.svg";
 import Flex from "./flex";
@@ -36,7 +36,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
     <SubredditContainer>
       <SubredditImage src="https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png" />
       <SubredditName>{post.subreddit_name_prefixed}</SubredditName>
-      <Author>by u/{post.author}</Author>∂
+      <Author>by u/{post.author}</Author>
       <DateTime>
         {dayjs.utc(dayjs.unix(post.created_utc)).local().fromNow()}
       </DateTime>
@@ -45,14 +45,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
 
   const renderSelfText = () =>
     !!post.selftext && (
-      <PostText>
-        {post.selftext.split("\n").map((chunk) => (
-          <>
-            <span>{chunk}</span>
-            <br />
-          </>
-        ))}
-      </PostText>
+      <PostText>{<ReactMarkdown source={post.selftext} />}</PostText>
     );
 
   const renderImage = () =>
