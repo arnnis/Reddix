@@ -26,9 +26,16 @@ const Header: FC<Props> = () => {
   );
 
   const renderUserPopup = () => (
-    <Popup.Content>
-      <span>Popup user</span>
+    <Popup.Content style={{ width: 150 }}>
+      {renderPopupOption("Saved", <ChevronDown />)}
     </Popup.Content>
+  );
+
+  const renderPopupOption = (title: string, icon: JSX.Element) => (
+    <PopupOptionContainer>
+      {icon}
+      <PopupOptionTitle>{title}</PopupOptionTitle>
+    </PopupOptionContainer>
   );
 
   const renderUserProfile = () => (
@@ -39,19 +46,13 @@ const Header: FC<Props> = () => {
           <UserName>alirezarzna</UserName>
         </UserProfileContainer>
       }
-      content={renderUserPopup()}
       position="bottom center"
-    />
+      flowing
+      hoverable
+    >
+      {renderUserPopup()}
+    </Popup>
   );
-
-  const renderCategoryDropdownOld = () =>
-    subreddit &&
-    !postId && (
-      <Flex alignItems="center" style={{ marginTop: 1.5 }}>
-        <CategoryDropdown>{category.toUpperCase()}</CategoryDropdown>
-        <ChevronDown style={{ fill: "#e04e18", height: 18 }} />
-      </Flex>
-    );
 
   const renderCategoryDropdown = () =>
     subreddit &&
@@ -92,14 +93,6 @@ const CategoryTitle = styled.span`
   font-weight: bold;
 `;
 
-const CategoryDropdown = styled.div`
-  color: #e04e18;
-  font-weight: 500;
-  margin-left: 30px;
-  font-size: 14.5px;
-  cursor: pointer;
-`;
-
 const UserProfileContainer = styled.div`
   display: flex;
   align-items: center;
@@ -117,6 +110,19 @@ const UserName = styled.span`
   font-size: 15px;
   margin-left: 10px;
   margin-bottom: 1px;
+`;
+
+const PopupOptionContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+`;
+
+const PopupOptionTitle = styled.div`
+  color: #34495e;
+  font-size: 13.5px;
+  margin-left: 5px;
 `;
 
 export default Header;

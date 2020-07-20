@@ -16,6 +16,7 @@
     "@types/redux-logger": "^3.0.8",
     "@types/styled-components": "^5.1.0",
     "connected-react-router": "^6.8.0",
+    "dayjs": "^1.8.29",
     "ky": "^0.20.0",
     "lodash": "^4.17.15",
     "millify": "^3.2.1",

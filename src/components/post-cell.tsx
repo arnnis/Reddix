@@ -8,6 +8,12 @@ import Voter from "./voter";
 import { history, RootState } from "../store/configureStore";
 import millify from "millify";
 import { useSelector } from "react-redux";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 interface Props {
   postId: string;
@@ -26,11 +32,14 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
 
   const renderVotes = () => <Voter post={post} />;
 
-  const renderSubRedditNameAndIcon = () => (
+  const renderMetadata = () => (
     <SubredditContainer>
       <SubredditImage src="https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png" />
       <SubredditName>{post.subreddit_name_prefixed}</SubredditName>
-      <Author>by u/{post.author}</Author>
+      <Author>by u/{post.author}</Author>∂
+      <DateTime>
+        {dayjs.utc(dayjs.unix(post.created_utc)).local().fromNow()}
+      </DateTime>
     </SubredditContainer>
   );
 
@@ -85,7 +94,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
       {renderVotes()}
       <BodyContainer>
         <Flex flexDirection="column">
-          {renderSubRedditNameAndIcon()}
+          {renderMetadata()}
           <PostTitle>{post.title}</PostTitle>
           <Flex>
             {renderSelfText()}
@@ -142,7 +151,16 @@ const ToolbarContainer = styled.div`
 const Author = styled.span`
   color: #828282;
   font-size: 11.5px;
-  //margin-top: 10px;
+
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 5px;
+`;
+
+const DateTime = styled.span`
+  color: #828282;
+  font-size: 11.5px;
+
   font-weight: 400;
   cursor: pointer;
   margin-left: 5px;
