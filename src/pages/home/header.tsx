@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Popup, Dropdown } from "semantic-ui-react";
+
 import { logInStart } from "../../slices/app/thunks";
 import { RootState } from "../../store/configureStore";
 import { Button } from "../../components/button";
@@ -23,20 +25,48 @@ const Header: FC<Props> = () => {
     <Button title="Login" onClick={handleLogin} />
   );
 
-  const renderUserProfile = () => (
-    <UserProfileContainer>
-      <UserAvatar src="https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png?width=256&s=13a87a036836ce95570a76feb53f27e61717ad1b" />
-      <UserName>alirezarzna</UserName>
-    </UserProfileContainer>
+  const renderUserPopup = () => (
+    <Popup.Content>
+      <span>Popup user</span>
+    </Popup.Content>
   );
 
-  const renderCategoryDropdown = () =>
+  const renderUserProfile = () => (
+    <Popup
+      trigger={
+        <UserProfileContainer>
+          <UserAvatar src="https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png?width=256&s=13a87a036836ce95570a76feb53f27e61717ad1b" />
+          <UserName>alirezarzna</UserName>
+        </UserProfileContainer>
+      }
+      content={renderUserPopup()}
+      position="bottom center"
+    />
+  );
+
+  const renderCategoryDropdownOld = () =>
     subreddit &&
     !postId && (
       <Flex alignItems="center" style={{ marginTop: 1.5 }}>
         <CategoryDropdown>{category.toUpperCase()}</CategoryDropdown>
         <ChevronDown style={{ fill: "#e04e18", height: 18 }} />
       </Flex>
+    );
+
+  const renderCategoryDropdown = () =>
+    subreddit &&
+    !postId && (
+      <Dropdown
+        text="BEST"
+        inline
+        style={{ marginLeft: 25, marginTop: 4, color: "#e04e18" }}
+      >
+        <Dropdown.Menu vertical>
+          <Dropdown.Item text="Top" selected={true} />
+          <Dropdown.Item text="Best" />
+          <Dropdown.Item text="New" />
+        </Dropdown.Menu>
+      </Dropdown>
     );
 
   return (
