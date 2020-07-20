@@ -88,7 +88,9 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
       <BodyContainer>
         <Flex flexDirection="column">
           {renderMetadata()}
-          <PostTitle>{post.title}</PostTitle>
+          <PostTitle href={post.url}>
+            {post.title} <Domain>({post.domain})</Domain>
+          </PostTitle>
           <Flex>
             {renderSelfText()}
             {renderImage()}
@@ -115,11 +117,12 @@ const BodyContainer = styled.div`
   text-overflow: ellipsis;
 `;
 
-const PostTitle = styled.span`
+const PostTitle = styled.a`
   font-size: 15.5px;
   font-weight: 500;
   margin-top: 10px;
   color: #34495e;
+  text-decoration: none;
 `;
 
 const PostText = styled.span`
@@ -157,6 +160,15 @@ const DateTime = styled.span`
   font-weight: 400;
   cursor: pointer;
   margin-left: 5px;
+`;
+
+const Domain = styled.span`
+  color: #828282;
+  font-size: 11.5px;
+
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 10px;
 `;
 
 const CommentsNum = styled.span`
