@@ -13,46 +13,55 @@ interface Props {
 }
 
 const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(comment.score <= -10);
   if (!comment.body) return null;
 
   const renderReply = (replyData: Data<Comment>) => (
     <CommentCell comment={replyData.data} isMaster={false} />
   );
 
-  const renderLine = () => <Line onClick={() => setCollapsed(true)} />;
+  const renderLineAndVoter = () =>
+    !collapsed ? (
+      <>
+        <VoteContainer>
+          <ArrowUp
+            width="13px"
+            height="13px"
+            fontSize="13px"
+            style={{
+              cursor: "pointer",
+              fill: "#34495e",
+            }}
+          />
+          <ArrowDown
+            width="13px"
+            height="13px"
+            fontSize="13px"
+            style={{
+              cursor: "pointer",
+              fill: "#34495e",
+              marginTop: 3,
+            }}
+          />
+        </VoteContainer>
+        <Line onClick={() => setCollapsed(true)} />
+      </>
+    ) : (
+      <span onClick={() => setCollapsed(false)} style={{ cursor: "pointer" }}>
+        +
+      </span>
+    );
+
+  const renderReplies = () =>
+    !collapsed &&
+    comment.replies &&
+    comment.replies.data.children.length &&
+    comment.replies.data.children.map(renderReply);
 
   return (
     <Container>
       <Flex flexDirection="column" style={{ width: 15 }}>
-        {!collapsed ? (
-          <>
-            <VoteContainer>
-              <ArrowUp
-                width="13px"
-                height="13px"
-                fontSize="13px"
-                style={{
-                  cursor: "pointer",
-                  fill: "#34495e",
-                }}
-              />
-              <ArrowDown
-                width="13px"
-                height="13px"
-                fontSize="13px"
-                style={{
-                  cursor: "pointer",
-                  fill: "#34495e",
-                  marginTop: 3,
-                }}
-              />
-            </VoteContainer>
-            {renderLine()}
-          </>
-        ) : (
-          <span onClick={() => setCollapsed(false)}>+</span>
-        )}
+        {renderLineAndVoter()}
       </Flex>
       <Flex flexDirection="column" style={{ marginLeft: 15 }}>
         <CommentContainer>
@@ -61,16 +70,12 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
               <Author>{comment.author}</Author>
               <Score>{comment.score} points</Score>
             </Flex>
-
             {!collapsed && (
               <Text>{<ReactMarkdown source={comment.body} />}</Text>
             )}
           </Flex>
         </CommentContainer>
-        {!collapsed &&
-          comment.replies &&
-          comment.replies.data.children.length &&
-          comment.replies.data.children.map(renderReply)}
+        {renderReplies()}
       </Flex>
     </Container>
   );
