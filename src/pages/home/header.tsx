@@ -84,6 +84,7 @@ const Header: FC<Props> = () => {
 const Container = styled.div`
   display: flex;
   padding: 25px 0 30px 0;
+  height: 10%;
   width: 100%;
   align-items: center;
 `;

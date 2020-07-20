@@ -11,9 +11,9 @@ const Home: FC = () => {
   return (
     <Container>
       <NavBar />
-      <RightContainer>
+      <Right>
         <Header />
-        <BodyContainer>
+        <Body>
           <Switch>
             <Route path="/(r?)/:subreddit?">
               <PostsList />
@@ -24,8 +24,8 @@ const Home: FC = () => {
               <PostPage />
             </Route>
           </Switch>
-        </BodyContainer>
-      </RightContainer>
+        </Body>
+      </Right>
     </Container>
   );
 };
@@ -35,7 +35,7 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const RightContainer = styled.div`
+const Right = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -43,11 +43,12 @@ const RightContainer = styled.div`
   background-color: #f2f3f5;
 `;
 
-const BodyContainer = styled.div`
+const Body = styled.div`
   position: relative;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  height: 100%;
+  height: 90%;
   box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
   background-color: white;
 `;
