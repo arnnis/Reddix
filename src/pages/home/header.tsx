@@ -1,7 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Popup, Dropdown } from "semantic-ui-react";
+import { useParams, useRouteMatch } from "react-router-dom";
 
 import { logInStart } from "../../slices/app/thunks";
 import { RootState } from "../../store/configureStore";
@@ -18,8 +19,17 @@ const Header: FC<Props> = () => {
     dispatch(logInStart());
   };
   const subreddit = useSelector((state: RootState) => state.posts.subreddit);
+  // let match = useRouteMatch({
+  //   path: "/r/:subreddit/",
+  //   strict: true,
+  //   sensitive: true,
+  // });
   const category = useSelector((state: RootState) => state.posts.category);
   const postId = useSelector((state: RootState) => state.posts.post);
+
+  // useEffect(() => {
+  //   alert(JSON.stringify(match));
+  // }, [match]);
 
   const renderLoginButton = () => (
     <Button title="Login" onClick={handleLogin} />
