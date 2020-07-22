@@ -5,6 +5,7 @@ import { ReactComponent as NewIcon } from "../../assets/svg/plus-box.svg";
 import { ReactComponent as ChartIcon } from "../../assets/svg/chart-bar.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/svg/cog-box.svg";
 import { ReactComponent as SavedIcon } from "../../assets/svg/content-save.svg";
+import { ReactComponent as HomeIcon } from "../../assets/svg/home.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getMySubreddits, getPosts } from "../../slices/posts/thunks";
 import Flex from "../../components/flex";
@@ -59,12 +60,12 @@ const NavBar: FC<Props> = () => {
       <SectionItem
         title="Home"
         icon={
-          <NewIcon
+          <HomeIcon
             style={{
               marginLeft: -3,
               fill: isHome ? "#494949" : "#CECECE",
-              height: 19,
             }}
+            width={21}
           />
         }
         onPress={() => {
@@ -81,7 +82,7 @@ const NavBar: FC<Props> = () => {
               marginLeft: -1.5,
               fill: !isHome && category === "best" ? "#494949" : "#CECECE",
             }}
-            width={20}
+            width={21}
           />
         }
         onPress={() => {
@@ -97,8 +98,8 @@ const NavBar: FC<Props> = () => {
             style={{
               marginLeft: -3,
               fill: isHome && category === "top" ? "#494949" : "#CECECE",
-              height: 19,
             }}
+            width={21}
           />
         }
         onPress={() => {
