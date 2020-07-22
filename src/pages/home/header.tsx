@@ -65,7 +65,6 @@ const Header: FC<Props> = () => {
   );
 
   const renderCategoryDropdown = () =>
-    subreddit &&
     !postId && (
       <Dropdown
         text="BEST"
@@ -82,9 +81,7 @@ const Header: FC<Props> = () => {
 
   return (
     <Container>
-      <CategoryTitle>
-        {subreddit ? `r/${subreddit}` : category.toUpperCase()}
-      </CategoryTitle>
+      <CategoryTitle>{subreddit ? `r/${subreddit}` : "Home"}</CategoryTitle>
       {renderCategoryDropdown()}
       {isLoggedIn ? renderUserProfile() : renderLoginButton()}
     </Container>

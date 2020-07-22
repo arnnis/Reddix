@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { ReactComponent as HotIcon } from "../../assets/svg/fire.svg";
 import { ReactComponent as NewIcon } from "../../assets/svg/plus-box.svg";
 import { ReactComponent as ChartIcon } from "../../assets/svg/chart-bar.svg";
+import { ReactComponent as SettingsIcon } from "../../assets/svg/cog-box.svg";
+import { ReactComponent as SavedIcon } from "../../assets/svg/content-save.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getMySubreddits, getPosts } from "../../slices/posts/thunks";
 import Flex from "../../components/flex";
@@ -53,31 +55,15 @@ const NavBar: FC<Props> = () => {
   );
 
   const renderHomeSection = () => (
-    <Section title="HOME">
+    <Section>
       <SectionItem
-        title="NEW"
+        title="Home"
         icon={
           <NewIcon
             style={{
               marginLeft: -3,
-              fill: isHome && category === "new" ? "#494949" : "#CECECE",
+              fill: isHome ? "#494949" : "#CECECE",
               height: 19,
-            }}
-          />
-        }
-        onPress={() => {
-          dispatch(setCategory("new"));
-          history.push("/");
-        }}
-        selected={isHome && category === "new"}
-      />
-      <SectionItem
-        title="BEST"
-        icon={
-          <HotIcon
-            style={{
-              marginLeft: -3,
-              fill: isHome && category === "best" ? "#494949" : "#CECECE",
             }}
           />
         }
@@ -85,12 +71,29 @@ const NavBar: FC<Props> = () => {
           dispatch(setCategory("best"));
           history.push("/");
         }}
-        selected={isHome && category === "best"}
+        selected={isHome}
       />
       <SectionItem
-        title="TOP"
+        title="Saved"
         icon={
-          <ChartIcon
+          <SavedIcon
+            style={{
+              marginLeft: -1.5,
+              fill: !isHome && category === "best" ? "#494949" : "#CECECE",
+            }}
+            width={20}
+          />
+        }
+        onPress={() => {
+          dispatch(setCategory("best"));
+          history.push("/");
+        }}
+        selected={!isHome && category === "best"}
+      />
+      <SectionItem
+        title="Settings"
+        icon={
+          <SettingsIcon
             style={{
               marginLeft: -3,
               fill: isHome && category === "top" ? "#494949" : "#CECECE",
@@ -126,12 +129,15 @@ const NavBar: FC<Props> = () => {
   );
 };
 
-const Section: FC<{ title: string }> = ({ title, children }) => (
+const Section: FC<{ title?: string }> = ({ title, children }) => (
   <SectionContainer>
-    <SectionTitleContainer>
-      <SectionTitle>{title}</SectionTitle>
-      <SectionDivider />
-    </SectionTitleContainer>
+    {title && (
+      <SectionTitleContainer>
+        <SectionTitle>{title}</SectionTitle>
+        <SectionDivider />
+      </SectionTitleContainer>
+    )}
+
     {children}
   </SectionContainer>
 );
@@ -192,7 +198,7 @@ const SectionTitleContainer = styled.div`
 `;
 
 const SectionTitle = styled.span`
-  font-size: 14px;
+  font-size: 13.25px;
   color: #6d6f76;
   margin-bottom: 10px;
   font-weight: 500;
