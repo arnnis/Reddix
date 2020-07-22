@@ -69,6 +69,6 @@ export const getPostComments = (
     .json<[Listing<Post>, Listing<Comment>]>();
   console.log("comments", data);
 
-  // dispatch(storeEntities({ entity: "subreddits", data: data.data.children }));
+  dispatch(storeEntities({ entity: "posts", data: data[0].data.children }));
   return data;
 };

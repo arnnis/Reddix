@@ -105,6 +105,7 @@ const UserProfileContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: auto;
+  cursor: pointer;
 `;
 
 const UserAvatar = styled.img`
