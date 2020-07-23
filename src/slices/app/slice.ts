@@ -26,9 +26,15 @@ const appSlice = createSlice({
       state.expiresIn = action.payload.expiresIn;
       state.isLoggedIn = !!action.payload.token;
     },
+    logout(state) {
+      state.token = null;
+      state.refreshToken = null;
+      state.expiresIn = null;
+      state.isLoggedIn = false;
+    },
   },
 });
 
 export const appReducer = appSlice.reducer;
 
-export const { setToken } = appSlice.actions;
+export const { setToken, logout } = appSlice.actions;

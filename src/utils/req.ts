@@ -3,6 +3,7 @@ import { store } from "../store/configureStore";
 import { CLIENT_ID, OAUTH_API_URL, PUBLIC_API_URL } from "../env";
 import { refreshToken } from "../slices/app/thunks";
 import { LoginResult } from "../models/auth";
+import { setToken, logout } from "../slices/app/slice";
 
 type API_TYPE = "OAUTH" | "PUBLIC";
 
@@ -14,10 +15,14 @@ const kyHooks: Hooks = {
         // @ts-ignore
         let data: LoginResult = await store.dispatch(refreshToken());
 
-        // Retry with the token
-        request.headers.set("Authorization", `Bearer ${data.access_token}`);
+        if (data?.access_token) {
+          // Retry with the token
+          request.headers.set("Authorization", `Bearer ${data.access_token}`);
 
-        return ky(request);
+          return ky(request);
+        } else {
+          store.dispatch(logout());
+        }
       }
     },
   ],

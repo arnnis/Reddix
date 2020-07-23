@@ -70,7 +70,7 @@ export const refreshToken = (): AppThunk => async (dispatch, getState) => {
 
     return data;
   } catch (e) {
-    if (e.message == 401) {
+    if (e.message === 401) {
       dispatch(logOut());
     }
     return false;

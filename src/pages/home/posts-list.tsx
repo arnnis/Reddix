@@ -7,6 +7,7 @@ import Flex from "../../components/flex";
 import { setSubreddit } from "../../slices/posts/slice";
 import { RootState } from "../../store/configureStore";
 import { useParams, useLocation } from "react-router-dom";
+import useListEndReached from "../../utils/hooks/use-list-end-reached";
 
 interface Props {
   subreddit?: string;
@@ -21,6 +22,7 @@ const PostList: FC<Props> = ({}) => {
   const loading = useSelector((state: RootState) => state.posts.loadingList);
   const loadError = useSelector((state: RootState) => state.posts.loadError);
   const dispatch = useDispatch<any>();
+  const loadingMore = loading && postsList.length;
 
   useEffect(() => {
     console.log("pathname:", pathname);
@@ -32,6 +34,8 @@ const PostList: FC<Props> = ({}) => {
   useEffect(() => {
     dispatch(setSubreddit(subreddit));
   }, [subreddit]);
+
+  const listRef = useListEndReached(postsList, () => getPostsList());
 
   const isHome = !subreddit;
 
@@ -56,8 +60,11 @@ const PostList: FC<Props> = ({}) => {
   );
 
   return (
-    <Container style={{ visibility: currentPostId ? "hidden" : "visible" }}>
-      {loading
+    <Container
+      style={{ visibility: currentPostId ? "hidden" : "visible" }}
+      ref={listRef}
+    >
+      {loading && !loadingMore
         ? renderLoading()
         : loadError
         ? renderLoadError()

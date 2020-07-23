@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 import ThemeContext from ".";
 import * as themes from "./themes";
-import { ThemeKey, Theme } from "./types";
+import { ThemeKey } from "./types";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
 
 interface State {
   themeKey: ThemeKey;
@@ -38,7 +39,9 @@ class ThemeProvider extends Component<unknown, State> {
           toggleTheme: this.toggleTheme,
         }}
       >
-        {!isLoadingTheme && this.props.children}
+        <StyledThemeProvider theme={themes[this.state.themeKey]}>
+          {!isLoadingTheme && this.props.children}
+        </StyledThemeProvider>
       </ThemeContext.Provider>
     );
   }

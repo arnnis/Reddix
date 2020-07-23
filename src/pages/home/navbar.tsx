@@ -178,11 +178,10 @@ const LogoContainer = styled.div`
 const LogoTilte = styled.div`
   font-size: 19.5px;
   font-weight: bold;
-  color: #e04e18;
+  color: ${(props) => props.theme.orange};
 `;
 
 const SectionContainer = styled.div`
-  background-color: #fff;
   display: flex;
   width: 100%;
   flex-direction: column;
