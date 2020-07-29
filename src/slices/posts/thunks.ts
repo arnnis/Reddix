@@ -12,15 +12,17 @@ import { Post } from "../../models/post";
 import { Subreddit } from "../../models/subreddit";
 import { batch } from "react-redux";
 import { Comment } from "../../models/comment";
+import { updateEntity } from "../entities/slice";
 
 export const getPosts = (
   subreddit?: string,
-  category: Category = "best"
+  category: Category = "best",
+  reload: boolean = false
 ): AppThunk => async (dispatch, getState) => {
   const store = getState();
   const { isLoggedIn } = store.app;
   const lastPostId = store.posts.list[store.posts.list.length - 1];
-  const after = store.entities.posts.byId[lastPostId]?.name ?? "";
+  const after = reload ? "" : store.entities.posts.byId[lastPostId]?.name ?? "";
   dispatch(getPostsStart());
 
   try {
@@ -74,10 +76,38 @@ export const getPostComments = (
   subreddit: string
 ): AppThunk => async (dispatch) => {
   let data = await req("OAUTH")
-    .get(`r/${subreddit}/comments/${postId}?raw_json=1&depth=3`)
+    .get(`r/${subreddit}/comments/${postId}?raw_json=1&depth=3&showmore=true`)
     .json<[Listing<Post>, Listing<Comment>]>();
   console.log("comments", data);
 
   dispatch(storeEntities({ entity: "posts", data: data[0].data.children }));
   return data;
+};
+
+export const vote = (
+  id: string,
+  on: "post" | "comment",
+  type: "upvote" | "downvote" | "unvote"
+): AppThunk => async (dispatch, getState) => {
+  try {
+    let data = await req("OAUTH")
+      .post(`api/vote`, {
+        body: JSON.stringify({
+          dir: type === "upvote" ? 1 : type === "downvote" ? -1 : 0,
+          id,
+        }),
+      })
+      .json<[Listing<Post>, Listing<Comment>]>();
+    const store = getState();
+    const entity = on === "post" ? "posts" : "comments";
+    dispatch(
+      updateEntity({
+        entity,
+        key: id,
+        data: { score: store.entities[entity].byId[id].score + 1 },
+      })
+    );
+  } catch (e) {
+    console.log(e);
+  }
 };

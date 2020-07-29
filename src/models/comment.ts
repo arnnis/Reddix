@@ -1,6 +1,7 @@
 import { Listing } from "./api";
 
 export interface Comment {
+  count: number;
   replies?: Listing<Comment>;
   total_awards_received: number;
   approved_at_utc: null;

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Data } from "../../models/api";
 import Flex from "../../components/flex";
 import ReactMarkdown from "react-markdown";
+import millify from "millify";
 
 interface Props {
   comment: Comment;
@@ -58,6 +59,14 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
     comment.replies.data.children.length &&
     comment.replies.data.children.map(renderReply);
 
+  const renderShowMoreReplies = () => {
+    const more = comment.replies?.data?.children?.find(
+      (com) => com.kind === "more"
+    );
+    if (!more || more.data.count === 0) return null;
+    return <ShowMoreText>{more?.data?.count} more replies</ShowMoreText>;
+  };
+
   return (
     <Container>
       <Flex flexDirection="column" style={{ width: 15 }}>
@@ -68,7 +77,7 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
           <Flex flexDirection="column">
             <Flex>
               <Author>{comment.author}</Author>
-              <Score>{comment.score} points</Score>
+              <Score>{millify(comment.score, { precision: 1 })} points</Score>
             </Flex>
             {!collapsed && (
               <Text>{<ReactMarkdown source={comment.body} />}</Text>
@@ -76,6 +85,7 @@ const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
           </Flex>
         </CommentContainer>
         {renderReplies()}
+        {renderShowMoreReplies()}
       </Flex>
     </Container>
   );
@@ -123,6 +133,13 @@ const VoteContainer = styled.div`
   flex-direction: column;
   height: 30px;
   margin-left: -5px;
+`;
+
+const ShowMoreText = styled.span`
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 12.5px;
+  cursor: pointer;
 `;
 
 export default CommentCell;

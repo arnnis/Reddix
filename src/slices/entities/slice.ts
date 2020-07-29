@@ -3,14 +3,17 @@ import merge from "lodash/merge";
 import { Post } from "../../models/post";
 import { Subreddit } from "../../models/subreddit";
 import { Data } from "../../models/api";
+import { Comment } from "../../models/comment";
 
 export type EntitiesState = Readonly<{
   posts: { byId: { [userId: string]: Post } };
+  comments: { byId: { [userId: string]: Comment } };
   subreddits: { byId: { [userId: string]: Subreddit } };
 }>;
 
 const initialState: EntitiesState = {
   posts: { byId: {} },
+  comments: { byId: {} },
   subreddits: { byId: {} },
 };
 
@@ -42,7 +45,11 @@ const entitiesSlice = createSlice({
     },
     updateEntity(
       state,
-      action: PayloadAction<{ entity: EntityType; key: string; data: object }>
+      action: PayloadAction<{
+        entity: EntityType;
+        key: string;
+        data: any | Data<any>[];
+      }>
     ) {
       let { entity, key, data } = action.payload;
       if (!data) return;

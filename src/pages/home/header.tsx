@@ -9,6 +9,7 @@ import { RootState } from "../../store/configureStore";
 import { Button } from "../../components/button";
 import { ReactComponent as ChevronDown } from "../../assets/svg/chevron-down.svg";
 import Flex from "../../components/flex";
+import useMatchSubreddit from "../../navigation/useMatchSubreddit";
 
 interface Props {}
 
@@ -19,11 +20,7 @@ const Header: FC<Props> = () => {
     dispatch(logInStart());
   };
   const subreddit = useSelector((state: RootState) => state.posts.subreddit);
-  // let match = useRouteMatch({
-  //   path: "/r/:subreddit/",
-  //   strict: true,
-  //   sensitive: true,
-  // });
+  const match = useMatchSubreddit();
   const category = useSelector((state: RootState) => state.posts.category);
   const postId = useSelector((state: RootState) => state.posts.post);
 

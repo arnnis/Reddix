@@ -13,3 +13,5 @@ export interface Data<T> {
   data: T;
   kind: string;
 }
+
+export type LoadType = "more" | "refresh";

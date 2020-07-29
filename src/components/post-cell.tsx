@@ -7,10 +7,11 @@ import Flex from "./flex";
 import Voter from "./voter";
 import { history, RootState } from "../store/configureStore";
 import millify from "millify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
+import { vote } from "../slices/posts/thunks";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -24,6 +25,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const post = useSelector(
     (state: RootState) => state.entities.posts.byId[postId]
   );
+  const dispatch = useDispatch();
 
   const goToPostComments = () =>
     history.push("/" + post.subreddit_name_prefixed + "/comments/" + post.id, {

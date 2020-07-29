@@ -28,7 +28,7 @@ const PostList: FC<Props> = ({}) => {
     console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);
     console.log("category:", category);
-    getPostsList();
+    getPostsList(true);
   }, [subreddit, category]);
 
   useEffect(() => {
@@ -39,8 +39,8 @@ const PostList: FC<Props> = ({}) => {
 
   const isHome = !subreddit;
 
-  const getPostsList = async () => {
-    dispatch(getPosts(subreddit, category));
+  const getPostsList = async (reload: boolean = false) => {
+    dispatch(getPosts(subreddit, category, reload));
   };
 
   const renderPostCell = (postId: string) => (

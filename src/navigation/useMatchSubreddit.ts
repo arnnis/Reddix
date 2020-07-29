@@ -1,7 +1,7 @@
 import { useRouteMatch } from "react-router-dom";
 import { HOME_PATH, SUBREDDIT_PATH } from "./paths";
 
-function useIsHome() {
+function useMatchSubreddit() {
   return useRouteMatch({
     path: SUBREDDIT_PATH,
     strict: true,
@@ -9,4 +9,4 @@ function useIsHome() {
   });
 }
 
-export default useIsHome;
+export default useMatchSubreddit;
