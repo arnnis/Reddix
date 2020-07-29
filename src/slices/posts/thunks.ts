@@ -76,7 +76,7 @@ export const getPostComments = (
   subreddit: string
 ): AppThunk => async (dispatch) => {
   let data = await req("OAUTH")
-    .get(`r/${subreddit}/comments/${postId}?raw_json=1&depth=3&showmore=true`)
+    .get(`r/${subreddit}/comments/${postId}?raw_json=1&depth=5&showmore=true`)
     .json<[Listing<Post>, Listing<Comment>]>();
   console.log("comments", data);
 
