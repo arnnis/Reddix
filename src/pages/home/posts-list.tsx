@@ -31,10 +31,6 @@ const PostList: FC<Props> = ({}) => {
     getPostsList(true);
   }, [subreddit, category]);
 
-  useEffect(() => {
-    dispatch(setSubreddit(subreddit));
-  }, [subreddit]);
-
   const listRef = useListEndReached(postsList, () => getPostsList());
 
   const isHome = !subreddit;

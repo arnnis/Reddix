@@ -30,11 +30,15 @@ const postsSlice = createSlice({
       state.loadingList = true;
       state.loadError = null;
     },
-    getPostsSuccess(state, action: PayloadAction<string[]>) {
+    getPostsSuccess(
+      state,
+      action: PayloadAction<{ list: string[]; reload: boolean }>
+    ) {
       state.loadingList = false;
-      state.list = state.list.length
-        ? [...state.list, ...action.payload]
-        : action.payload;
+      state.list =
+        state.list.length && !action.payload.reload
+          ? [...state.list, ...action.payload.list]
+          : action.payload.list;
     },
     getPostsFail(state, action: PayloadAction<PostsState["loadError"]>) {
       state.loadingList = false;

@@ -14,6 +14,9 @@ import { setCategory } from "../../slices/posts/slice";
 import { history, RootState } from "../../store/configureStore";
 import { Listing } from "../../models/api";
 import SubredditCell from "./subreddit-cell";
+import useMatchHome from "../../navigation/useMatchHome";
+import useMatchSubreddit from "../../navigation/useMatchSubreddit";
+import useMatchSaved from "../../navigation/useMatchSaved";
 
 interface Props {}
 
@@ -24,12 +27,15 @@ const NavBar: FC<Props> = () => {
   const [loadError, setLoadError] = useState<any>(null);
   const subreddit = useSelector((state: RootState) => state.posts.subreddit);
   const category = useSelector((state: RootState) => state.posts.category);
-
-  const isHome = !subreddit;
+  const mathHome = useMatchHome();
+  const matchSubreddit = useMatchSubreddit();
+  const matchSaved = useMatchSaved();
 
   useEffect(() => {
     getMySubredditsList();
   }, []);
+
+  useEffect(() => console.log(matchSubreddit), [matchSubreddit]);
 
   const getMySubredditsList = async () => {
     setLoading(true);
@@ -63,7 +69,7 @@ const NavBar: FC<Props> = () => {
           <HomeIcon
             style={{
               marginLeft: -3,
-              fill: isHome ? "#494949" : "#CECECE",
+              fill: mathHome ? "#494949" : "#CECECE",
             }}
             width={21}
           />
@@ -72,7 +78,7 @@ const NavBar: FC<Props> = () => {
           dispatch(setCategory("best"));
           history.push("/");
         }}
-        selected={isHome}
+        selected={!!mathHome}
       />
       <SectionItem
         title="Saved"
@@ -80,16 +86,15 @@ const NavBar: FC<Props> = () => {
           <SavedIcon
             style={{
               marginLeft: -1.5,
-              fill: !isHome && category === "best" ? "#494949" : "#CECECE",
+              fill: matchSaved ? "#494949" : "#CECECE",
             }}
             width={21}
           />
         }
         onPress={() => {
-          dispatch(setCategory("best"));
-          history.push("/");
+          history.push("/saved");
         }}
-        selected={!isHome && category === "best"}
+        selected={!!matchSaved}
       />
       <SectionItem
         title="Settings"
@@ -97,7 +102,7 @@ const NavBar: FC<Props> = () => {
           <SettingsIcon
             style={{
               marginLeft: -3,
-              fill: isHome && category === "top" ? "#494949" : "#CECECE",
+              fill: mathHome && category === "top" ? "#494949" : "#CECECE",
             }}
             width={21}
           />
@@ -106,7 +111,7 @@ const NavBar: FC<Props> = () => {
           dispatch(setCategory("top"));
           history.push("/");
         }}
-        selected={isHome && category === "top"}
+        selected={!!mathHome && category === "top"}
       />
     </Section>
   );
@@ -138,7 +143,6 @@ const Section: FC<{ title?: string }> = ({ title, children }) => (
         <SectionDivider />
       </SectionTitleContainer>
     )}
-
     {children}
   </SectionContainer>
 );

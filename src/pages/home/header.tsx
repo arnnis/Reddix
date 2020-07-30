@@ -19,14 +19,10 @@ const Header: FC<Props> = () => {
   const handleLogin = () => {
     dispatch(logInStart());
   };
-  const subreddit = useSelector((state: RootState) => state.posts.subreddit);
-  const match = useMatchSubreddit();
+
+  const matchSubreddit = useMatchSubreddit();
   const category = useSelector((state: RootState) => state.posts.category);
   const postId = useSelector((state: RootState) => state.posts.post);
-
-  // useEffect(() => {
-  //   alert(JSON.stringify(match));
-  // }, [match]);
 
   const renderLoginButton = () => (
     <Button title="Login" onClick={handleLogin} />
@@ -78,7 +74,9 @@ const Header: FC<Props> = () => {
 
   return (
     <Container>
-      <CategoryTitle>{subreddit ? `r/${subreddit}` : "Home"}</CategoryTitle>
+      <CategoryTitle>
+        {matchSubreddit ? `r/${matchSubreddit.params.subreddit}` : "Home"}
+      </CategoryTitle>
       {renderCategoryDropdown()}
       {isLoggedIn ? renderUserProfile() : renderLoginButton()}
     </Container>

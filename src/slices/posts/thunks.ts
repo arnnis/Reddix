@@ -48,9 +48,17 @@ export const getPosts = (
     console.log("posts", result);
 
     batch(() => {
-      dispatch(storeEntities({ entity: "posts", data: result.data.children }));
       dispatch(
-        getPostsSuccess(result.data.children.map(({ data }) => data.id))
+        storeEntities({
+          entity: "posts",
+          data: result.data.children.map((child) => child.data),
+        })
+      );
+      dispatch(
+        getPostsSuccess({
+          list: result.data.children.map(({ data }) => data.id),
+          reload,
+        })
       );
     });
 
@@ -66,7 +74,12 @@ export const getMySubreddits = (): AppThunk => async (dispatch) => {
     .json<Listing<Subreddit>>();
   console.log("my subs", data);
   // navigator.clipboard.writeText(JSON.stringify(data));
-  dispatch(storeEntities({ entity: "subreddits", data: data.data.children }));
+  dispatch(
+    storeEntities({
+      entity: "subreddits",
+      data: data.data.children.map((child) => child.data),
+    })
+  );
   return data;
 };
 
@@ -80,7 +93,25 @@ export const getPostComments = (
     .json<[Listing<Post>, Listing<Comment>]>();
   console.log("comments", data);
 
-  dispatch(storeEntities({ entity: "posts", data: data[0].data.children }));
+  const commentsAndReplies: Comment[] = [];
+
+  for (let comment of data[1].data.children) {
+    commentsAndReplies.push(comment.data);
+
+    if (comment.data.replies?.data?.children) {
+      for (let reply of comment.data.replies?.data.children) {
+        if (reply.kind !== "more") commentsAndReplies.push(reply.data);
+      }
+    }
+  }
+
+  dispatch(storeEntities({ entity: "comments", data: commentsAndReplies }));
+  dispatch(
+    storeEntities({
+      entity: "posts",
+      data: data[0].data.children.map((child) => child.data),
+    })
+  );
   return data;
 };
 
@@ -90,21 +121,38 @@ export const vote = (
   type: "upvote" | "downvote" | "unvote"
 ): AppThunk => async (dispatch, getState) => {
   try {
-    let data = await req("OAUTH")
-      .post(`api/vote`, {
-        body: JSON.stringify({
-          dir: type === "upvote" ? 1 : type === "downvote" ? -1 : 0,
-          id,
-        }),
-      })
-      .json<[Listing<Post>, Listing<Comment>]>();
+    // let data = await req("OAUTH")
+    //   .post(`api/vote`, {
+    //     body: JSON.stringify({
+    //       dir: type === "upvote" ? 1 : type === "downvote" ? -1 : 0,
+    //       id,
+    //     }),
+    //   })
+    //   .json<[Listing<Post>, Listing<Comment>]>();
     const store = getState();
-    const entity = on === "post" ? "posts" : "comments";
+    const entityKey = on === "post" ? "posts" : "comments";
+    const entity = store.entities[entityKey].byId[id];
+    const currentVoteStatus =
+      entity.likes === true
+        ? "upvote"
+        : entity.likes === false
+        ? "downvote"
+        : "unvote";
+
+    let scoreChange = type === "upvote" ? +1 : type === "downvote" ? -1 : 0;
+    if (currentVoteStatus === "upvote") {
+      scoreChange -= 1;
+    }
+    if (currentVoteStatus === "downvote") {
+      scoreChange += 1;
+    }
+    const newScore = entity.score + scoreChange;
+    const likes = type === "upvote" ? true : type === "downvote" ? false : null;
     dispatch(
       updateEntity({
-        entity,
+        entity: entityKey,
         key: id,
-        data: { score: store.entities[entity].byId[id].score + 1 },
+        data: { score: newScore, likes },
       })
     );
   } catch (e) {

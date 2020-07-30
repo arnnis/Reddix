@@ -201,4 +201,4 @@ const SubredditName = styled.span`
   color: #34495e;
 `;
 
-export default React.memo(PostCell);
+export default PostCell;

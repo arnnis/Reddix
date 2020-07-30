@@ -4,6 +4,7 @@ import { history, RootState } from "../../store/configureStore";
 import { setCategory } from "../../slices/posts/slice";
 import { SectionItem } from "./navbar";
 import styled from "styled-components";
+import useMatchSubreddit from "../../navigation/useMatchSubreddit";
 
 interface Props {
   subId: string;
@@ -13,9 +14,8 @@ const SubredditCell: FC<Props> = ({ subId }) => {
   const sub = useSelector(
     (state: RootState) => state.entities.subreddits.byId[subId]
   );
-  const activeSubreddit = useSelector(
-    (state: RootState) => state.posts.subreddit
-  );
+  const matchSubreddit = useMatchSubreddit();
+
   const dispatch = useDispatch<any>();
   return (
     <SectionItem
@@ -25,7 +25,9 @@ const SubredditCell: FC<Props> = ({ subId }) => {
         dispatch(setCategory("best"));
         history.push("/r/" + sub.display_name);
       }}
-      selected={sub.display_name === activeSubreddit}
+      selected={
+        !!matchSubreddit && matchSubreddit.params.subreddit === sub.display_name
+      }
       icon={
         <SubredditImage
           src={(sub.icon_img || sub.community_icon)?.replace(/amp;/g, "")}

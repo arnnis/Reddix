@@ -7,18 +7,24 @@ import { Data } from "../../models/api";
 import Flex from "../../components/flex";
 import ReactMarkdown from "react-markdown";
 import millify from "millify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/configureStore";
 
 interface Props {
-  comment: Comment;
+  commentId: string;
   isMaster?: boolean;
 }
 
-const CommentCell: FC<Props> = ({ comment, isMaster = true }) => {
-  const [collapsed, setCollapsed] = useState(comment.score <= -10);
-  if (!comment.body) return null;
+const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
+  const comment = useSelector(
+    (state: RootState) => state.entities.comments.byId[commentId]
+  );
+  const [collapsed, setCollapsed] = useState(comment?.score <= -10);
+
+  if (!comment || !comment.body) return null;
 
   const renderReply = (replyData: Data<Comment>) => (
-    <CommentCell comment={replyData.data} isMaster={false} />
+    <CommentCell commentId={replyData.data.id} isMaster={false} />
   );
 
   const renderLineAndVoter = () =>

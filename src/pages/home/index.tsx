@@ -6,6 +6,7 @@ import NavBar from "./navbar";
 import PostsList from "./posts-list";
 import Header from "./header";
 import PostPage from "../post";
+import { HOME_AND_SUBREDDIT_PATH, POST_PATH } from "../../navigation/paths";
 
 const Home: FC = () => {
   return (
@@ -15,12 +16,12 @@ const Home: FC = () => {
         <Header />
         <Body>
           <Switch>
-            <Route path="/(r?)/:subreddit?">
+            <Route path={HOME_AND_SUBREDDIT_PATH}>
               <PostsList />
             </Route>
           </Switch>
           <Switch>
-            <Route path="/r/:subreddit/comments/:postId">
+            <Route path={POST_PATH}>
               <PostPage />
             </Route>
           </Switch>

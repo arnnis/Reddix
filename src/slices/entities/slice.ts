@@ -25,7 +25,7 @@ const entitiesSlice = createSlice({
   reducers: {
     storeEntities(
       state,
-      action: PayloadAction<{ entity: EntityType; data: any | Data<any>[] }>
+      action: PayloadAction<{ entity: EntityType; data: any | any[] }>
     ) {
       let { entity, data } = action.payload;
 
@@ -35,7 +35,7 @@ const entitiesSlice = createSlice({
         data = data.reduce(
           (preValue, curValue) => ({
             ...preValue,
-            [curValue.data.id]: curValue.data,
+            [curValue.id]: curValue,
           }),
           {}
         );

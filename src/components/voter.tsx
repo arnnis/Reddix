@@ -28,7 +28,7 @@ const Voter: FC<Props> = ({ post }) => {
         style={{ cursor: "pointer", fill: "#34495e" }}
         onClick={handleUpvoteClick}
       />
-      <Votes>{millify(post.ups, { precision: 1 })}</Votes>
+      <Votes>{millify(post.score, { precision: 1 })}</Votes>
       <ChevronDown
         style={{ cursor: "pointer", fill: "#34495e" }}
         onClick={handleDownvoteClick}

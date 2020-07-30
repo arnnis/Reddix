@@ -52,7 +52,7 @@ const PostPage: FC = ({}) => {
   };
 
   const renderCommentCell = (comment: Data<Comment>) => (
-    <CommentCell comment={comment.data} />
+    <CommentCell commentId={comment.data.id} />
   );
 
   const renderComments = () => (
