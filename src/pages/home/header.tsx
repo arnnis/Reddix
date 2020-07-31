@@ -10,6 +10,9 @@ import { Button } from "../../components/button";
 import { ReactComponent as ChevronDown } from "../../assets/svg/chevron-down.svg";
 import Flex from "../../components/flex";
 import useMatchSubreddit from "../../navigation/useMatchSubreddit";
+import useMatchSettings from "../../navigation/useMatchSettings";
+import useMatchSaved from "../../navigation/useMatchSaved";
+import useMatchHome from "../../navigation/useMatchHome";
 
 interface Props {}
 
@@ -21,6 +24,9 @@ const Header: FC<Props> = () => {
   };
 
   const matchSubreddit = useMatchSubreddit();
+  const matchSettings = useMatchSettings();
+  const matchSaved = useMatchSaved();
+  const matchHome = useMatchHome();
   const category = useSelector((state: RootState) => state.posts.category);
   const postId = useSelector((state: RootState) => state.posts.post);
 
@@ -58,6 +64,7 @@ const Header: FC<Props> = () => {
   );
 
   const renderCategoryDropdown = () =>
+    (matchSubreddit || matchHome) &&
     !postId && (
       <Dropdown
         text="BEST"
@@ -72,11 +79,16 @@ const Header: FC<Props> = () => {
       </Dropdown>
     );
 
+  const getTitle = () => {
+    if (matchSettings) return "Settings";
+    if (matchSubreddit) return `r/${matchSubreddit.params.subreddit}`;
+    if (matchSaved) return "Saved";
+    return "Home";
+  };
+
   return (
     <Container>
-      <CategoryTitle>
-        {matchSubreddit ? `r/${matchSubreddit.params.subreddit}` : "Home"}
-      </CategoryTitle>
+      <CategoryTitle>{getTitle()}</CategoryTitle>
       {renderCategoryDropdown()}
       {isLoggedIn ? renderUserProfile() : renderLoginButton()}
     </Container>

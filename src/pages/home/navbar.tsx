@@ -17,6 +17,8 @@ import SubredditCell from "./subreddit-cell";
 import useMatchHome from "../../navigation/useMatchHome";
 import useMatchSubreddit from "../../navigation/useMatchSubreddit";
 import useMatchSaved from "../../navigation/useMatchSaved";
+import useMatchSettings from "../../navigation/useMatchSettings";
+import { SAVED_PATH, SETTINGS_PATH } from "../../navigation/paths";
 
 interface Props {}
 
@@ -30,6 +32,7 @@ const NavBar: FC<Props> = () => {
   const mathHome = useMatchHome();
   const matchSubreddit = useMatchSubreddit();
   const matchSaved = useMatchSaved();
+  const matchSettings = useMatchSettings();
 
   useEffect(() => {
     getMySubredditsList();
@@ -92,7 +95,7 @@ const NavBar: FC<Props> = () => {
           />
         }
         onPress={() => {
-          history.push("/saved");
+          history.push(SAVED_PATH);
         }}
         selected={!!matchSaved}
       />
@@ -108,10 +111,9 @@ const NavBar: FC<Props> = () => {
           />
         }
         onPress={() => {
-          dispatch(setCategory("top"));
-          history.push("/");
+          history.push(SETTINGS_PATH);
         }}
-        selected={!!mathHome && category === "top"}
+        selected={!!matchSettings}
       />
     </Section>
   );
