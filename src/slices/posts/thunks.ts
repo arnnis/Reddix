@@ -89,7 +89,7 @@ export const getPostComments = (
   subreddit: string
 ): AppThunk => async (dispatch) => {
   let data = await req("OAUTH")
-    .get(`r/${subreddit}/comments/${postId}?raw_json=1&depth=5&showmore=true`)
+    .get(`r/${subreddit}/comments/${postId}?raw_json=1&showmore=true`)
     .json<[Listing<Post>, Listing<Comment>]>();
   console.log("comments", data);
 
@@ -158,4 +158,17 @@ export const vote = (
   } catch (e) {
     console.log(e);
   }
+};
+
+export const loadMoreComments = (
+  postId: string,
+  commentId: string
+): AppThunk => async (dispatch) => {
+  let data = await req("OAUTH")
+    .get(
+      `api/morechildren?raw_json=1&link_id=${postId}&children=${commentId}&api_type=json&sort=confidence&limit_children=true`
+    )
+    .json<[Listing<Post>, Listing<Comment>]>();
+
+  debugger;
 };

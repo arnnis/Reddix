@@ -4,8 +4,8 @@ import { HOME_PATH } from "./paths";
 function useMatchHome() {
   return useRouteMatch({
     path: HOME_PATH,
-    exact: true,
     strict: true,
+    exact: true,
     sensitive: true,
   });
 }

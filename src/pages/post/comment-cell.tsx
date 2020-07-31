@@ -1,14 +1,17 @@
 import React, { FC, useEffect, useState } from "react";
 import { ReactComponent as ArrowUp } from "../../assets/svg/arrow-up-bold.svg";
 import { ReactComponent as ArrowDown } from "../../assets/svg/arrow-down-bold.svg";
+import { ReactComponent as PlusIcon } from "../../assets/svg/plus.svg";
+
 import { Comment } from "../../models/comment";
 import styled from "styled-components";
 import { Data } from "../../models/api";
 import Flex from "../../components/flex";
 import ReactMarkdown from "react-markdown";
 import millify from "millify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/configureStore";
+import { loadMoreComments } from "../../slices/posts/thunks";
 
 interface Props {
   commentId: string;
@@ -20,8 +23,13 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
     (state: RootState) => state.entities.comments.byId[commentId]
   );
   const [collapsed, setCollapsed] = useState(comment?.score <= -10);
+  const dispatch = useDispatch();
 
   if (!comment || !comment.body) return null;
+
+  const loadMoreReplies = (moreId: string) => {
+    dispatch(loadMoreComments(comment.link_id, moreId));
+  };
 
   const renderReply = (replyData: Data<Comment>) => (
     <CommentCell commentId={replyData.data.id} isMaster={false} />
@@ -54,9 +62,18 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
         <Line onClick={() => setCollapsed(true)} />
       </>
     ) : (
-      <span onClick={() => setCollapsed(false)} style={{ cursor: "pointer" }}>
-        +
-      </span>
+      <PlusIcon
+        onClick={() => setCollapsed(false)}
+        width="13px"
+        height="13px"
+        style={{ marginLeft: -5, marginTop: 3 }}
+      />
+      // <span
+      //   onClick={() => setCollapsed(false)}
+      //   style={{ cursor: "pointer", marginLeft: -5 }}
+      // >
+      //   +
+      // </span>
     );
 
   const renderReplies = () =>
@@ -70,14 +87,16 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
       (com) => com.kind === "more"
     );
     if (!more || more.data.count === 0) return null;
-    return <ShowMoreText>{more?.data?.count} more replies</ShowMoreText>;
+    return (
+      <ShowMoreText onClick={() => loadMoreReplies(more?.data.id)}>
+        {more?.data?.count} more replies
+      </ShowMoreText>
+    );
   };
 
   return (
     <Container>
-      <Flex flexDirection="column" style={{ width: 15 }}>
-        {renderLineAndVoter()}
-      </Flex>
+      <Flex flexDirection="column">{renderLineAndVoter()}</Flex>
       <Flex flexDirection="column" style={{ marginLeft: 15 }}>
         <CommentContainer>
           <Flex flexDirection="column">
@@ -99,7 +118,7 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
 
 const Container = styled.div`
   display: flex;
-  width: auto;
+
   margin-top: 20px;
 `;
 
