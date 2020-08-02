@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
+import { Link } from "react-router-dom";
 import { ReactComponent as CommentIcon } from "../assets/svg/comment.svg";
 import { ReactComponent as SaveIcon } from "../assets/svg/bookmark-plus.svg";
 import Flex from "./flex";
@@ -25,19 +26,16 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const post = useSelector(
     (state: RootState) => state.entities.posts.byId[postId]
   );
-  const dispatch = useDispatch();
-
-  const goToPostComments = () =>
-    history.push("/" + post.subreddit_name_prefixed + "/comments/" + post.id, {
-      currentScrollPosition,
-    });
 
   const renderVotes = () => <Voter post={post} />;
 
   const renderMetadata = () => (
     <SubredditContainer>
       <SubredditImage src="https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png" />
-      <SubredditName>{post.subreddit_name_prefixed}</SubredditName>
+      <Link to={post.subreddit_name_prefixed}>
+        <SubredditName>{post.subreddit_name_prefixed}</SubredditName>
+      </Link>
+
       <Author>by u/{post.author}</Author>
       <DateTime>
         {dayjs.utc(dayjs.unix(post.created_utc)).local().fromNow()}
@@ -62,12 +60,14 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
     );
 
   const renderCommentsNum = () => (
-    <Flex alignItems="center" style={{ flex: "initial" }}>
-      <CommentIcon style={{ fill: "#8d9092", height: 15 }} />
-      <CommentsNum onClick={goToPostComments}>
-        {millify(post.num_comments, { precision: 1 })} comments
-      </CommentsNum>
-    </Flex>
+    <Link to={"/" + post.subreddit_name_prefixed + "/comments/" + post.id}>
+      <Flex alignItems="center">
+        <CommentIcon style={{ fill: "#8d9092", height: 15 }} />
+        <CommentsNum>
+          {millify(post.num_comments, { precision: 1 })} comments
+        </CommentsNum>
+      </Flex>
+    </Link>
   );
 
   const renderSaveIcon = () => (
