@@ -5,9 +5,10 @@ import {
   getPostsStart,
   getPostsFail,
   getPostsSuccess,
+  convertVoteFromReddit,
 } from "./slice";
 import { storeEntities } from "../entities/slice";
-import { Listing } from "../../models/api";
+import { Listing, Vote } from "../../models/api";
 import { Post } from "../../models/post";
 import { Subreddit } from "../../models/subreddit";
 import { batch } from "react-redux";
@@ -119,27 +120,27 @@ export const getPostComments = (
 
 export const vote = (
   id: string,
+  fullname: string,
   on: "post" | "comment",
-  type: "upvote" | "downvote" | "unvote"
+  type: Vote
 ): AppThunk => async (dispatch, getState) => {
+  const fd = new FormData();
+  fd.append(
+    "dir",
+    (type === "upvote" ? "1" : type === "downvote" ? "-1" : "0") as string
+  );
+  fd.append("id", fullname);
   try {
-    // let data = await req("OAUTH")
-    //   .post(`api/vote`, {
-    //     body: JSON.stringify({
-    //       dir: type === "upvote" ? 1 : type === "downvote" ? -1 : 0,
-    //       id,
-    //     }),
-    //   })
-    //   .json<[Listing<Post>, Listing<Comment>]>();
+    let data = await req("OAUTH")
+      .post(`api/vote`, {
+        body: fd,
+      })
+      .json<[Listing<Post>, Listing<Comment>]>();
+
     const store = getState();
     const entityKey = on === "post" ? "posts" : "comments";
     const entity = store.entities[entityKey].byId[id];
-    const currentVoteStatus =
-      entity.likes === true
-        ? "upvote"
-        : entity.likes === false
-        ? "downvote"
-        : "unvote";
+    const currentVoteStatus: Vote = convertVoteFromReddit(entity.likes);
 
     let scoreChange = type === "upvote" ? +1 : type === "downvote" ? -1 : 0;
     if (currentVoteStatus === "upvote") {

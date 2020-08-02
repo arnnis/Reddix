@@ -6,6 +6,9 @@ import millify from "millify";
 import { Post } from "../models/post";
 import { vote } from "../slices/posts/thunks";
 import { useDispatch } from "react-redux";
+import { Vote } from "../models/api";
+import { convertVoteFromReddit } from "../slices/posts/slice";
+import { useTheme } from "../contexts/theme/useTheme";
 
 interface Props {
   post: Post;
@@ -13,24 +16,44 @@ interface Props {
 
 const Voter: FC<Props> = ({ post }) => {
   const dispatch = useDispatch();
+  const currentVote: Vote = convertVoteFromReddit(post.likes);
+  const { theme } = useTheme();
 
   const handleUpvoteClick = () => {
-    dispatch(vote(post.id, "post", "upvote"));
+    if (currentVote === "upvote") {
+      handleUnvote();
+    } else {
+      dispatch(vote(post.id, post.name, "post", "upvote"));
+    }
   };
 
   const handleDownvoteClick = () => {
-    dispatch(vote(post.id, "post", "downvote"));
+    if (currentVote === "downvote") {
+      handleUnvote();
+    } else {
+      dispatch(vote(post.id, post.name, "post", "downvote"));
+    }
+  };
+
+  const handleUnvote = () => {
+    dispatch(vote(post.id, post.name, "post", "unvote"));
   };
 
   return (
     <VotesContainer>
       <ChevronUp
-        style={{ cursor: "pointer", fill: "#34495e" }}
+        style={{
+          cursor: "pointer",
+          fill: currentVote === "upvote" ? theme.orange : "#34495e",
+        }}
         onClick={handleUpvoteClick}
       />
       <Votes>{millify(post.score, { precision: 1 })}</Votes>
       <ChevronDown
-        style={{ cursor: "pointer", fill: "#34495e" }}
+        style={{
+          cursor: "pointer",
+          fill: currentVote === "downvote" ? theme.orange : "#34495e",
+        }}
         onClick={handleDownvoteClick}
       />
     </VotesContainer>

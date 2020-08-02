@@ -15,3 +15,5 @@ export interface Data<T> {
 }
 
 export type LoadType = "more" | "refresh";
+
+export type Vote = "upvote" | "downvote" | "unvote";

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Vote } from "../../models/api";
 
 export type Category = "best" | "top" | "new";
 
@@ -66,3 +67,6 @@ export const {
   getPostsSuccess,
   getPostsFail,
 } = postsSlice.actions;
+
+export const convertVoteFromReddit = (likes: null | true | false): Vote =>
+  likes === true ? "upvote" : likes === false ? "downvote" : "unvote";
