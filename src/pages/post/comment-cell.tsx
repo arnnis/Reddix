@@ -57,7 +57,7 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
             fontSize="13px"
             style={{
               cursor: "pointer",
-              fill: currentVote === "upvote" ? theme.orange : "#34495e",
+              fill: currentVote === "upvote" ? theme.orange : theme.textColor,
             }}
             onClick={handleUpvoteClick}
           />
@@ -67,7 +67,7 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
             fontSize="13px"
             style={{
               cursor: "pointer",
-              fill: currentVote === "downvote" ? theme.orange : "#34495e",
+              fill: currentVote === "downvote" ? theme.orange : theme.textColor,
               marginTop: 3,
             }}
             onClick={handleDownvoteClick}
@@ -138,7 +138,7 @@ const CommentContainer = styled.div`
 const Line = styled.div`
   height: calc(100% - 30px);
   width: 1.4px;
-  background-color: whitesmoke;
+  background-color: ${(props) => props.theme.rootBackgroundColor};
   cursor: pointer;
   &:hover {
     background-color: lightgrey;
@@ -175,6 +175,7 @@ const ShowMoreText = styled.span`
   font-weight: bold;
   font-size: 12.5px;
   cursor: pointer;
+  color: ${(props) => props.theme.textColor};
 `;
 
 export default CommentCell;
