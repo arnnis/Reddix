@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import { vote } from "../slices/posts/thunks";
+import useMatchPost from "../navigation/useMatchPost";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -26,6 +27,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const post = useSelector(
     (state: RootState) => state.entities.posts.byId[postId]
   );
+  const matchPost = useMatchPost();
 
   const renderVotes = () => <Voter post={post} />;
 
@@ -48,16 +50,25 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
       <PostText>{<ReactMarkdown source={post.selftext} />}</PostText>
     );
 
-  const renderImage = () =>
-    !!post?.preview && (
-      <PostImage
-        src={post?.preview?.images[0]?.resolutions[2]?.url.replace(/amp;/g, "")}
-        style={{
-          height: post.preview?.images[0]?.resolutions[2]?.height,
-          width: post.preview?.images[0]?.resolutions[2]?.width,
-        }}
-      />
+  const renderImage = () => {
+    if (!post?.preview) return null;
+    let res = 2;
+    if (matchPost) res = 3;
+    return (
+      <a href={post?.preview?.images[0].source.url}>
+        <PostImage
+          src={post?.preview?.images[0]?.resolutions[res]?.url.replace(
+            /amp;/g,
+            ""
+          )}
+          style={{
+            height: post.preview?.images[0]?.resolutions[res]?.height,
+            width: post.preview?.images[0]?.resolutions[res]?.width,
+          }}
+        />
+      </a>
     );
+  };
 
   const renderCommentsNum = () => (
     <Link to={"/" + post.subreddit_name_prefixed + "/comments/" + post.id}>
