@@ -128,7 +128,7 @@ export const vote = (
   const store = getState();
   const entityKey = on === "post" ? "posts" : "comments";
   const entity = store.entities[entityKey].byId[id];
-  const currentVoteStatus: Vote = convertVoteFromReddit(entity.likes);
+  const currentVote: Vote = convertVoteFromReddit(entity.likes);
 
   const fd = new FormData();
   fd.append(
@@ -145,15 +145,15 @@ export const vote = (
         })
         .json<[Listing<Post>, Listing<Comment>]>()
         .catch((err) => {
-          dispatch(vote(id, fullname, on, currentVoteStatus, true));
+          dispatch(vote(id, fullname, on, currentVote, true));
         });
     }
 
     let scoreChange = type === "upvote" ? +1 : type === "downvote" ? -1 : 0;
-    if (currentVoteStatus === "upvote") {
+    if (currentVote === "upvote") {
       scoreChange -= 1;
     }
-    if (currentVoteStatus === "downvote") {
+    if (currentVote === "downvote") {
       scoreChange += 1;
     }
     const newScore = entity.score + scoreChange;
