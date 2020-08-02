@@ -34,7 +34,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const renderMetadata = () => (
     <SubredditContainer>
       <SubredditImage src="https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png" />
-      <Link to={post.subreddit_name_prefixed}>
+      <Link to={"/" + post.subreddit_name_prefixed}>
         <SubredditName>{post.subreddit_name_prefixed}</SubredditName>
       </Link>
 
@@ -62,8 +62,9 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
       <a href={post?.preview?.images[0].source.url} target="_blank">
         {/*This wrapped div is to make sharp css: blur edges.*/}
         <BlurImageEdgeSharperDiv
-          width={width - 10}
-          height={height - 10}
+          width={width}
+          height={height}
+          offset={10}
           active={blurred}
         >
           <PostImage
@@ -161,14 +162,17 @@ const PostText = styled.span`
 
 const BlurImageEdgeSharperDiv = styled.div<{
   active: boolean;
+  offset: number;
   width: number;
   height: number;
 }>`
   overflow: hidden;
   margin-left: 0px;
   margin-top: 15px;
-  width: ${(props) => (props.active ? props.width : 0)}px;
-  height: ${(props) => (props.active ? props.height : 0)}px;
+  width: ${(props) =>
+    props.active ? props.width - props.offset : props.width}px;
+  height: ${(props) =>
+    props.active ? props.height - props.offset : props.height}px;
 `;
 
 const PostImage = styled.img<{ nsfw: boolean }>`
