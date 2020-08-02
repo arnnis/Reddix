@@ -122,25 +122,32 @@ export const vote = (
   id: string,
   fullname: string,
   on: "post" | "comment",
-  type: Vote
+  type: Vote,
+  local: boolean = false // used when reverting vote on api fail.
 ): AppThunk => async (dispatch, getState) => {
+  const store = getState();
+  const entityKey = on === "post" ? "posts" : "comments";
+  const entity = store.entities[entityKey].byId[id];
+  const currentVoteStatus: Vote = convertVoteFromReddit(entity.likes);
+
   const fd = new FormData();
   fd.append(
     "dir",
     (type === "upvote" ? "1" : type === "downvote" ? "-1" : "0") as string
   );
   fd.append("id", fullname);
-  try {
-    let data = await req("OAUTH")
-      .post(`api/vote`, {
-        body: fd,
-      })
-      .json<[Listing<Post>, Listing<Comment>]>();
 
-    const store = getState();
-    const entityKey = on === "post" ? "posts" : "comments";
-    const entity = store.entities[entityKey].byId[id];
-    const currentVoteStatus: Vote = convertVoteFromReddit(entity.likes);
+  try {
+    if (!local) {
+      req("OAUTH")
+        .post(`api/vote`, {
+          body: fd,
+        })
+        .json<[Listing<Post>, Listing<Comment>]>()
+        .catch((err) => {
+          dispatch(vote(id, fullname, on, currentVoteStatus, true));
+        });
+    }
 
     let scoreChange = type === "upvote" ? +1 : type === "downvote" ? -1 : 0;
     if (currentVoteStatus === "upvote") {
