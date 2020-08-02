@@ -54,18 +54,29 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
     if (!post?.preview) return null;
     let res = 2;
     if (matchPost) res = 3;
+    const blurred = post.over_18 && !matchPost;
+    const width = post.preview?.images[0]?.resolutions[res]?.width;
+    const height = post.preview?.images[0]?.resolutions[res]?.height;
+
     return (
-      <a href={post?.preview?.images[0].source.url}>
-        <PostImage
-          src={post?.preview?.images[0]?.resolutions[res]?.url.replace(
-            /amp;/g,
-            ""
-          )}
-          style={{
-            height: post.preview?.images[0]?.resolutions[res]?.height,
-            width: post.preview?.images[0]?.resolutions[res]?.width,
-          }}
-        />
+      <a href={post?.preview?.images[0].source.url} target="_blank">
+        {/*This wrapped div is to make sharp css: blur edges.*/}
+        <BlurImageEdgeSharperDiv
+          width={width - 10}
+          height={height - 10}
+          active={blurred}
+        >
+          <PostImage
+            src={post?.preview?.images[0]?.resolutions[res]?.url}
+            width={width}
+            height={height}
+            style={{
+              height,
+              width,
+            }}
+            nsfw={blurred}
+          />
+        </BlurImageEdgeSharperDiv>
       </a>
     );
   };
@@ -148,9 +159,20 @@ const PostText = styled.span`
   line-height: 20px;
 `;
 
-const PostImage = styled.img`
+const BlurImageEdgeSharperDiv = styled.div<{
+  active: boolean;
+  width: number;
+  height: number;
+}>`
+  overflow: hidden;
   margin-left: 0px;
   margin-top: 15px;
+  width: ${(props) => (props.active ? props.width : 0)}px;
+  height: ${(props) => (props.active ? props.height : 0)}px;
+`;
+
+const PostImage = styled.img<{ nsfw: boolean }>`
+  filter: ${(props) => (props.nsfw ? "blur(10px)" : "initial")};
 `;
 
 const ToolbarContainer = styled.div`
@@ -188,7 +210,6 @@ const Domain = styled.span`
 const CommentsNum = styled.span`
   color: #828282;
   font-size: 12px;
-  //margin-top: 10px;
   font-weight: 400;
   cursor: pointer;
   margin-bottom: 1px;
