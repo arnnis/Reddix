@@ -20,23 +20,11 @@ const Voter: FC<Props> = ({ post }) => {
   const { theme } = useTheme();
 
   const handleUpvoteClick = () => {
-    if (currentVote === "upvote") {
-      handleUnvote();
-    } else {
-      dispatch(vote(post.id, post.name, "post", "upvote"));
-    }
+    dispatch(vote(post.id, post.name, "post", "upvote"));
   };
 
   const handleDownvoteClick = () => {
-    if (currentVote === "downvote") {
-      handleUnvote();
-    } else {
-      dispatch(vote(post.id, post.name, "post", "downvote"));
-    }
-  };
-
-  const handleUnvote = () => {
-    dispatch(vote(post.id, post.name, "post", "unvote"));
+    dispatch(vote(post.id, post.name, "post", "downvote"));
   };
 
   return (

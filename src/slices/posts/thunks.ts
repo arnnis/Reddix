@@ -122,13 +122,17 @@ export const vote = (
   id: string,
   fullname: string,
   on: "post" | "comment",
-  type: Vote,
+  type: Vote, // this accepts upvote & downvote only, unvote is determied from currentVote.
   local: boolean = false // used when reverting vote on api fail.
 ): AppThunk => async (dispatch, getState) => {
   const store = getState();
   const entityKey = on === "post" ? "posts" : "comments";
   const entity = store.entities[entityKey].byId[id];
   const currentVote: Vote = convertVoteFromReddit(entity.likes);
+
+  if (currentVote === type) {
+    type = "unvote";
+  }
 
   const fd = new FormData();
   fd.append(
