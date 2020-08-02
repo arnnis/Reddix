@@ -176,7 +176,7 @@ const BlurImageEdgeSharperDiv = styled.div<{
 `;
 
 const PostImage = styled.img<{ nsfw: boolean }>`
-  filter: ${(props) => (props.nsfw ? "blur(10px)" : "initial")};
+  filter: ${(props) => (props.nsfw ? "blur(13px)" : "initial")};
 `;
 
 const ToolbarContainer = styled.div`

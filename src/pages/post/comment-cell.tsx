@@ -11,7 +11,9 @@ import ReactMarkdown from "react-markdown";
 import millify from "millify";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/configureStore";
-import { loadMoreComments } from "../../slices/posts/thunks";
+import { loadMoreComments, vote } from "../../slices/posts/thunks";
+import { convertVoteFromReddit } from "../../slices/posts/slice";
+import { useTheme } from "../../contexts/theme/useTheme";
 
 interface Props {
   commentId: string;
@@ -24,8 +26,18 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
   );
   const [collapsed, setCollapsed] = useState(comment?.score <= -10);
   const dispatch = useDispatch();
+  const { theme } = useTheme();
 
   if (!comment || !comment.body) return null;
+  const currentVote = convertVoteFromReddit(comment.likes);
+
+  const handleUpvoteClick = () => {
+    dispatch(vote(comment.id, comment.name, "comment", "upvote"));
+  };
+
+  const handleDownvoteClick = () => {
+    dispatch(vote(comment.id, comment.name, "comment", "downvote"));
+  };
 
   const loadMoreReplies = (moreId: string) => {
     dispatch(loadMoreComments(comment.link_id, moreId));
@@ -45,8 +57,9 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
             fontSize="13px"
             style={{
               cursor: "pointer",
-              fill: "#34495e",
+              fill: currentVote === "upvote" ? theme.orange : "#34495e",
             }}
+            onClick={handleUpvoteClick}
           />
           <ArrowDown
             width="13px"
@@ -54,9 +67,10 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
             fontSize="13px"
             style={{
               cursor: "pointer",
-              fill: "#34495e",
+              fill: currentVote === "downvote" ? theme.orange : "#34495e",
               marginTop: 3,
             }}
+            onClick={handleDownvoteClick}
           />
         </VoteContainer>
         <Line onClick={() => setCollapsed(true)} />

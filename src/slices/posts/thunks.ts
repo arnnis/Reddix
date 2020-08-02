@@ -31,16 +31,15 @@ export const getPosts = (
     if (isLoggedIn) {
       result = await req("OAUTH")
         .get(
-          subreddit
-            ? `r/${subreddit}/.json?after=${after}&&count=${store.posts.list.length}&&raw_json=1`
-            : category
+          (subreddit ? `r/${subreddit}/.json` : category) +
+            `?after=${after}&count=${store.posts.list.length}&raw_json=1`
         )
         .json<Listing<Post>>();
     } else {
       result = await req("PUBLIC")
         .get(
           subreddit
-            ? `r/${subreddit}/.json?after=${after}&&count=${store.posts.list.length}&&raw_json=1`
+            ? `r/${subreddit}/.json?after=${after}&count=${store.posts.list.length}&raw_json=1`
             : `${category}/.json`
         )
         .json<Listing<Post>>();
