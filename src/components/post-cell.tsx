@@ -14,6 +14,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import { vote } from "../slices/posts/thunks";
 import useMatchPost from "../navigation/useMatchPost";
+import { useTheme } from "../contexts/theme/useTheme";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -28,6 +29,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
     (state: RootState) => state.entities.posts.byId[postId]
   );
   const matchPost = useMatchPost();
+  const { theme } = useTheme();
 
   const renderVotes = () => <Voter post={post} />;
 
@@ -88,7 +90,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const renderCommentsNum = () => (
     <Link to={"/" + post.subreddit_name_prefixed + "/comments/" + post.id}>
       <Flex alignItems="center">
-        <CommentIcon style={{ fill: "#8d9092", height: 15 }} />
+        <CommentIcon style={{ fill: theme.textColor3, height: 15 }} />
         <CommentsNum>
           {millify(post.num_comments, { precision: 1 })} comments
         </CommentsNum>
@@ -98,7 +100,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
 
   const renderSaveIcon = () => (
     <Flex alignItems="center" style={{ flex: "initial" }}>
-      <SaveIcon style={{ fill: "#8d9092", height: 15 }} />
+      <SaveIcon style={{ fill: theme.textColor3, height: 15 }} />
       <CommentsNum>save</CommentsNum>
     </Flex>
   );
@@ -214,7 +216,7 @@ const Domain = styled.span`
 `;
 
 const CommentsNum = styled.span`
-  color: #828282;
+  color: ${(props) => props.theme.textColor3};
   font-size: 12px;
   font-weight: 400;
   cursor: pointer;
@@ -237,7 +239,7 @@ const SubredditImage = styled.img`
 const SubredditName = styled.span`
   font-size: 11.5px;
   font-weight: bold;
-  color: ${(props) => props.theme.textColorLess};
+  color: ${(props) => props.theme.textColor};
 `;
 
 export default PostCell;

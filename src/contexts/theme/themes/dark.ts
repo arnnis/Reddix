@@ -8,6 +8,7 @@ export const darkBlack: Theme = {
   rootBackgroundColor: "#33363E",
   backgroundColor: "#292B30",
   textColor: "#CECECE",
-  textColorLess: "#7c7c7c",
+  textColor2: "#7c7c7c",
+  textColor3: "#828282",
   ...getStaticColor(false),
 };

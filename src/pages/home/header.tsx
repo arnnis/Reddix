@@ -93,7 +93,7 @@ const Header: FC<Props> = () => {
     <Container>
       <CategoryTitle>{getTitle()}</CategoryTitle>
       {renderCategoryDropdown()}
-      <Flex alignItems="center">
+      <Flex alignItems="center" style={{ marginLeft: "auto" }}>
         <ThemeIcon
           style={{
             marginRight: 15,
@@ -116,7 +116,6 @@ const Container = styled.div`
   height: 10%;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
 `;
 
 const CategoryTitle = styled.span`

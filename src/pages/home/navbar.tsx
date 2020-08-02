@@ -214,7 +214,7 @@ const SectionTitle = styled.span`
 const SectionDivider = styled.div`
   width: 100%;
   height: 1.5px;
-  background-color: whitesmoke;
+  background-color: ${(props) => props.theme.rootBackgroundColor};
 `;
 
 const SectionItemContainer = styled.div<{ selected?: boolean }>`
@@ -229,7 +229,7 @@ const SectionItemContainer = styled.div<{ selected?: boolean }>`
 
 const SectionItemTitle = styled.span<{ selected?: boolean }>`
   font-size: 13.5px;
-  color: ${(props) => (props.selected ? "#494949" : "#CECECE")};
+  color: ${(props) => (props.selected ? props.theme.textColor : "#CECECE")};
   margin-left: 15px;
   font-weight: bold;
 `;

@@ -32,7 +32,7 @@ const Voter: FC<Props> = ({ post }) => {
       <ChevronUp
         style={{
           cursor: "pointer",
-          fill: currentVote === "upvote" ? theme.orange : "#34495e",
+          fill: currentVote === "upvote" ? theme.orange : theme.textColor,
         }}
         onClick={handleUpvoteClick}
       />
@@ -40,7 +40,7 @@ const Voter: FC<Props> = ({ post }) => {
       <ChevronDown
         style={{
           cursor: "pointer",
-          fill: currentVote === "downvote" ? theme.orange : "#34495e",
+          fill: currentVote === "downvote" ? theme.orange : theme.textColor,
         }}
         onClick={handleDownvoteClick}
       />
@@ -59,7 +59,7 @@ const VotesContainer = styled.div`
 
 const Votes = styled.span`
   font-size: 14.5px;
-  color: #34495e;
+  color: ${(props) => props.theme.textColor};
   font-weight: 500;
 `;
 

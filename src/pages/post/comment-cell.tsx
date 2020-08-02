@@ -160,7 +160,7 @@ const Text = styled.span`
 const Score = styled.span`
   font-size: 12px;
   margin-left: 5px;
-  color: ${(props) => props.theme.textColorLess};
+  color: ${(props) => props.theme.textColor2};
 `;
 
 const VoteContainer = styled.div`

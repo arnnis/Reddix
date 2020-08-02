@@ -9,7 +9,8 @@ export type ThemeColors = StaticThemeColors & {
   rootBackgroundColor: string;
   backgroundColor: string;
   textColor: string;
-  textColorLess: string;
+  textColor2: string;
+  textColor3: string;
 };
 
 export interface Theme extends ThemeColors {

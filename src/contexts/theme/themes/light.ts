@@ -8,6 +8,7 @@ export const lightWhite: Theme = {
   rootBackgroundColor: "#f2f3f5",
   backgroundColor: "#fff",
   textColor: "#34495e",
-  textColorLess: "#7c7c7c",
+  textColor2: "#7c7c7c",
+  textColor3: "#828282",
   ...getStaticColor(false),
 };
