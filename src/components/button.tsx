@@ -25,7 +25,7 @@ const ButtonContainer = styled.div`
   );
   border-radius: 4px;
   border: 1.4px solid #dd5b12;
-  margin-left: auto;
+
   padding: 4px 11px 5px 11px;
   min-width: 85px;
   cursor: pointer;

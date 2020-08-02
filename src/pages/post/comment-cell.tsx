@@ -149,17 +149,18 @@ const Author = styled.span`
   font-size: 12px;
   margin-bottom: 5px;
   font-weight: 500;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const Text = styled.span`
   font-size: 14px;
-  color: #34495e;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const Score = styled.span`
   font-size: 12px;
   margin-left: 5px;
-  color: #7c7c7c;
+  color: ${(props) => props.theme.textColorLess};
 `;
 
 const VoteContainer = styled.div`

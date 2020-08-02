@@ -42,7 +42,7 @@ const Right = styled.div`
   flex-direction: column;
   width: calc(100% - 300px);
   padding: 0 6% 0 6%;
-  background-color: #f2f3f5;
+  background-color: ${(props) => props.theme.rootBackgroundColor};
 `;
 
 const Body = styled.div`
@@ -51,8 +51,11 @@ const Body = styled.div`
   flex: 1;
   flex-direction: column;
   height: 90%;
-  box-shadow: 0px 0px 15px -9px rgba(150, 150, 150, 1);
-  background-color: white;
+  box-shadow: ${(props) =>
+    props.theme.isDark
+      ? "initial"
+      : "0px 0px 15px -9px rgba(150, 150, 150, 1)"};
+  background-color: ${(props) => props.theme.backgroundColor};
 `;
 
 export default Home;

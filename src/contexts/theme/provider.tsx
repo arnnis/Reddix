@@ -25,9 +25,14 @@ class ThemeProvider extends Component<unknown, State> {
     this.setState({ isLoadingTheme: false });
   }
 
-  toggleTheme = async (themeKey: ThemeKey) => {
-    await this.setState({ themeKey });
-    localStorage.setItem("themeKey", themeKey);
+  toggleTheme = async () => {
+    const themeKeys = Object.keys(themes);
+    let currentThemeIndex = themeKeys.indexOf(this.state.themeKey);
+    let nextThemeKey = themeKeys[currentThemeIndex + 1]
+      ? themeKeys[currentThemeIndex + 1]
+      : themeKeys[0];
+    await this.setState({ themeKey: nextThemeKey as ThemeKey });
+    localStorage.setItem("themeKey", nextThemeKey);
   };
 
   render() {

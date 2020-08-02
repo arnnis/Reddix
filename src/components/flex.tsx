@@ -34,7 +34,6 @@ const Flex: FC<Props> = ({
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
 `;
 
 export default Flex;

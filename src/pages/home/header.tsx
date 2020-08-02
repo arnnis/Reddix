@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Popup, Dropdown } from "semantic-ui-react";
 import { useParams, useRouteMatch } from "react-router-dom";
+import { ReactComponent as ThemeIcon } from "../../assets/svg/theme-light-dark.svg";
 
 import { logInStart } from "../../slices/app/thunks";
 import { RootState } from "../../store/configureStore";
@@ -13,6 +14,7 @@ import useMatchSubreddit from "../../navigation/useMatchSubreddit";
 import useMatchSettings from "../../navigation/useMatchSettings";
 import useMatchSaved from "../../navigation/useMatchSaved";
 import useMatchHome from "../../navigation/useMatchHome";
+import { useTheme } from "../../contexts/theme/useTheme";
 
 interface Props {}
 
@@ -29,6 +31,7 @@ const Header: FC<Props> = () => {
   const matchHome = useMatchHome();
   const category = useSelector((state: RootState) => state.posts.category);
   const postId = useSelector((state: RootState) => state.posts.post);
+  const { theme, toggleTheme } = useTheme();
 
   const renderLoginButton = () => (
     <Button title="Login" onClick={handleLogin} />
@@ -90,7 +93,19 @@ const Header: FC<Props> = () => {
     <Container>
       <CategoryTitle>{getTitle()}</CategoryTitle>
       {renderCategoryDropdown()}
-      {isLoggedIn ? renderUserProfile() : renderLoginButton()}
+      <Flex alignItems="center">
+        <ThemeIcon
+          style={{
+            marginRight: 15,
+            cursor: "pointer",
+            fill: theme.isDark ? "#fff" : "#333",
+          }}
+          width={20}
+          height={20}
+          onClick={() => toggleTheme()}
+        />
+        {isLoggedIn ? renderUserProfile() : renderLoginButton()}
+      </Flex>
     </Container>
   );
 };
@@ -101,17 +116,18 @@ const Container = styled.div`
   height: 10%;
   width: 100%;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const CategoryTitle = styled.span`
   font-size: 16px;
   font-weight: bold;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const UserProfileContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: auto;
   cursor: pointer;
 `;
 
@@ -126,6 +142,7 @@ const UserName = styled.span`
   font-size: 15px;
   margin-left: 10px;
   margin-bottom: 1px;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const PopupOptionContainer = styled.div`

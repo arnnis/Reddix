@@ -38,9 +38,8 @@ export const getPosts = (
     } else {
       result = await req("PUBLIC")
         .get(
-          subreddit
-            ? `r/${subreddit}/.json?after=${after}&count=${store.posts.list.length}&raw_json=1`
-            : `${category}/.json`
+          (subreddit ? `r/${subreddit}/.json` : `${category}/.json`) +
+            `?after=${after}&count=${store.posts.list.length}&raw_json=1`
         )
         .json<Listing<Post>>();
     }

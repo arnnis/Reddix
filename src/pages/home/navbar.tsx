@@ -167,7 +167,7 @@ const Container = styled.div`
   width: 300px;
   min-width: 300px;
   height: 100%;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.backgroundColor};
   flex-direction: column;
   box-shadow: 10px 0px 15px -19px rgba(150, 150, 150, 1);
 `;

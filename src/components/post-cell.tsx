@@ -68,7 +68,10 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
           active={blurred}
         >
           <PostImage
-            src={post?.preview?.images[0]?.resolutions[res]?.url}
+            src={post?.preview?.images[0]?.resolutions[res]?.url.replace(
+              /amp;/g,
+              ""
+            )}
             width={width}
             height={height}
             style={{
@@ -132,8 +135,8 @@ const Container = styled.div`
   flex-direction: row;
   width: 100%;
   max-width: 100%;
-  background-color: #fff;
-  border-bottom: 1.25px solid whitesmoke;
+  background-color: ${({ theme }) => theme.backgroundColor};
+  border-bottom: 1.25px solid ${({ theme }) => theme.rootBackgroundColor};
 `;
 
 const BodyContainer = styled.div`
@@ -147,15 +150,14 @@ const PostTitle = styled.a`
   font-size: 15.5px;
   font-weight: 500;
   margin-top: 10px;
-  color: #34495e;
+  color: ${({ theme }) => theme.textColor};
   text-decoration: none;
 `;
 
 const PostText = styled.span`
   font-size: 14px;
   margin-top: 10px;
-
-  color: #34495e;
+  color: ${({ theme }) => theme.textColor};
   text-overflow: ellipsis;
   line-height: 20px;
 `;
@@ -235,7 +237,7 @@ const SubredditImage = styled.img`
 const SubredditName = styled.span`
   font-size: 11.5px;
   font-weight: bold;
-  color: #34495e;
+  color: ${(props) => props.theme.textColorLess};
 `;
 
 export default PostCell;

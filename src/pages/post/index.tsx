@@ -106,6 +106,7 @@ const CommentsNum = styled.span`
   font-weight: 500;
   margin-left: 15px;
   margin-top: 15px;
+  color: ${(props) => props.theme.textColor};
 `;
 
 export default PostPage;
