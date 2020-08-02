@@ -40,6 +40,7 @@ const Right = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  width: calc(100% - 300px);
   padding: 0 6% 0 6%;
   background-color: #f2f3f5;
 `;
