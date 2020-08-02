@@ -10,6 +10,7 @@ import { getPostComments } from "../../slices/posts/thunks";
 import { Data, Listing } from "../../models/api";
 import { Comment } from "../../models/comment";
 import CommentCell from "./comment-cell";
+import { DEFAULT_TITLE } from "../../env";
 
 const PostPage: FC = ({}) => {
   const { subreddit, postId } = useParams<{
@@ -25,22 +26,28 @@ const PostPage: FC = ({}) => {
   const [loadingComments, setLoadingComments] = useState(false);
   const [commentsLoadError, setCommentsLoadError] = useState(null);
 
-  // Sync url subreddit with redux
-  // useEffect(() => {
-  //   dispatch(setSubreddit(subreddit));
-  // }, [subreddit]);
-  // Sync url postId with redux
   useEffect(() => {
     dispatch(setPost(postId));
   }, [postId]);
 
+  // Change tab title on post change.
+  useEffect(() => {
+    if (post?.title) {
+      document.title = post.title;
+    } else {
+      document.title = DEFAULT_TITLE;
+    }
+  }, [post?.title]);
+
+  // onMount
   useEffect(() => {
     // load Post if not in redux
 
-    getComments();
+    getComments().catch((e) => console.log(e));
 
     return () => {
       dispatch(setPost(undefined));
+      document.title = DEFAULT_TITLE;
     };
   }, []);
 
@@ -68,7 +75,7 @@ const PostPage: FC = ({}) => {
           {renderComments()}
         </>
       ) : (
-        "Post not found in redux state"
+        <span>Post not found in redux state</span>
       )}
     </Container>
   );

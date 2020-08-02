@@ -68,8 +68,10 @@ export const getPosts = (
   }
 };
 
-export const getMySubreddits = (): AppThunk => async (dispatch) => {
-  let data = await req("OAUTH")
+export const getMySubreddits = (): AppThunk => async (dispatch, getState) => {
+  const store = getState();
+  const { isLoggedIn } = store.app;
+  let data = await req(isLoggedIn ? "OAUTH" : "PUBLIC")
     .get("subreddits/mine.json?raw_json=1")
     .json<Listing<Subreddit>>();
   console.log("my subs", data);

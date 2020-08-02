@@ -17,3 +17,5 @@ export const OAUTH_CALLBACK_URL = `${APP_URL}/oauthcallback`;
 export const OAUTH_URL = `https://www.reddit.com/api/v1/authorize?client_id=${CLIENT_ID}&response_type=code&state=9043316759&redirect_uri=${OAUTH_CALLBACK_URL}&duration=permanent&scope=${SCOPES.join(
   " "
 )}`;
+
+export const DEFAULT_TITLE = "Reddix for reddit";

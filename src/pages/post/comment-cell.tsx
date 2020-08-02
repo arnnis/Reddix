@@ -66,14 +66,8 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
         onClick={() => setCollapsed(false)}
         width="13px"
         height="13px"
-        style={{ marginLeft: -5, marginTop: 3 }}
+        style={{ marginLeft: -5, marginTop: 3, cursor: "pointer" }}
       />
-      // <span
-      //   onClick={() => setCollapsed(false)}
-      //   style={{ cursor: "pointer", marginLeft: -5 }}
-      // >
-      //   +
-      // </span>
     );
 
   const renderReplies = () =>
@@ -83,6 +77,7 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
     comment.replies.data.children.map(renderReply);
 
   const renderShowMoreReplies = () => {
+    if (collapsed) return null;
     const more = comment.replies?.data?.children?.find(
       (com) => com.kind === "more"
     );

@@ -165,6 +165,7 @@ export const SectionItem: FC<{
 const Container = styled.div`
   display: flex;
   width: 300px;
+  min-width: 300px;
   height: 100%;
   background-color: #fff;
   flex-direction: column;
