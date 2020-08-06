@@ -5,7 +5,7 @@ function useMatchHome() {
   return useRouteMatch({
     path: HOME_PATH,
     strict: true,
-    exact: true,
+
     sensitive: true,
   });
 }

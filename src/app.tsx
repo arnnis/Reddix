@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import Home from "./pages/home";

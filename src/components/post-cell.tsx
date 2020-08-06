@@ -36,7 +36,7 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const renderMetadata = () => (
     <SubredditContainer>
       <SubredditImage src="https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png" />
-      <Link to={"/" + post.subreddit_name_prefixed}>
+      <Link to={process.env.PUBLIC_URL + "/" + post.subreddit_name_prefixed}>
         <SubredditName>{post.subreddit_name_prefixed}</SubredditName>
       </Link>
 
@@ -88,7 +88,15 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   };
 
   const renderCommentsNum = () => (
-    <Link to={"/" + post.subreddit_name_prefixed + "/comments/" + post.id}>
+    <Link
+      to={
+        process.env.PUBLIC_URL +
+        "/" +
+        post.subreddit_name_prefixed +
+        "/comments/" +
+        post.id
+      }
+    >
       <Flex alignItems="center">
         <CommentIcon style={{ fill: theme.textColor3, height: 15 }} />
         <CommentsNum>

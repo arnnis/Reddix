@@ -4,6 +4,7 @@ import req from "../../utils/req";
 import ky from "ky";
 import { LoginResult } from "../../models/auth";
 import { setToken } from "./slice";
+import { HOME_PATH } from "../../navigation/paths";
 
 export const logInStart = (): AppThunk => (dispatch) => {
   window.location.replace(OAUTH_URL);
@@ -34,7 +35,7 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
     })
   );
 
-  history.replace("/");
+  history.replace(HOME_PATH);
 };
 
 export const refreshToken = (): AppThunk => async (dispatch, getState) => {

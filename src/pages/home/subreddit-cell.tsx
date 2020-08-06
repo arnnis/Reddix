@@ -23,7 +23,7 @@ const SubredditCell: FC<Props> = ({ subId }) => {
       title={"r/" + sub.display_name}
       onPress={() => {
         dispatch(setCategory("best"));
-        history.push("/r/" + sub.display_name);
+        history.push(process.env.PUBLIC_URL + "/r/" + sub.display_name);
       }}
       selected={
         !!matchSubreddit && matchSubreddit.params.subreddit === sub.display_name
