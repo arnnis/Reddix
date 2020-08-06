@@ -18,7 +18,7 @@ import useMatchHome from "../../navigation/useMatchHome";
 import useMatchSubreddit from "../../navigation/useMatchSubreddit";
 import useMatchSaved from "../../navigation/useMatchSaved";
 import useMatchSettings from "../../navigation/useMatchSettings";
-import { SAVED_PATH, SETTINGS_PATH } from "../../navigation/paths";
+import { HOME_PATH, SAVED_PATH, SETTINGS_PATH } from "../../navigation/paths";
 
 interface Props {}
 
@@ -79,7 +79,7 @@ const NavBar: FC<Props> = () => {
         }
         onPress={() => {
           dispatch(setCategory("best"));
-          history.push("/");
+          history.push(HOME_PATH);
         }}
         selected={!!mathHome}
       />

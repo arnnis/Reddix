@@ -3,15 +3,16 @@ import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import Home from "./pages/home";
 import OauthCallback from "./pages/oauth-callback";
+import { HOME_PATH, OAUTH_CALLBACK_PATH } from "./navigation/paths";
 
 function App() {
   return (
     <Container>
       <Switch>
-        <Route path="/oauthcallback">
+        <Route path={OAUTH_CALLBACK_PATH}>
           <OauthCallback />
         </Route>
-        <Route path="/">
+        <Route path={HOME_PATH}>
           <Home />
         </Route>
       </Switch>
