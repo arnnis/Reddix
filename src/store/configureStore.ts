@@ -7,7 +7,7 @@ import {
   ThunkAction,
 } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import { connectRouter } from "connected-react-router";
+
 import persistConfig from "./persistConfig";
 
 import { appReducer } from "./../slices/app/slice";
@@ -21,7 +21,6 @@ const rootReducer = combineReducers({
   entities: entitiesReducer,
   app: appReducer,
   posts: postsReducer,
-  router: connectRouter(history),
 });
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
