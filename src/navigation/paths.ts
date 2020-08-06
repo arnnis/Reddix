@@ -6,4 +6,4 @@ export const POST_PATH =
   process.env.PUBLIC_URL + "/r/:subreddit/comments/:postId";
 export const SAVED_PATH = process.env.PUBLIC_URL + "/saved";
 export const SETTINGS_PATH = process.env.PUBLIC_URL + "/settings";
-export const OAUTH_CALLBACK_PATH = "/oauthcallback";
+export const OAUTH_CALLBACK_PATH = process.env.PUBLIC_URL + "/oauthcallback";
