@@ -9,6 +9,7 @@ import { RootState } from "../../store/configureStore";
 import { useParams, useLocation } from "react-router-dom";
 import useListEndReached from "../../utils/hooks/use-list-end-reached";
 import useMatchPost from "../../navigation/useMatchPost";
+import usePrevious from "../../utils/hooks/usePrevious";
 
 interface Props {
   subreddit?: string;
@@ -25,10 +26,12 @@ const PostList: FC<Props> = ({}) => {
   const dispatch = useDispatch<any>();
   const loadingMore = loading && postsList.length;
   const matchPost = useMatchPost();
+  const prevMathPost = usePrevious(matchPost);
 
   useEffect(() => {
     // edge case since post url is a nest of subreddit
-    if (matchPost) return;
+    if (matchPost || prevMathPost) return;
+    alert("asked load");
     console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);
     console.log("category:", category);
