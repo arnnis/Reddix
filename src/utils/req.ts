@@ -12,6 +12,7 @@ const kyHooks: Hooks = {
     async (request, options, response) => {
       if (response.status === 401) {
         // Get a fresh token
+        console.log("401: trying to refresh token...");
         // @ts-ignore
         let data: LoginResult = await store.dispatch(refreshToken());
 
@@ -35,15 +36,14 @@ const createKyInstance = (apiType: API_TYPE) => {
       hooks: kyHooks,
     });
   } else {
-    const token = store.getState().app.token;
+    let token = store.getState().app.token;
+
     if (!token) throw new Error("401");
-    let headers = {
-      Authorization:
-        "Basic " + btoa(unescape(encodeURIComponent(CLIENT_ID + ":" + ""))),
-    };
+
+    let headers = {};
     if (token)
       headers = {
-        Authorization: "Bearer " + store.getState().app.token,
+        Authorization: "Bearer " + token,
       };
     return ky.create({
       prefixUrl: OAUTH_API_URL,

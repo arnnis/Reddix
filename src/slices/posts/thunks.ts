@@ -172,6 +172,14 @@ export const vote = (
   }
 };
 
+export const save = (
+  id: string,
+  fullname: string,
+  what: "post" | "comment",
+  type: Vote, // this accepts upvote & downvote only, unvote is determied from currentVote.
+  local: boolean = false // used when reverting vote on api fail.
+) => {};
+
 export const loadMoreComments = (
   postId: string,
   commentId: string

@@ -32,6 +32,7 @@ export const finishLogin = (code: string): AppThunk => async (dispatch) => {
       token: data.access_token,
       refreshToken: data.refresh_token,
       expiresIn: data.expires_in,
+      isLoggedIn: true,
     })
   );
 
@@ -64,10 +65,13 @@ export const refreshToken = (): AppThunk => async (dispatch, getState) => {
     dispatch(
       setToken({
         token: data.access_token,
-        refreshToken: data.refresh_token,
+        // refreshToken: data.refresh_token,
         expiresIn: data.expires_in,
+        isLoggedIn: true,
       })
     );
+
+    alert("token refreshed");
 
     return data;
   } catch (e) {

@@ -4,18 +4,13 @@ import PostCell from "../../components/post-cell";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../slices/posts/thunks";
 import Flex from "../../components/flex";
-import { setSubreddit } from "../../slices/posts/slice";
 import { RootState } from "../../store/configureStore";
 import { useParams, useLocation } from "react-router-dom";
 import useListEndReached from "../../utils/hooks/use-list-end-reached";
 import useMatchPost from "../../navigation/useMatchPost";
 import usePrevious from "../../utils/hooks/usePrevious";
 
-interface Props {
-  subreddit?: string;
-}
-
-const PostList: FC<Props> = ({}) => {
+const PostList: FC = () => {
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
   const { pathname } = useLocation();
   const category = useSelector((state: RootState) => state.posts.category);
@@ -31,7 +26,7 @@ const PostList: FC<Props> = ({}) => {
   useEffect(() => {
     // edge case since post url is a nest of subreddit
     if (matchPost || prevMathPost) return;
-    alert("asked load");
+
     console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);
     console.log("category:", category);
