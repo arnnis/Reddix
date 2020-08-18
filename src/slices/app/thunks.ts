@@ -71,7 +71,7 @@ export const refreshToken = (): AppThunk => async (dispatch, getState) => {
       })
     );
 
-    alert("token refreshed");
+    // alert("token refreshed");
 
     return data;
   } catch (e) {

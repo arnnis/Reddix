@@ -145,7 +145,6 @@ export const vote = (
         .post(`api/vote`, {
           body: fd,
         })
-        .json<[Listing<Post>, Listing<Comment>]>()
         .catch((err) => {
           dispatch(vote(id, fullname, on, currentVote, true));
         });
@@ -176,9 +175,57 @@ export const save = (
   id: string,
   fullname: string,
   what: "post" | "comment",
-  type: Vote, // this accepts upvote & downvote only, unvote is determied from currentVote.
   local: boolean = false // used when reverting vote on api fail.
-) => {};
+): AppThunk => (dispatch) => {
+  const fd = new FormData();
+  fd.append("id", fullname);
+
+  if (!local) {
+    req("OAUTH")
+      .post(`api/save`, {
+        body: fd,
+      })
+      .catch((err) => {
+        dispatch(unsave(id, fullname, what, true));
+      });
+  }
+
+  dispatch(
+    updateEntity({
+      entity: what === "post" ? "posts" : "comments",
+      key: id,
+      data: { saved: true },
+    })
+  );
+};
+
+export const unsave = (
+  id: string,
+  fullname: string,
+  what: "post" | "comment",
+  local: boolean = false // used when reverting vote on api fail.
+): AppThunk => (dispatch) => {
+  const fd = new FormData();
+  fd.append("id", fullname);
+
+  if (!local) {
+    req("OAUTH")
+      .post(`api/unsave`, {
+        body: fd,
+      })
+      .catch((err) => {
+        dispatch(save(id, fullname, what, true));
+      });
+  }
+
+  dispatch(
+    updateEntity({
+      entity: what === "post" ? "posts" : "comments",
+      key: id,
+      data: { saved: false },
+    })
+  );
+};
 
 export const loadMoreComments = (
   postId: string,

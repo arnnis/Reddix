@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import { vote } from "../slices/posts/thunks";
+import { save, unsave, vote } from "../slices/posts/thunks";
 import useMatchPost from "../navigation/useMatchPost";
 import { useTheme } from "../contexts/theme/useTheme";
 import Markdown from "./markdown-renderer";
@@ -32,6 +32,15 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   );
   const matchPost = useMatchPost();
   const { theme } = useTheme();
+  const dispatch = useDispatch();
+
+  const handleSavePress = () => {
+    if (post.saved) {
+      dispatch(unsave(post.id, post.name, "post"));
+    } else {
+      dispatch(save(post.id, post.name, "post"));
+    }
+  };
 
   const renderVotes = () => <Voter post={post} />;
 
@@ -114,7 +123,9 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
   const renderSaveIcon = () => (
     <Flex alignItems="center" style={{ flex: "initial" }}>
       <SaveIcon style={{ fill: theme.textColor3, height: 15 }} />
-      <CommentsNum>save</CommentsNum>
+      <CommentsNum onClick={handleSavePress}>
+        {post.saved ? "unsave" : "save"}
+      </CommentsNum>
     </Flex>
   );
 
