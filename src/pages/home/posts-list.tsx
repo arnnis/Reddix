@@ -25,7 +25,7 @@ const PostList: FC = () => {
 
   useEffect(() => {
     // edge case since post url is a nest of subreddit
-    if (matchPost || prevMathPost) return;
+    if (matchPost || (prevMathPost && postsList.length)) return;
 
     console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);

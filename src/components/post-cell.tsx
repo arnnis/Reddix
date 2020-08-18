@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
+
 import { Link } from "react-router-dom";
 import { ReactComponent as CommentIcon } from "../assets/svg/comment.svg";
 import { ReactComponent as SaveIcon } from "../assets/svg/bookmark-plus.svg";
@@ -15,6 +16,7 @@ import utc from "dayjs/plugin/utc";
 import { vote } from "../slices/posts/thunks";
 import useMatchPost from "../navigation/useMatchPost";
 import { useTheme } from "../contexts/theme/useTheme";
+import Markdown from "./markdown-renderer";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -49,7 +51,10 @@ const PostCell: FC<Props> = ({ postId, currentScrollPosition }) => {
 
   const renderSelfText = () =>
     !!post.selftext && (
-      <PostText>{<ReactMarkdown source={post.selftext} />}</PostText>
+      <PostText>
+        {/*<ReactMarkdown source={post.selftext} />*/}
+        <Markdown text={post.selftext} />
+      </PostText>
     );
 
   const renderImage = () => {

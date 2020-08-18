@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { setPost } from "../../slices/posts/slice";
 import { useParams } from "react-router-dom";
+import { Transition } from "react-transition-group";
 import { useDispatch, useSelector } from "react-redux";
 import { Post } from "../../models/post";
 import { RootState } from "../../store/configureStore";
@@ -25,9 +26,11 @@ const PostPage: FC = ({}) => {
   const [comments, setComments] = useState<Data<Comment>[]>([]);
   const [loadingComments, setLoadingComments] = useState(false);
   const [commentsLoadError, setCommentsLoadError] = useState(null);
+  const [inProp, setInProp] = useState(false);
 
   useEffect(() => {
     dispatch(setPost(postId));
+    setInProp(true);
   }, [postId]);
 
   // Change tab title on post change.
@@ -66,17 +69,37 @@ const PostPage: FC = ({}) => {
     <CommentsContainer>{comments.map(renderCommentCell)}</CommentsContainer>
   );
 
+  const duration = 300;
+
+  const defaultStyle = {
+    transition: `opacity ${duration}ms ease-in-out`,
+    opacity: 0,
+  };
+
+  const transitionStyles: any = {
+    entering: { opacity: 1 },
+    entered: { opacity: 1 },
+    exiting: { opacity: 0 },
+    exited: { opacity: 0 },
+  };
+
   return (
     <Container>
-      {post ? (
-        <>
-          <PostCell postId={postId} />
-          <CommentsNum>{post.num_comments} Comments</CommentsNum>
-          {renderComments()}
-        </>
-      ) : (
-        <span>Post not found in redux state</span>
-      )}
+      <Transition in={inProp} timeout={duration}>
+        {(state) => (
+          <div style={{ ...defaultStyle, ...transitionStyles[state] }}>
+            {post ? (
+              <>
+                <PostCell postId={postId} />
+                <CommentsNum>{post.num_comments} Comments</CommentsNum>
+                {renderComments()}
+              </>
+            ) : (
+              <span>Post not found in redux state</span>
+            )}
+          </div>
+        )}
+      </Transition>
     </Container>
   );
 };
@@ -91,6 +114,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  background-color: ${(props) => props.theme.backgroundColor};
 `;
 
 const CommentsContainer = styled.div`

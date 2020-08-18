@@ -6,6 +6,7 @@ function useMatchSubreddit() {
     path: SUBREDDIT_PATH,
     strict: true,
     sensitive: true,
+    exact: true,
   });
 }
 

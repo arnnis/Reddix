@@ -7,13 +7,15 @@ import { Comment } from "../../models/comment";
 import styled from "styled-components";
 import { Data } from "../../models/api";
 import Flex from "../../components/flex";
-import ReactMarkdown from "react-markdown";
+
 import millify from "millify";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/configureStore";
 import { loadMoreComments, vote } from "../../slices/posts/thunks";
 import { convertVoteFromReddit } from "../../slices/posts/slice";
 import { useTheme } from "../../contexts/theme/useTheme";
+import { APP_URL } from "../../env";
+import Markdown from "../../components/markdown-renderer";
 
 interface Props {
   commentId: string;
@@ -114,7 +116,9 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
               <Score>{millify(comment.score, { precision: 1 })} points</Score>
             </Flex>
             {!collapsed && (
-              <Text>{<ReactMarkdown source={comment.body} />}</Text>
+              <Text>
+                <Markdown text={comment.body} />
+              </Text>
             )}
           </Flex>
         </CommentContainer>
