@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Popup, Dropdown } from "semantic-ui-react";
-import { useParams, useRouteMatch } from "react-router-dom";
+
 import { ReactComponent as ThemeIcon } from "../../assets/svg/theme-light-dark.svg";
 
 import { logInStart } from "../../slices/app/thunks";

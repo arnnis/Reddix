@@ -9,6 +9,7 @@ import { useParams, useLocation } from "react-router-dom";
 import useListEndReached from "../../utils/hooks/use-list-end-reached";
 import useMatchPost from "../../navigation/useMatchPost";
 import usePrevious from "../../utils/hooks/usePrevious";
+import { Loader } from "semantic-ui-react";
 
 const PostList: FC = () => {
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
@@ -47,7 +48,7 @@ const PostList: FC = () => {
 
   const renderLoading = () => (
     <Flex flex={1} allCenter>
-      <span>Loading...</span>
+      <Loader active>Loading {subreddit ? `r/${subreddit}` : ""}</Loader>
     </Flex>
   );
 

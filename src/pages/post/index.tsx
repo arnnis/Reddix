@@ -13,6 +13,7 @@ import { Comment } from "../../models/comment";
 import CommentCell from "./comment-cell";
 import { DEFAULT_TITLE } from "../../env";
 import Flex from "../../components/flex";
+import { Loader } from "semantic-ui-react";
 
 const PostPage: FC = ({}) => {
   const { subreddit, postId } = useParams<{
@@ -80,7 +81,7 @@ const PostPage: FC = ({}) => {
 
   const renderLoading = () => (
     <Flex flex={1} justifyContent="center" alignItems="center">
-      <span>Loading...</span>
+      <Loader active>Loading</Loader>
     </Flex>
   );
 
@@ -112,9 +113,7 @@ const PostPage: FC = ({}) => {
                 <PostCell postId={postId} />
                 <CommentsNum>{post.num_comments} Comments</CommentsNum>
               </>
-            ) : (
-              <span>Post not found in redux state</span>
-            )}
+            ) : null}
             {loading ? (
               renderLoading()
             ) : loadErr ? (
