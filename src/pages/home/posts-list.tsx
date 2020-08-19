@@ -10,6 +10,8 @@ import useListEndReached from "../../utils/hooks/use-list-end-reached";
 import useMatchPost from "../../navigation/useMatchPost";
 import usePrevious from "../../utils/hooks/usePrevious";
 import { Loader } from "semantic-ui-react";
+import useMatchSubreddit from "../../navigation/useMatchSubreddit";
+import useMatchHome from "../../navigation/useMatchHome";
 
 const PostList: FC = () => {
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
@@ -24,10 +26,12 @@ const PostList: FC = () => {
   const dispatch = useDispatch<any>();
   const matchPost = useMatchPost();
   const prevMathPost = usePrevious(matchPost);
+  const matchSubreddit = useMatchSubreddit(true);
+  const matchHome = useMatchHome();
 
   useEffect(() => {
     // edge case since post url is a nest of subreddit
-    if (matchPost || (prevMathPost && postsList.length)) return;
+    if (matchPost || prevMathPost) return;
 
     console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);
@@ -66,11 +70,7 @@ const PostList: FC = () => {
       style={{ visibility: matchPost ? "hidden" : "visible" }}
       ref={listRef}
     >
-      {loading
-        ? renderLoading()
-        : loadError
-        ? renderLoadError()
-        : postsList.map(renderPostCell)}
+      {loadError ? renderLoadError() : postsList.map(renderPostCell)}
     </Container>
   );
 };

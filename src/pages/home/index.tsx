@@ -7,17 +7,24 @@ import PostsList from "./posts-list";
 import Header from "./header";
 import PostPage from "../post";
 import { HOME_AND_SUBREDDIT_PATH, POST_PATH } from "../../navigation/paths";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { getCurrentUserInfo } from "../../slices/app/thunks";
+import TopLoadingBar from "../../components/top-loading-bar";
+import { RootState } from "../../store/configureStore";
 
 const Home: FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCurrentUserInfo());
   });
+  const loading = useSelector((state: RootState) => state.posts.loadingList);
+
+  const renderTopLoadingBar = () => <TopLoadingBar active={loading} />;
 
   return (
     <Container>
+      {renderTopLoadingBar()}
       <NavBar />
       <Right>
         <Header />

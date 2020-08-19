@@ -29,7 +29,7 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-top-loading-bar": "^1.2.0",
+    "react-top-loading-bar": "^2.0.0",
     "react-transition-group": "^4.4.1",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",

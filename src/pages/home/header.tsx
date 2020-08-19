@@ -40,7 +40,9 @@ const Header: FC<Props> = () => {
   );
 
   const renderUserPopup = () => (
-    <Popup.Content style={{ width: 150 }}>
+    <Popup.Content
+      style={{ width: 150, backgroundColor: theme.backgroundColor }}
+    >
       {renderPopupOption(
         "Night Mode",
         <ThemeIcon
@@ -80,6 +82,8 @@ const Header: FC<Props> = () => {
       position="bottom right"
       flowing
       hoverable
+      style={{ backgroundColor: theme.backgroundColor }}
+      b
     >
       {renderUserPopup()}
     </Popup>
@@ -166,7 +170,6 @@ const UserName = styled.span`
 const PopupOptionContainer = styled.div`
   display: flex;
   align-items: center;
-
   cursor: pointer;
 `;
 
@@ -174,6 +177,7 @@ const PopupOptionTitle = styled.div`
   color: #34495e;
   font-size: 13.5px;
   margin-top: 1.5px;
+  color: ${(props) => props.theme.textColor};
 `;
 
 export default Header;
