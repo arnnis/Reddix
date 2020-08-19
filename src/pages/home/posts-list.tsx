@@ -15,7 +15,6 @@ const PostList: FC = () => {
   const { subreddit } = useParams<{ subreddit: string | undefined }>();
   const { pathname } = useLocation();
   const category = useSelector((state: RootState) => state.posts.category);
-  const currentPostId = useSelector((state: RootState) => state.posts.post);
   const postsList = useSelector((state: RootState) => state.posts.list);
   const loading = useSelector((state: RootState) => state.posts.loadingList);
   const loadError = useSelector((state: RootState) => state.posts.loadError);
@@ -60,7 +59,7 @@ const PostList: FC = () => {
 
   return (
     <Container
-      style={{ visibility: currentPostId ? "hidden" : "visible" }}
+      style={{ visibility: matchPost ? "hidden" : "visible" }}
       ref={listRef}
     >
       {loading && !loadingMore

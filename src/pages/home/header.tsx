@@ -15,6 +15,7 @@ import useMatchSettings from "../../navigation/useMatchSettings";
 import useMatchSaved from "../../navigation/useMatchSaved";
 import useMatchHome from "../../navigation/useMatchHome";
 import { useTheme } from "../../contexts/theme/useTheme";
+import useMatchPost from "../../navigation/useMatchPost";
 
 interface Props {}
 
@@ -29,8 +30,8 @@ const Header: FC<Props> = () => {
   const matchSettings = useMatchSettings();
   const matchSaved = useMatchSaved();
   const matchHome = useMatchHome();
-  const category = useSelector((state: RootState) => state.posts.category);
-  const postId = useSelector((state: RootState) => state.posts.post);
+
+  const matchPost = useMatchPost();
   const { theme, toggleTheme } = useTheme();
 
   const renderLoginButton = () => (
@@ -68,7 +69,7 @@ const Header: FC<Props> = () => {
 
   const renderCategoryDropdown = () =>
     (matchSubreddit || matchHome) &&
-    !postId && (
+    !matchPost && (
       <Dropdown
         text="BEST"
         inline
