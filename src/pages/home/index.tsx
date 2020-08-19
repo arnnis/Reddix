@@ -21,7 +21,7 @@ const Home: FC = () => {
             </Route>
           </Switch>
           <Switch>
-            <Route path={POST_PATH} exact>
+            <Route path={POST_PATH}>
               <PostPage />
             </Route>
           </Switch>

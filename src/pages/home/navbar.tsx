@@ -57,7 +57,7 @@ const NavBar: FC<Props> = () => {
     <LogoContainer
       onClick={() => {
         dispatch(setCategory("best"));
-        history.push("/");
+        history.push(HOME_PATH);
       }}
     >
       <LogoTilte>Reddix</LogoTilte>
