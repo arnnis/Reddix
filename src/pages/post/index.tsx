@@ -12,6 +12,7 @@ import { Data, Listing } from "../../models/api";
 import { Comment } from "../../models/comment";
 import CommentCell from "./comment-cell";
 import { DEFAULT_TITLE } from "../../env";
+import Flex from "../../components/flex";
 
 const PostPage: FC = ({}) => {
   const { subreddit, postId } = useParams<{
@@ -24,8 +25,9 @@ const PostPage: FC = ({}) => {
     (state: RootState) => state.entities.posts.byId[postId]
   );
   const [comments, setComments] = useState<Data<Comment>[]>([]);
-  const [loadingComments, setLoadingComments] = useState(false);
-  const [commentsLoadError, setCommentsLoadError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadErr, setLoadErr] = useState(null);
   const [inProp, setInProp] = useState(false);
 
   useEffect(() => {
@@ -55,10 +57,17 @@ const PostPage: FC = ({}) => {
   }, []);
 
   const getComments = async () => {
-    let data: [Listing<Post>, Listing<Comment>] = await dispatch(
-      getPostComments(postId, subreddit)
-    );
-    setComments(data[1].data.children);
+    setLoading(true);
+    try {
+      let data: [Listing<Post>, Listing<Comment>] = await dispatch(
+        getPostComments(postId, subreddit)
+      );
+      setComments(data[1].data.children);
+    } catch (e) {
+      setLoadErr(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderCommentCell = (comment: Data<Comment>) => (
@@ -67,6 +76,12 @@ const PostPage: FC = ({}) => {
 
   const renderComments = () => (
     <CommentsContainer>{comments.map(renderCommentCell)}</CommentsContainer>
+  );
+
+  const renderLoading = () => (
+    <Flex flex={1} justifyContent="center" alignItems="center">
+      <span>Loading...</span>
+    </Flex>
   );
 
   const duration = 300;
@@ -87,17 +102,27 @@ const PostPage: FC = ({}) => {
     <Container>
       <Transition in={inProp} timeout={duration}>
         {(state) => (
-          <div style={{ ...defaultStyle, ...transitionStyles[state] }}>
+          <Flex
+            flex={1}
+            style={{ ...defaultStyle, ...transitionStyles[state] }}
+            flexDirection="column"
+          >
             {post ? (
               <>
                 <PostCell postId={postId} />
                 <CommentsNum>{post.num_comments} Comments</CommentsNum>
-                {renderComments()}
               </>
             ) : (
               <span>Post not found in redux state</span>
             )}
-          </div>
+            {loading ? (
+              renderLoading()
+            ) : loadErr ? (
+              <span>{loadErr}</span>
+            ) : (
+              renderComments()
+            )}
+          </Flex>
         )}
       </Transition>
     </Container>
