@@ -15,7 +15,7 @@ const SCOPES = [
 export const DEFAULT_TITLE = "Reddix for reddit";
 
 // prod
-export const APP_URL_PROD = "https://arrnis.github.io/Reddix";
+export const APP_URL_PROD = "https://arnnis.github.io/Reddix";
 export const CLIENT_ID_PROD = "-q-aaV4uoRgELg";
 
 // Dev
