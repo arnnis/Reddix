@@ -81,7 +81,9 @@ const PostPage: FC = ({}) => {
 
   const renderLoading = () => (
     <Flex flex={1} justifyContent="center" alignItems="center">
-      <Loader active>Loading</Loader>
+      <Loader active inline={true}>
+        Loading
+      </Loader>
     </Flex>
   );
 
@@ -114,13 +116,15 @@ const PostPage: FC = ({}) => {
                 <CommentsNum>{post.num_comments} Comments</CommentsNum>
               </>
             ) : null}
-            {loading ? (
-              renderLoading()
-            ) : loadErr ? (
-              <span>{loadErr}</span>
-            ) : (
-              renderComments()
-            )}
+            <Flex style={{ minHeight: 100 }}>
+              {loading ? (
+                renderLoading()
+              ) : loadErr ? (
+                <span>{loadErr}</span>
+              ) : (
+                renderComments()
+              )}
+            </Flex>
           </Flex>
         )}
       </Transition>
