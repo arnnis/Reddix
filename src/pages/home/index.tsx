@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 
@@ -7,8 +7,15 @@ import PostsList from "./posts-list";
 import Header from "./header";
 import PostPage from "../post";
 import { HOME_AND_SUBREDDIT_PATH, POST_PATH } from "../../navigation/paths";
+import { useDispatch } from "react-redux";
+import { getCurrentUserInfo } from "../../slices/app/thunks";
 
 const Home: FC = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCurrentUserInfo());
+  });
+
   return (
     <Container>
       <NavBar />

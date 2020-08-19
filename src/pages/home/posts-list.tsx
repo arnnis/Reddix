@@ -50,7 +50,7 @@ const PostList: FC = () => {
   const renderLoading = () => (
     <Flex flex={1} allCenter>
       <Loader active inline={true}>
-        Loading {subreddit ? `r/${subreddit}` : ""}
+        Going to {subreddit ? `r/${subreddit}` : ""} ...
       </Loader>
     </Flex>
   );

@@ -25,6 +25,7 @@ const Header: FC<Props> = () => {
   const handleLogin = () => {
     dispatch(logInStart());
   };
+  const me = useSelector((state: RootState) => state.app.me);
 
   const matchSubreddit = useMatchSubreddit();
   const matchSettings = useMatchSettings();
@@ -40,12 +41,29 @@ const Header: FC<Props> = () => {
 
   const renderUserPopup = () => (
     <Popup.Content style={{ width: 150 }}>
-      {renderPopupOption("Saved", <ChevronDown />)}
+      {renderPopupOption(
+        "Night Mode",
+        <ThemeIcon
+          style={{
+            marginRight: 15,
+            cursor: "pointer",
+            fill: theme.isDark ? "#fff" : "#333",
+          }}
+          width={20}
+          height={20}
+        />,
+        () => toggleTheme()
+      )}
+      <Button title="Logout" style={{ marginTop: 15 }} />
     </Popup.Content>
   );
 
-  const renderPopupOption = (title: string, icon: JSX.Element) => (
-    <PopupOptionContainer>
+  const renderPopupOption = (
+    title: string,
+    icon: JSX.Element,
+    onClick?: () => void
+  ) => (
+    <PopupOptionContainer onClick={onClick}>
       {icon}
       <PopupOptionTitle>{title}</PopupOptionTitle>
     </PopupOptionContainer>
@@ -55,11 +73,11 @@ const Header: FC<Props> = () => {
     <Popup
       trigger={
         <UserProfileContainer>
-          <UserAvatar src="https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png?width=256&s=13a87a036836ce95570a76feb53f27e61717ad1b" />
-          <UserName>alirezarzna</UserName>
+          <UserAvatar src={me?.subreddit.icon_img} />
+          <UserName>{me?.subreddit?.display_name_prefixed}</UserName>
         </UserProfileContainer>
       }
-      position="bottom center"
+      position="bottom right"
       flowing
       hoverable
     >
@@ -155,7 +173,7 @@ const PopupOptionContainer = styled.div`
 const PopupOptionTitle = styled.div`
   color: #34495e;
   font-size: 13.5px;
-  margin-left: 5px;
+  margin-top: 1.5px;
 `;
 
 export default Header;

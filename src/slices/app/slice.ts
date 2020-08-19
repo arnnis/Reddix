@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Me } from "../../models/me";
 
 export type TokenState = {
   token: string | null;
   refreshToken: string | null;
   expiresIn: number | null;
   isLoggedIn?: boolean;
+  me: Me | null;
 };
 
 export type AppState = Readonly<TokenState & {}>;
@@ -14,6 +16,7 @@ const initialState: AppState = {
   refreshToken: null,
   expiresIn: null,
   isLoggedIn: false,
+  me: null,
 };
 
 const appSlice = createSlice({
@@ -33,9 +36,12 @@ const appSlice = createSlice({
       state.expiresIn = null;
       state.isLoggedIn = false;
     },
+    setMe(state, action: PayloadAction<Me>) {
+      state.me = action.payload;
+    },
   },
 });
 
 export const appReducer = appSlice.reducer;
 
-export const { setToken, logout } = appSlice.actions;
+export const { setToken, logout, setMe } = appSlice.actions;

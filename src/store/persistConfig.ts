@@ -5,7 +5,7 @@ import { createWhitelistFilter } from "redux-persist-transform-filter";
 
 const migrations = {};
 
-const appFilter = createWhitelistFilter("app", ["token"]);
+const appFilter = createWhitelistFilter("app", ["token", "me"]);
 
 export default {
   key: "root",

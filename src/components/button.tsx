@@ -1,13 +1,14 @@
-import React, { FC } from "react";
+import React, { CSSProperties, FC } from "react";
 import styled from "styled-components";
 
 interface Props {
   title: string;
   onClick?(): void;
+  style?: CSSProperties;
 }
 
-export const Button: FC<Props> = ({ title, onClick }) => (
-  <ButtonContainer onClick={onClick}>
+export const Button: FC<Props> = ({ title, onClick, style }) => (
+  <ButtonContainer onClick={onClick} style={style}>
     <ButtonTitle>{title}</ButtonTitle>
   </ButtonContainer>
 );

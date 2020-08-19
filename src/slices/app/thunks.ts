@@ -3,8 +3,9 @@ import { CLIENT_ID, OAUTH_CALLBACK_URL, OAUTH_URL } from "../../env";
 import req from "../../utils/req";
 import ky from "ky";
 import { LoginResult } from "../../models/auth";
-import { setToken } from "./slice";
+import { setToken, setMe } from "./slice";
 import { HOME_PATH } from "../../navigation/paths";
+import { Me } from "../../models/me";
 
 export const logInStart = (): AppThunk => (dispatch) => {
   window.location.replace(OAUTH_URL);
@@ -91,6 +92,13 @@ const logOut = (): AppThunk => (dispatch) => {
       isLoggedIn: false,
     })
   );
+};
+
+export const getCurrentUserInfo = (): AppThunk => async (dispatch) => {
+  try {
+    let me = await req("OAUTH").get("api/v1/me").json<Me>();
+    dispatch(setMe(me));
+  } catch (e) {}
 };
 
 // import {batch} from 'react-redux';
