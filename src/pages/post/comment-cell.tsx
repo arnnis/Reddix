@@ -41,9 +41,7 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
     dispatch(vote(comment.id, comment.name, "comment", "downvote"));
   };
 
-  const loadMoreReplies = (moreId: string) => {
-    dispatch(loadMoreComments(comment.link_id, moreId));
-  };
+  const loadMoreReplies = (moreId: string) => {};
 
   const renderReply = (replyData: Data<Comment>) => (
     <CommentCell commentId={replyData.data.id} isMaster={false} />
@@ -98,8 +96,17 @@ const CommentCell: FC<Props> = ({ commentId, isMaster = true }) => {
       (com) => com.kind === "more"
     );
     if (!more || more.data.count === 0) return null;
+    console.log("more", more);
+
     return (
-      <ShowMoreText onClick={() => loadMoreReplies(more?.data.id)}>
+      <ShowMoreText
+        onClick={() => {
+          // @ts-ignore
+          dispatch(
+            loadMoreComments(comment.link_id, more?.data.children, comment.id)
+          );
+        }}
+      >
         {more?.data?.count} more replies
       </ShowMoreText>
     );

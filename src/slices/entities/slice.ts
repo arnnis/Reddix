@@ -67,9 +67,35 @@ const entitiesSlice = createSlice({
         },
       };
     },
+
+    addRepliesToComment(
+      state,
+      action: PayloadAction<{ commentId: string; replies: Data<Comment>[] }>
+    ) {
+      const { commentId, replies } = action.payload;
+      let moreIndex = state.comments.byId[commentId]?.replies?.data.children
+        .map((c) => c.kind)
+        .indexOf("more");
+      if (!moreIndex) return;
+      state.comments.byId[commentId].replies?.data.children.splice(
+        moreIndex,
+        1
+      );
+
+      if (!state.comments.byId[commentId]?.replies) {
+      } else {
+        for (let reply of replies) {
+          state.comments.byId[commentId]?.replies?.data.children.push(reply);
+        }
+      }
+    },
   },
 });
 
 export const entitiesReducer = entitiesSlice.reducer;
 
-export const { storeEntities, updateEntity } = entitiesSlice.actions;
+export const {
+  storeEntities,
+  updateEntity,
+  addRepliesToComment,
+} = entitiesSlice.actions;

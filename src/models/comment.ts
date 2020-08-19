@@ -1,6 +1,7 @@
 import { Listing } from "./api";
 
 export interface Comment {
+  children: string[];
   count: number;
   replies?: Listing<Comment>;
   total_awards_received: number;

@@ -1,5 +1,5 @@
 import req from "../../utils/req";
-import { AppThunk } from "../../store/configureStore";
+import { AppThunk, store } from "../../store/configureStore";
 import {
   Category,
   getPostsStart,
@@ -8,12 +8,12 @@ import {
   convertVoteFromReddit,
 } from "./slice";
 import { storeEntities } from "../entities/slice";
-import { Listing, Vote } from "../../models/api";
+import { Data, Listing, Vote } from "../../models/api";
 import { Post } from "../../models/post";
 import { Subreddit } from "../../models/subreddit";
 import { batch } from "react-redux";
 import { Comment } from "../../models/comment";
-import { updateEntity } from "../entities/slice";
+import { updateEntity, addRepliesToComment } from "../entities/slice";
 
 export const getPosts = (
   subreddit?: string,
@@ -94,9 +94,23 @@ export const getPostComments = (
     .json<[Listing<Post>, Listing<Comment>]>();
   console.log("comments", data);
 
+  dispatch(storeComments(data[1].data.children));
+  dispatch(
+    storeEntities({
+      entity: "posts",
+      data: data[0].data.children.map((child) => child.data),
+    })
+  );
+
+  return data;
+};
+
+export const storeComments = (comments: Data<Comment>[]): AppThunk => (
+  dispatch
+) => {
   const commentsAndReplies: Comment[] = [];
 
-  for (let comment of data[1].data.children) {
+  for (let comment of comments) {
     commentsAndReplies.push(comment.data);
 
     if (comment.data.replies?.data?.children) {
@@ -107,13 +121,6 @@ export const getPostComments = (
   }
 
   dispatch(storeEntities({ entity: "comments", data: commentsAndReplies }));
-  dispatch(
-    storeEntities({
-      entity: "posts",
-      data: data[0].data.children.map((child) => child.data),
-    })
-  );
-  return data;
 };
 
 export const vote = (
@@ -228,14 +235,23 @@ export const unsave = (
 };
 
 export const loadMoreComments = (
-  postId: string,
+  post_fullname: string,
+  children: string[],
   commentId: string
 ): AppThunk => async (dispatch) => {
   let data = await req("OAUTH")
     .get(
-      `api/morechildren?raw_json=1&link_id=${postId}&children=${commentId}&api_type=json&sort=confidence&limit_children=true`
+      `api/morechildren?raw_json=1&link_id=${post_fullname}&children=${children.join(
+        ","
+      )}&api_type=json&sort=confidence&limit_children=false`
     )
-    .json<[Listing<Post>, Listing<Comment>]>();
+    .json<{ json: { data: { things: Data<Comment>[] } } }>();
+
+  const replies = data.json.data.things;
+
+  dispatch(storeComments(replies));
+  dispatch(addRepliesToComment({ commentId, replies }));
+  return replies;
 
   debugger;
 };
