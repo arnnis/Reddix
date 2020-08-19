@@ -18,13 +18,13 @@ import { updateEntity, addRepliesToComment } from "../entities/slice";
 export const getPosts = (
   subreddit?: string,
   category: Category = "best",
-  reload: boolean = false
+  loadMore: boolean = false
 ): AppThunk => async (dispatch, getState) => {
   const store = getState();
   const { isLoggedIn } = store.app;
   const lastPostId = store.posts.list[store.posts.list.length - 1];
-  const after = reload ? "" : store.entities.posts.byId[lastPostId]?.name ?? "";
-  dispatch(getPostsStart());
+  const after = loadMore ? store.entities.posts.byId[lastPostId]?.name : "";
+  dispatch(getPostsStart({ loadMore }));
 
   try {
     let result: Listing<Post>;
@@ -56,14 +56,14 @@ export const getPosts = (
       dispatch(
         getPostsSuccess({
           list: result.data.children.map(({ data }) => data.id),
-          reload,
+          loadMore,
         })
       );
     });
 
     return result;
   } catch (e) {
-    dispatch(getPostsFail(e.message));
+    dispatch(getPostsFail({ err: e.message, loadMore }));
   }
 };
 

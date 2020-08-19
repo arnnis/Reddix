@@ -6,6 +6,7 @@ export type Category = "best" | "top" | "new";
 export type PostsState = Readonly<{
   list: Array<string>;
   loadingList: boolean;
+  loadingMore: boolean;
   loadError: string | null;
   loading: { [userId: string]: boolean };
   category: Category;
@@ -16,6 +17,7 @@ export type PostsState = Readonly<{
 const initialState: PostsState = {
   list: [],
   loadingList: false,
+  loadingMore: false,
   loadError: null,
   loading: {},
   category: "best",
@@ -27,23 +29,29 @@ const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    getPostsStart(state) {
-      state.loadingList = true;
+    getPostsStart(state, action: PayloadAction<{ loadMore: boolean }>) {
+      if (action.payload.loadMore) state.loadingMore = true;
+      else state.loadingList = true;
       state.loadError = null;
     },
     getPostsSuccess(
       state,
-      action: PayloadAction<{ list: string[]; reload: boolean }>
+      action: PayloadAction<{ list: string[]; loadMore: boolean }>
     ) {
-      state.loadingList = false;
-      state.list =
-        state.list.length && !action.payload.reload
-          ? [...state.list, ...action.payload.list]
-          : action.payload.list;
+      if (action.payload.loadMore) state.loadingMore = false;
+      else state.loadingList = false;
+      state.list = action.payload.loadMore
+        ? [...state.list, ...action.payload.list]
+        : action.payload.list;
     },
-    getPostsFail(state, action: PayloadAction<PostsState["loadError"]>) {
-      state.loadingList = false;
-      state.loadError = action.payload;
+    getPostsFail(
+      state,
+      action: PayloadAction<{ err: PostsState["loadError"]; loadMore: boolean }>
+    ) {
+      if (action.payload.loadMore) state.loadingMore = false;
+      else state.loadingList = false;
+
+      state.loadError = action.payload.err;
     },
     setCategory(state, action: PayloadAction<Category>) {
       state.category = action.payload;

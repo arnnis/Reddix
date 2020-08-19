@@ -183,9 +183,10 @@ const LogoContainer = styled.div`
 `;
 
 const LogoTilte = styled.div`
-  font-size: 19.5px;
-  font-weight: bold;
+  font-size: 21px;
+  font-weight: bolder;
   color: ${(props) => props.theme.orange};
+  font-family: ABeeZee;
 `;
 
 const SectionContainer = styled.div`

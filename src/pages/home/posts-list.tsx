@@ -18,8 +18,10 @@ const PostList: FC = () => {
   const postsList = useSelector((state: RootState) => state.posts.list);
   const loading = useSelector((state: RootState) => state.posts.loadingList);
   const loadError = useSelector((state: RootState) => state.posts.loadError);
+  const loadingMore = useSelector(
+    (state: RootState) => state.posts.loadingMore
+  );
   const dispatch = useDispatch<any>();
-  const loadingMore = loading && postsList.length;
   const matchPost = useMatchPost();
   const prevMathPost = usePrevious(matchPost);
 
@@ -30,15 +32,15 @@ const PostList: FC = () => {
     console.log("pathname:", pathname);
     console.log("subreddit:", subreddit);
     console.log("category:", category);
-    getPostsList(true);
+    getPostsList();
   }, [subreddit, category]);
 
-  const listRef = useListEndReached(postsList, () => getPostsList());
+  const listRef = useListEndReached(postsList, () => getPostsList(true));
 
   const isHome = !subreddit;
 
-  const getPostsList = async (reload: boolean = false) => {
-    dispatch(getPosts(subreddit, category, reload));
+  const getPostsList = (loadMore?: boolean) => {
+    dispatch(getPosts(subreddit, category, loadMore));
   };
 
   const renderPostCell = (postId: string) => (
@@ -64,7 +66,7 @@ const PostList: FC = () => {
       style={{ visibility: matchPost ? "hidden" : "visible" }}
       ref={listRef}
     >
-      {loading && !loadingMore
+      {loading
         ? renderLoading()
         : loadError
         ? renderLoadError()
