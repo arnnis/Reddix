@@ -12,9 +12,9 @@ import usePrevious from "../../utils/hooks/usePrevious";
 import { Loader } from "semantic-ui-react";
 import useMatchSubreddit from "../../navigation/useMatchSubreddit";
 import useMatchHome from "../../navigation/useMatchHome";
+import TopLoadingBar from "../../components/top-loading-bar";
 
 const PostList: FC = () => {
-  const { subreddit } = useParams<{ subreddit: string | undefined }>();
   const { pathname } = useLocation();
   const category = useSelector((state: RootState) => state.posts.category);
   const postsList = useSelector((state: RootState) => state.posts.list);
@@ -27,24 +27,31 @@ const PostList: FC = () => {
   const matchPost = useMatchPost();
   const prevMathPost = usePrevious(matchPost);
   const matchSubreddit = useMatchSubreddit(true);
-  const matchHome = useMatchHome();
+  const matchHome = useMatchHome(true);
+  const prevMatchSubreddit = usePrevious(matchSubreddit);
+  const prevMatchHome = usePrevious(matchHome);
+  const prevCategory = usePrevious(category);
 
   useEffect(() => {
-    // edge case since post url is a nest of subreddit
-    if (matchPost || prevMathPost) return;
-
-    console.log("pathname:", pathname);
-    console.log("subreddit:", subreddit);
-    console.log("category:", category);
-    getPostsList();
-  }, [subreddit, category]);
-
+    if (
+      matchSubreddit?.params.subreddit !==
+        prevMatchSubreddit?.params.subreddit ||
+      category !== prevCategory
+      // matchHome?.path !== prevMatchHome?.path
+    ) {
+      console.log("pathname:", pathname);
+      console.log("subreddit:", matchSubreddit?.params.subreddit);
+      console.log("category:", category);
+      getPostsList();
+    }
+  }, [matchSubreddit?.params.subreddit, category]);
+  //
   const listRef = useListEndReached(postsList, () => getPostsList(true));
 
-  const isHome = !subreddit;
+  const isHome = !matchSubreddit?.params.subreddit;
 
   const getPostsList = (loadMore?: boolean) => {
-    dispatch(getPosts(subreddit, category, loadMore));
+    dispatch(getPosts(matchSubreddit?.params.subreddit, category, loadMore));
   };
 
   const renderPostCell = (postId: string) => (
@@ -54,10 +61,16 @@ const PostList: FC = () => {
   const renderLoading = () => (
     <Flex flex={1} allCenter>
       <Loader active inline={true}>
-        Going to {subreddit ? `r/${subreddit}` : ""} ...
+        Going to{" "}
+        {matchSubreddit?.params.subreddit
+          ? `r/${matchSubreddit?.params.subreddit}`
+          : ""}{" "}
+        ...
       </Loader>
     </Flex>
   );
+
+  const renderTopLoadingBar = () => <TopLoadingBar active={loading} />;
 
   const renderLoadError = () => (
     <Flex allCenter>
