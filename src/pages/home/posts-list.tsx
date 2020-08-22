@@ -33,7 +33,7 @@ const PostList: FC = () => {
   const prevCategory = usePrevious(category);
 
   useEffect(() => {
-    if (matchHome) return;
+    if (matchPost) return;
     if (
       matchSubreddit?.params.subreddit !==
         // @ts-ignore
