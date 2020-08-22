@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/Reddix/static/css/main.4c31d33a.chunk.css",
+    "main.js": "/Reddix/static/js/main.1d3f40f2.chunk.js",
+    "main.js.map": "/Reddix/static/js/main.1d3f40f2.chunk.js.map",
+    "runtime-main.js": "/Reddix/static/js/runtime-main.6abbed97.js",
+    "runtime-main.js.map": "/Reddix/static/js/runtime-main.6abbed97.js.map",
+    "static/js/2.5b5b500c.chunk.js": "/Reddix/static/js/2.5b5b500c.chunk.js",
+    "static/js/2.5b5b500c.chunk.js.map": "/Reddix/static/js/2.5b5b500c.chunk.js.map",
+    "index.html": "/Reddix/index.html",
+    "precache-manifest.c0563a9285adf289ab27ce18c9bbdac8.js": "/Reddix/precache-manifest.c0563a9285adf289ab27ce18c9bbdac8.js",
+    "service-worker.js": "/Reddix/service-worker.js",
+    "static/css/main.4c31d33a.chunk.css.map": "/Reddix/static/css/main.4c31d33a.chunk.css.map",
+    "static/js/2.5b5b500c.chunk.js.LICENSE.txt": "/Reddix/static/js/2.5b5b500c.chunk.js.LICENSE.txt",
+    "static/media/arrow-down-bold.1c66cb05.svg": "/Reddix/static/media/arrow-down-bold.1c66cb05.svg",
+    "static/media/arrow-up-bold.0fbf8c9a.svg": "/Reddix/static/media/arrow-up-bold.0fbf8c9a.svg",
+    "static/media/bookmark-plus.11bdd8ee.svg": "/Reddix/static/media/bookmark-plus.11bdd8ee.svg",
+    "static/media/chevron-down.cfcc8357.svg": "/Reddix/static/media/chevron-down.cfcc8357.svg",
+    "static/media/chevron-up.857fd861.svg": "/Reddix/static/media/chevron-up.857fd861.svg",
+    "static/media/cog-box.fea2ee66.svg": "/Reddix/static/media/cog-box.fea2ee66.svg",
+    "static/media/comment.8ecb1681.svg": "/Reddix/static/media/comment.8ecb1681.svg",
+    "static/media/content-save.940ed8fd.svg": "/Reddix/static/media/content-save.940ed8fd.svg",
+    "static/media/home.0c07127c.svg": "/Reddix/static/media/home.0c07127c.svg",
+    "static/media/plus.b91bdf1b.svg": "/Reddix/static/media/plus.b91bdf1b.svg",
+    "static/media/theme-light-dark.be60bd20.svg": "/Reddix/static/media/theme-light-dark.be60bd20.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6abbed97.js",
+    "static/js/2.5b5b500c.chunk.js",
+    "static/css/main.4c31d33a.chunk.css",
+    "static/js/main.1d3f40f2.chunk.js"
+  ]
+}
